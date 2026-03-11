@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research & Publications | Nitya Bimba Sewa</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#F9FAFB',
+                            primary: '#1E3A8A', // Science Blue
+                            secondary: '#16A34A', // Environment Green
+                            accent: '#6366F1', // Education Indigo
+                            highlight: '#F59E0B', // Welfare Orange
+                            dark: '#1F2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; color: #1F2937; overflow-x: hidden; }
+        
+        .glass-nav {
+            background: rgba(249, 250, 251, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(30, 58, 138, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.4); 
+            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08); 
+        }
+
+        .hero-inner-bg {
+            background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.85)), 
+                        url('https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+        }
+
+        .research-grid {
+            background-image: radial-gradient(rgba(30, 58, 138, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- Next Level Gradients --- */
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #1E3A8A 0%, #6366F1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glow-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .reveal, .hero-elem { opacity: 0; visibility: hidden; }
+        
+        /* Document Badge */
+        .doc-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 0.375rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+    </style>
+</head>
+<body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
+
+    <!-- Navigation (Master Template) -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:shadow-lg transition-all group-hover:rotate-180 duration-700">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-brand-primary">Nitya Bimba Sewa</span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex space-x-6 items-center font-medium text-sm text-slate-600">
+                    <a href="index.html" class="hover:text-brand-primary transition-colors">Home</a>
+
+                    <!-- About Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="about.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">About Us</a>
+                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
+                            <a href="transparency.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Transparency</a>
+                            <a href="faq.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">FAQ</a>
+                        </div>
+                    </div>
+
+                    <!-- Work Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
+                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
+                            <a href="impact.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Impact & Results</a>
+                        </div>
+                    </div>
+
+                    <!-- Knowledge Dropdown (Active) -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 text-brand-accent transition-colors border-b-2 border-brand-accent pb-1">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="research.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">Research & Publications</a>
+                            <a href="media.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Media Gallery</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Engage Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="get-involved.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Get Involved</a>
+                            <a href="partners.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Partners</a>
+                            <a href="news.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">News & Insights</a>
+                        </div>
+                    </div>
+
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
+                    
+                    <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg flex items-center gap-2 font-bold transform hover:scale-105 transition-all">
+                        <i class="fa-solid fa-heart text-white"></i> Donate
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+            <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
+                <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Organization</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Transparency</a>
+                        <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Work</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
+                        <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
+                        <a href="impact.html" class="text-slate-600 hover:text-brand-accent text-sm">Impact & Results</a>
+                    </div>
+                </div>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Knowledge</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="research.html" class="text-brand-accent text-sm font-bold">Research & Publications</a>
+                        <a href="media.html" class="text-slate-600 hover:text-brand-accent text-sm">Media Gallery</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Engage</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="get-involved.html" class="text-slate-600 hover:text-brand-accent text-sm">Get Involved</a>
+                        <a href="partners.html" class="text-slate-600 hover:text-brand-accent text-sm">Partners</a>
+                        <a href="news.html" class="text-slate-600 hover:text-brand-accent text-sm">News & Insights</a>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
+                
+                <div class="pt-6 pb-2">
+                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Inner Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
+        <div class="absolute inset-0 research-grid opacity-20"></div>
+        
+        <div class="max-w-5xl mx-auto z-10 reveal">
+            <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Our Knowledge Hub</h3>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight hero-elem">
+                Research & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Publications.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
+                We believe in open data. Explore our peer-reviewed field studies, annual impact reports, and scientific white papers designed to guide global policy and local action.
+            </p>
+        </div>
+    </section>
+
+    <!-- Category Nav -->
+    <div class="bg-white py-8 border-b border-slate-200 sticky top-20 z-40 hidden md:block glass-nav">
+        <div class="max-w-7xl mx-auto px-4 flex justify-center gap-8 text-sm font-bold uppercase tracking-wider">
+            <a href="#featured" class="category-nav-link text-brand-primary border-b-2 border-brand-primary pb-1 flex items-center gap-2 transition-colors"><i class="fa-solid fa-star"></i> Featured</a>
+            <a href="#studies" class="category-nav-link text-slate-500 hover:text-brand-accent flex items-center gap-2 transition-colors"><i class="fa-solid fa-microscope"></i> Field Studies</a>
+            <a href="#reports" class="category-nav-link text-slate-500 hover:text-brand-secondary flex items-center gap-2 transition-colors"><i class="fa-solid fa-file-pdf"></i> PDF Reports</a>
+            <a href="#blog" class="category-nav-link text-slate-500 hover:text-brand-highlight flex items-center gap-2 transition-colors"><i class="fa-solid fa-pen-nib"></i> Science Blog</a>
+        </div>
+    </div>
+
+    <!-- 1. FEATURED RESEARCH -->
+    <section id="featured" class="py-24 px-4 bg-white relative overflow-hidden scroll-mt-40">
+        <div class="glow-blob bg-brand-primary opacity-[0.05] top-1/2 left-[10%] -translate-y-1/2"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col lg:flex-row gap-12 items-center reveal">
+                <!-- Image Side -->
+                <div class="w-full lg:w-1/2 relative">
+                    <div class="absolute -inset-4 bg-gradient-to-br from-brand-primary/20 to-brand-secondary/20 rounded-3xl transform -rotate-2 -z-10"></div>
+                    <div class="glass-card p-2 rounded-2xl bg-white shadow-xl relative overflow-hidden group">
+                        <img src="https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?q=80&w=2070&auto=format&fit=crop" alt="Featured Research" class="rounded-xl w-full object-cover h-[450px] transition-transform duration-700 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-brand-primary/20 group-hover:bg-transparent transition-all"></div>
+                        <div class="absolute bottom-6 left-6 right-6 bg-white/95 backdrop-blur-md p-6 rounded-xl border border-white/50 shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-all">
+                            <div class="flex items-center gap-2 text-brand-secondary font-bold text-xs uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-check-circle"></i> Peer Reviewed
+                            </div>
+                            <h4 class="font-bold text-brand-dark text-lg">The Bagmati Biodiversity Index (2026)</h4>
+                            <p class="text-slate-500 text-sm mt-1">Authors: Dr. A. Sharma, NBS Vigya Council</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Content Side -->
+                <div class="w-full lg:w-1/2 space-y-6">
+                    <h3 class="text-brand-primary font-bold tracking-wider uppercase text-sm mb-2"><i class="fa-solid fa-star text-brand-highlight mr-1"></i> Flagship Publication</h3>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-dark leading-tight">Cataloging Endangered Medicinal Flora in Rural Nepal</h2>
+                    <p class="text-slate-600 text-lg leading-relaxed">
+                        Our most comprehensive field study to date. Over 18 months, our scientific team and local forest groups mapped the rapid decline of 120 indigenous medicinal herbs. This 80-page white paper details localized conservation methodologies and provides a framework for sustainable eco-agriculture.
+                    </p>
+                    
+                    <div class="grid grid-cols-2 gap-4 py-4 border-y border-slate-100">
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase">Date Published</p>
+                            <p class="font-medium text-brand-dark">February 2026</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase">Pages / Size</p>
+                            <p class="font-medium text-brand-dark">84 Pages (4.2 MB)</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4 pt-2">
+                        <button class="bg-brand-primary hover:bg-blue-900 text-white font-bold py-3 px-8 rounded-xl shadow-md transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-download"></i> Download PDF
+                        </button>
+                        <button class="bg-slate-50 hover:bg-slate-100 text-brand-primary border border-slate-200 font-bold py-3 px-6 rounded-xl transition-all flex items-center gap-2">
+                            Read Abstract
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. FIELD STUDIES & ARTICLES -->
+    <section id="studies" class="py-24 px-4 bg-brand-bg relative border-t border-slate-200 scroll-mt-40">
+        <div class="absolute inset-0 research-grid opacity-50 z-0"></div>
+        <div class="glow-blob bg-brand-accent opacity-[0.05] top-1/2 right-[10%] -translate-y-1/2"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal">
+                <div>
+                    <h3 class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-2">Research Database</h3>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-primary">Field Studies & Articles</h2>
+                </div>
+                <div class="mt-4 md:mt-0 relative">
+                    <input type="text" id="study-search" placeholder="Search publications..." class="px-4 py-2 pl-10 rounded-full border border-slate-300 focus:outline-none focus:border-brand-accent focus:ring-1 focus:ring-brand-accent bg-white text-sm w-64 shadow-sm transition-all">
+                    <i class="fa-solid fa-search absolute left-4 top-3 text-slate-400"></i>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="study-card glass-card rounded-2xl overflow-hidden flex flex-col group reveal hover:border-brand-accent/50 cursor-pointer">
+                    <div class="p-6 border-b border-slate-100 bg-white flex justify-between items-start">
+                        <span class="doc-badge bg-blue-50 text-blue-700 border border-blue-100">Education</span>
+                        <span class="text-slate-400 text-xs font-medium"><i class="fa-regular fa-calendar"></i> Jan '26</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col bg-white">
+                        <h4 class="font-bold text-xl text-brand-dark mb-3 group-hover:text-brand-accent transition-colors">Efficacy of Mobile STEM Labs in Rural Curriculums</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">A quantitative analysis of student engagement and test score improvement following the introduction of practical science kits in underfunded municipal schools.</p>
+                        <a href="#" class="text-brand-accent font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Read Full Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="study-card glass-card rounded-2xl overflow-hidden flex flex-col group reveal hover:border-brand-secondary/50 cursor-pointer" style="transition-delay: 100ms;">
+                    <div class="p-6 border-b border-slate-100 bg-white flex justify-between items-start">
+                        <span class="doc-badge bg-emerald-50 text-emerald-700 border border-emerald-100">Environment</span>
+                        <span class="text-slate-400 text-xs font-medium"><i class="fa-regular fa-calendar"></i> Nov '25</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col bg-white">
+                        <h4 class="font-bold text-xl text-brand-dark mb-3 group-hover:text-brand-secondary transition-colors">Organic Yield vs. Synthetic Fertilizer Dependency</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">A 3-year comparative study of soil degradation and crop yield among 50 cooperative farmers transitioning to eco-friendly agricultural techniques.</p>
+                        <a href="#" class="text-brand-secondary font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Read Full Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="study-card glass-card rounded-2xl overflow-hidden flex flex-col group reveal hover:border-brand-highlight/50 cursor-pointer" style="transition-delay: 200ms;">
+                    <div class="p-6 border-b border-slate-100 bg-white flex justify-between items-start">
+                        <span class="doc-badge bg-orange-50 text-orange-700 border border-orange-100">Welfare</span>
+                        <span class="text-slate-400 text-xs font-medium"><i class="fa-regular fa-calendar"></i> Sep '25</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col bg-white">
+                        <h4 class="font-bold text-xl text-brand-dark mb-3 group-hover:text-brand-highlight transition-colors">Psychological First Aid in Crisis Zones</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Evaluating the impact of immediate, trauma-informed counseling deployed alongside physical medical camps during regional emergencies.</p>
+                        <a href="#" class="text-brand-highlight font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Read Full Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                
+                <!-- Card 4 (Initially Hidden) -->
+                <div class="study-card hidden-study hidden glass-card rounded-2xl overflow-hidden flex flex-col group hover:border-brand-primary/50 cursor-pointer">
+                    <div class="p-6 border-b border-slate-100 bg-white flex justify-between items-start">
+                        <span class="doc-badge bg-blue-50 text-blue-700 border border-blue-100">Public Health</span>
+                        <span class="text-slate-400 text-xs font-medium"><i class="fa-regular fa-calendar"></i> Jul '25</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col bg-white">
+                        <h4 class="font-bold text-xl text-brand-dark mb-3 group-hover:text-brand-primary transition-colors">Maternal Nutrition and Cognitive Development</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">A cross-sectional study of 500 households assessing the impact of maternal iron supplements on early childhood cognitive milestones.</p>
+                        <a href="#" class="text-brand-primary font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Read Full Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 5 (Initially Hidden) -->
+                <div class="study-card hidden-study hidden glass-card rounded-2xl overflow-hidden flex flex-col group hover:border-brand-accent/50 cursor-pointer">
+                    <div class="p-6 border-b border-slate-100 bg-white flex justify-between items-start">
+                        <span class="doc-badge bg-indigo-50 text-brand-accent border border-indigo-100">Technology</span>
+                        <span class="text-slate-400 text-xs font-medium"><i class="fa-regular fa-calendar"></i> May '25</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col bg-white">
+                        <h4 class="font-bold text-xl text-brand-dark mb-3 group-hover:text-brand-accent transition-colors">Evaluating Off-Grid Internet Access in Rural Schools</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Analyzing the feasibility and educational outcomes of installing solar-powered offline local servers loaded with digital libraries.</p>
+                        <a href="#" class="text-brand-accent font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Read Full Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <!-- Card 6 (Initially Hidden) -->
+                <div class="study-card hidden-study hidden glass-card rounded-2xl overflow-hidden flex flex-col group hover:border-brand-secondary/50 cursor-pointer">
+                    <div class="p-6 border-b border-slate-100 bg-white flex justify-between items-start">
+                        <span class="doc-badge bg-emerald-50 text-emerald-700 border border-emerald-100">Environment</span>
+                        <span class="text-slate-400 text-xs font-medium"><i class="fa-regular fa-calendar"></i> Feb '25</span>
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col bg-white">
+                        <h4 class="font-bold text-xl text-brand-dark mb-3 group-hover:text-brand-secondary transition-colors">Community Forestry Management Impact</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">A longitudinal review of forest cover recovery rates when conservation authority is completely transferred to local user groups.</p>
+                        <a href="#" class="text-brand-secondary font-semibold text-sm flex items-center gap-1 group-hover:gap-2 transition-all">Read Full Article <i class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 reveal">
+                <button id="load-more-studies-btn" class="bg-white border border-slate-300 text-slate-600 hover:text-brand-primary hover:border-brand-primary font-bold py-3 px-8 rounded-full transition-all text-sm shadow-sm hover:shadow-md">
+                    Load More Studies
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. REPORTS & DOWNLOAD HUB -->
+    <section id="reports" class="py-24 px-4 bg-brand-primary relative overflow-hidden scroll-mt-40">
+        <div class="absolute inset-0 research-grid opacity-20" style="background-image: radial-gradient(#FFFFFF 1px, transparent 1px);"></div>
+        <div class="glow-blob bg-brand-secondary/40 top-[20%] right-[-10%] scale-150"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h3 class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-2 bg-white/10 inline-block px-3 py-1 rounded-full">Open Data</h3>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Annual Reports & Downloads</h2>
+                <p class="text-slate-300 max-w-2xl mx-auto text-lg">Transparency is our core value. Access our financial overviews, annual impact reports, and raw community data sets.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+                
+                <!-- Download Item -->
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl flex items-center justify-between group hover:bg-white/15 hover:-translate-y-1 transition-all reveal shadow-md">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-xl bg-brand-accent/20 text-brand-accent flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg mb-1">NBS Annual Impact Report 2025</h4>
+                            <p class="text-slate-300 text-xs uppercase tracking-wider font-medium">PDF Document • 2.8 MB</p>
+                        </div>
+                    </div>
+                    <button class="w-10 h-10 rounded-full bg-white text-brand-primary flex items-center justify-center hover:bg-brand-accent hover:text-white transition-colors shadow-md">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                </div>
+
+                <!-- Download Item -->
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl flex items-center justify-between group hover:bg-white/15 hover:-translate-y-1 transition-all reveal shadow-md" style="transition-delay: 100ms;">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-xl bg-brand-secondary/20 text-brand-secondary flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-csv"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg mb-1">Health Camp Demographics Data</h4>
+                            <p class="text-slate-300 text-xs uppercase tracking-wider font-medium">CSV Data Set • 1.1 MB</p>
+                        </div>
+                    </div>
+                    <button class="w-10 h-10 rounded-full bg-white text-brand-primary flex items-center justify-center hover:bg-brand-secondary hover:text-white transition-colors shadow-md">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                </div>
+
+                <!-- Download Item -->
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl flex items-center justify-between group hover:bg-white/15 hover:-translate-y-1 transition-all reveal shadow-md">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-xl bg-brand-highlight/20 text-brand-highlight flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg mb-1">Digital Literacy Curriculum</h4>
+                            <p class="text-slate-300 text-xs uppercase tracking-wider font-medium">PDF Toolkit • 5.4 MB</p>
+                        </div>
+                    </div>
+                    <button class="w-10 h-10 rounded-full bg-white text-brand-primary flex items-center justify-center hover:bg-brand-highlight hover:text-white transition-colors shadow-md">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                </div>
+
+                <!-- Download Item -->
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl flex items-center justify-between group hover:bg-white/15 hover:-translate-y-1 transition-all reveal shadow-md" style="transition-delay: 100ms;">
+                    <div class="flex items-center gap-5">
+                        <div class="w-12 h-12 rounded-xl bg-brand-accent/20 text-brand-accent flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-white font-bold text-lg mb-1">Financial Transparency Audit '25</h4>
+                            <p class="text-slate-300 text-xs uppercase tracking-wider font-medium">PDF Document • 1.5 MB</p>
+                        </div>
+                    </div>
+                    <button class="w-10 h-10 rounded-full bg-white text-brand-primary flex items-center justify-center hover:bg-brand-accent hover:text-white transition-colors shadow-md">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. SCIENTIFIC BLOG / INSIGHTS -->
+    <section id="blog" class="py-24 px-4 bg-white relative border-b border-slate-100 scroll-mt-40 overflow-hidden">
+        <div class="glow-blob bg-brand-highlight opacity-[0.05] top-1/2 left-[80%] -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 reveal">
+                <div>
+                    <h3 class="text-brand-secondary font-bold tracking-wider uppercase text-sm mb-2">Expert Opinions</h3>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-dark">Insights from the 'Vigya' Council</h2>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <p class="text-slate-500 max-w-md text-sm md:text-right">Field notes, policy recommendations, and scientific commentary from our subject-matter experts.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                <!-- Blog Post 1 -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col sm:flex-row gap-6 group reveal cursor-pointer hover:border-brand-primary/30">
+                    <div class="w-full sm:w-2/5 h-48 sm:h-auto rounded-xl overflow-hidden relative flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2080&auto=format&fit=crop" alt="Lab" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <div class="w-full sm:w-3/5 flex flex-col justify-center py-2">
+                        <div class="text-xs font-bold text-brand-accent mb-2 uppercase tracking-wide"><i class="fa-solid fa-pen-nib"></i> Opinion Piece</div>
+                        <h4 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-primary transition-colors leading-snug">Why Mobile Labs are the Future of Rural Education</h4>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-2">Static infrastructure is expensive and difficult to maintain. By shifting to mobile micro-labs, we can democratize STEM access across multiple districts...</p>
+                        <div class="flex items-center gap-3 mt-auto">
+                            <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border border-slate-300"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover"></div>
+                            <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Dr. Ramesh K. • 5 min read</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Blog Post 2 -->
+                <div class="glass-card p-6 rounded-3xl flex flex-col sm:flex-row gap-6 group reveal cursor-pointer hover:border-brand-secondary/30" style="transition-delay: 100ms;">
+                    <div class="w-full sm:w-2/5 h-48 sm:h-auto rounded-xl overflow-hidden relative flex-shrink-0">
+                        <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop" alt="Nature" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    </div>
+                    <div class="w-full sm:w-3/5 flex flex-col justify-center py-2">
+                        <div class="text-xs font-bold text-brand-secondary mb-2 uppercase tracking-wide"><i class="fa-solid fa-book-journal-whills"></i> Field Notes</div>
+                        <h4 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-secondary transition-colors leading-snug">The Unseen Connection Between Soil Quality and Maternal Health</h4>
+                        <p class="text-slate-600 text-sm mb-4 line-clamp-2">Our recent camp in Nuwakot highlighted a startling correlation between nutrient-depleted soil and rising anemia rates among pregnant women...</p>
+                        <div class="flex items-center gap-3 mt-auto">
+                            <div class="w-8 h-8 rounded-full bg-slate-200 overflow-hidden border border-slate-300"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=2000&auto=format&fit=crop" class="w-full h-full object-cover"></div>
+                            <span class="text-xs text-slate-500 font-bold uppercase tracking-wider">Sita M. • 4 min read</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 reveal">
+                <a href="news.html" class="inline-block bg-white border border-slate-300 text-slate-600 hover:text-brand-primary hover:border-brand-primary font-bold py-3 px-8 rounded-full transition-all text-sm shadow-sm hover:shadow-md">
+                    Visit the Full Blog &rarr;
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Master Footer with Tight Spacing & Icons -->
+    <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white">Nitya Bimba Sewa</span>
+                </div>
+                <p class="text-sm mb-4 leading-relaxed">Where scientific knowledge meets compassion. Registered SWC-affiliated NGO in Nepal.</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-all shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-highlight hover:text-white transition-all shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-sm"><i class="fa-brands fa-tiktok text-xs"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Navigation</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="team.html" class="hover:text-white transition-colors">Our Team</a></li>
+                    <li><a href="our-work.html" class="hover:text-white transition-colors">Core Pillars</a></li>
+                    <li><a href="projects.html" class="hover:text-white transition-colors">Initiatives</a></li>
+                    <li><a href="impact.html" class="hover:text-white transition-colors">Our Impact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="research.html" class="text-white transition-colors">Research Hub</a></li>
+                    <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
+                    <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
+                    <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Legal & Connect</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
+                </ul>
+                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-all">Donate to a Project</a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
+    </footer>
+
+    <!-- GSAP Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // 1. Hero Entrance
+            gsap.set(".hero-elem", { visibility: "visible" });
+            gsap.fromTo('.hero-elem', 
+                { y: 40, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power4.out", delay: 0.3 }
+            );
+
+            // 2. Scroll Reveal Animations
+            gsap.set(".reveal", { visibility: "visible" });
+            const revealElements = document.querySelectorAll(".reveal");
+            revealElements.forEach((elem) => {
+                gsap.fromTo(elem,
+                    { y: 50, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: "top 85%", 
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if(mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Navbar background effect on scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-xl', 'border-brand-primary/5');
+                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    navbar.classList.remove('shadow-xl', 'border-brand-primary/5');
+                    navbar.style.background = 'rgba(249, 250, 251, 0.85)';
+                }
+            });
+
+            // --- CATEGORY NAV LOGIC (SCROLLSPY & CLICK) ---
+            const sections = document.querySelectorAll("section[id]");
+            const navLinks = document.querySelectorAll(".category-nav-link");
+
+            // 1. Smooth Click Interception
+            navLinks.forEach(link => {
+                link.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute("href");
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        // Immediately update active styling
+                        navLinks.forEach(l => {
+                            l.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            l.classList.add("text-slate-500");
+                        });
+                        this.classList.remove("text-slate-500");
+                        this.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+
+                        // Smooth scroll to the section
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // 2. ScrollSpy (Updates nav when naturally scrolling)
+            window.addEventListener("scroll", () => {
+                let current = "";
+                sections.forEach((section) => {
+                    const sectionTop = section.offsetTop;
+                    // Offset buffer to trigger nav change just before hitting the exact top
+                    if (window.scrollY >= (sectionTop - 250)) {
+                        current = section.getAttribute("id");
+                    }
+                });
+
+                if (current) {
+                    navLinks.forEach((link) => {
+                        link.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                        link.classList.add("text-slate-500");
+                        if (link.getAttribute("href").includes(current)) {
+                            link.classList.remove("text-slate-500");
+                            link.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                        }
+                    });
+                }
+            });
+
+            // --- LOAD MORE & SEARCH LOGIC ---
+            const loadMoreBtn = document.getElementById('load-more-studies-btn');
+            const hiddenStudies = document.querySelectorAll('.hidden-study');
+            const searchInput = document.getElementById('study-search');
+            const studyCards = document.querySelectorAll('.study-card');
+
+            // Load More Click Event
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', () => {
+                    hiddenStudies.forEach((study, index) => {
+                        study.classList.remove('hidden');
+                        gsap.fromTo(study, 
+                            { opacity: 0, y: 30 }, 
+                            { opacity: 1, y: 0, duration: 0.6, delay: index * 0.1, ease: "power2.out" }
+                        );
+                    });
+                    
+                    // Update button state
+                    loadMoreBtn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> All Studies Loaded';
+                    loadMoreBtn.classList.add('opacity-50', 'cursor-not-allowed', 'bg-slate-50');
+                    loadMoreBtn.classList.remove('hover:text-brand-primary', 'hover:border-brand-primary', 'hover:shadow-md');
+                    loadMoreBtn.disabled = true;
+                    
+                    // Refresh ScrollTrigger metrics
+                    setTimeout(() => ScrollTrigger.refresh(), 500);
+                });
+            }
+
+            // Real-time Search Event
+            if (searchInput) {
+                searchInput.addEventListener('input', (e) => {
+                    const term = e.target.value.toLowerCase();
+                    
+                    studyCards.forEach(card => {
+                        const title = card.querySelector('h4').textContent.toLowerCase();
+                        const desc = card.querySelector('p').textContent.toLowerCase();
+                        const category = card.querySelector('.doc-badge').textContent.toLowerCase();
+                        
+                        const isMatch = title.includes(term) || desc.includes(term) || category.includes(term);
+                        
+                        if (term !== '') {
+                            // If typing a search, show matching cards (even hidden ones)
+                            card.classList.toggle('hidden', !isMatch);
+                            if (loadMoreBtn) loadMoreBtn.style.display = 'none';
+                        } else {
+                            // If search is cleared, restore original state
+                            if (card.classList.contains('hidden-study') && (!loadMoreBtn || !loadMoreBtn.disabled)) {
+                                card.classList.add('hidden');
+                            } else {
+                                card.classList.remove('hidden');
+                            }
+                            if (loadMoreBtn && (!loadMoreBtn.disabled)) loadMoreBtn.style.display = 'inline-block';
+                        }
+                    });
+                    ScrollTrigger.refresh();
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>

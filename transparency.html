@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transparency & Reports | Nitya Bimba Sewa</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#F9FAFB',
+                            primary: '#1E3A8A', // Science Blue
+                            secondary: '#16A34A', // Environment Green
+                            accent: '#6366F1', // Education Indigo
+                            highlight: '#F59E0B', // Welfare Orange
+                            dark: '#1F2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; color: #1F2937; overflow-x: hidden; }
+        
+        .glass-nav {
+            background: rgba(249, 250, 251, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(30, 58, 138, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.4); 
+            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08); 
+        }
+
+        .hero-inner-bg {
+            background: linear-gradient(rgba(30, 58, 138, 0.95), rgba(30, 58, 138, 0.85)), 
+                        url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+        }
+
+        .research-grid {
+            background-image: radial-gradient(rgba(30, 58, 138, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- Next Level Gradients --- */
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #1E3A8A 0%, #6366F1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glow-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .reveal, .hero-elem { opacity: 0; visibility: hidden; }
+    </style>
+</head>
+<body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
+
+    <!-- Navigation (Master Template) -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:shadow-lg transition-all group-hover:rotate-180 duration-700">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-brand-primary">Nitya Bimba Sewa</span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex space-x-6 items-center font-medium text-sm text-slate-600">
+                    <a href="index.html" class="hover:text-brand-primary transition-colors">Home</a>
+
+                    <!-- About Dropdown (Active) -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 text-brand-accent transition-colors border-b-2 border-brand-accent pb-1">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="about.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">About Us</a>
+                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
+                            <a href="transparency.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">Transparency</a>
+                            <a href="faq.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">FAQ</a>
+                        </div>
+                    </div>
+
+                    <!-- Work Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
+                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
+                            <a href="impact.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Impact & Results</a>
+                        </div>
+                    </div>
+
+                    <!-- Knowledge Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="research.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Research & Publications</a>
+                            <a href="media.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Media Gallery</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Engage Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="get-involved.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Get Involved</a>
+                            <a href="partners.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Partners</a>
+                            <a href="news.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">News & Insights</a>
+                        </div>
+                    </div>
+
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
+                    
+                    <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg flex items-center gap-2 font-bold transform hover:scale-105 transition-all">
+                        <i class="fa-solid fa-heart text-white"></i> Donate
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+            <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
+                <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Organization</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
+                        <a href="transparency.html" class="text-brand-accent text-sm font-bold">Transparency</a>
+                        <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Work</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
+                        <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
+                        <a href="impact.html" class="text-slate-600 hover:text-brand-accent text-sm">Impact & Results</a>
+                    </div>
+                </div>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Knowledge</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="research.html" class="text-slate-600 hover:text-brand-accent text-sm">Research & Publications</a>
+                        <a href="media.html" class="text-slate-600 hover:text-brand-accent text-sm">Media Gallery</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Engage</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="get-involved.html" class="text-slate-600 hover:text-brand-accent text-sm">Get Involved</a>
+                        <a href="partners.html" class="text-slate-600 hover:text-brand-accent text-sm">Partners</a>
+                        <a href="news.html" class="text-slate-600 hover:text-brand-accent text-sm">News & Insights</a>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
+                
+                <div class="pt-6 pb-2">
+                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Inner Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
+        <div class="absolute inset-0 research-grid opacity-20"></div>
+        
+        <div class="max-w-5xl mx-auto z-10 reveal">
+            <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Trust & Accountability</h3>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight hero-elem">
+                Institutional <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Transparency.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
+                We hold ourselves to the highest global standards. Explore our financial audits, organizational policies, and legal governance frameworks.
+            </p>
+        </div>
+    </section>
+
+    <!-- Category Nav -->
+    <div class="bg-white py-8 border-b border-slate-200 sticky top-20 z-40 hidden md:block glass-nav">
+        <div class="max-w-7xl mx-auto px-4 flex justify-center gap-8 text-sm font-bold uppercase tracking-wider">
+            <a href="#financials" class="category-nav-link text-brand-primary border-b-2 border-brand-primary pb-1 flex items-center gap-2 transition-colors"><i class="fa-solid fa-chart-pie"></i> Financials</a>
+            <a href="#reports" class="category-nav-link text-slate-500 hover:text-brand-secondary flex items-center gap-2 transition-colors"><i class="fa-solid fa-book-open"></i> Annual Reports</a>
+            <a href="#policies" class="category-nav-link text-slate-500 hover:text-brand-accent flex items-center gap-2 transition-colors"><i class="fa-solid fa-shield-halved"></i> Policies</a>
+            <a href="#governance" class="category-nav-link text-slate-500 hover:text-brand-highlight flex items-center gap-2 transition-colors"><i class="fa-solid fa-scale-balanced"></i> Governance</a>
+        </div>
+    </div>
+
+    <!-- 1. FINANCIAL SUMMARIES -->
+    <section id="financials" class="py-24 px-4 bg-brand-bg relative overflow-hidden scroll-mt-40">
+        <div class="glow-blob bg-brand-primary opacity-[0.05] top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute inset-0 research-grid opacity-30 z-0 pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-16 reveal gap-6">
+                <div>
+                    <h3 class="text-brand-primary font-bold tracking-wider uppercase text-sm mb-2">Fund Allocation</h3>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gradient-primary">Financial Summaries</h2>
+                </div>
+                <div class="bg-white px-6 py-3 rounded-full border border-slate-200 shadow-sm flex items-center gap-3">
+                    <i class="fa-solid fa-check-circle text-brand-secondary text-xl"></i>
+                    <span class="font-bold text-slate-700 text-sm">Audited by Independent CPA (2025)</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <!-- Visual Allocation -->
+                <div class="glass-card p-8 lg:p-10 rounded-3xl reveal shadow-xl">
+                    <h4 class="text-xl font-bold text-brand-dark mb-8 text-center">Where Your Donations Go</h4>
+                    
+                    <div class="space-y-6">
+                        <!-- Programs -->
+                        <div>
+                            <div class="flex justify-between text-sm font-bold mb-2">
+                                <span class="text-brand-primary">Program Execution & Fieldwork</span>
+                                <span class="text-brand-primary">82%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                                <div class="bg-brand-primary h-3 rounded-full progress-fill" data-width="82%" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <!-- Admin -->
+                        <div>
+                            <div class="flex justify-between text-sm font-bold mb-2">
+                                <span class="text-slate-600">Administrative & Operations</span>
+                                <span class="text-slate-600">12%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                                <div class="bg-slate-400 h-3 rounded-full progress-fill" data-width="12%" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                        <!-- Fundraising -->
+                        <div>
+                            <div class="flex justify-between text-sm font-bold mb-2">
+                                <span class="text-brand-accent">Fundraising & Marketing</span>
+                                <span class="text-brand-accent">6%</span>
+                            </div>
+                            <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+                                <div class="bg-brand-accent h-3 rounded-full progress-fill" data-width="6%" style="width: 0%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-xs text-slate-500 mt-8 text-center leading-relaxed">
+                        We maximize impact by keeping our overhead low. Over 80 cents of every dollar directly funds our scientific and welfare programs in Nepal.
+                    </p>
+                </div>
+
+                <!-- Financial Downloads -->
+                <div class="space-y-6 reveal" style="transition-delay: 150ms;">
+                    <h4 class="text-xl font-bold text-brand-dark mb-4">Official Financial Statements</h4>
+                    <p class="text-slate-600 mb-6">Download our complete, independently audited financial statements and tax filings for full transparency.</p>
+                    
+                    <a href="#" class="glass-card flex items-center justify-between p-5 rounded-xl hover:border-brand-primary transition-all group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-blue-50 text-brand-primary flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-file-invoice-dollar"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-brand-dark">FY 2025 Audited Financials</h5>
+                                <p class="text-xs text-slate-500">PDF • 1.2 MB</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-download text-slate-300 group-hover:text-brand-primary transition-colors"></i>
+                    </a>
+                    
+                    <a href="#" class="glass-card flex items-center justify-between p-5 rounded-xl hover:border-brand-primary transition-all group">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-lg bg-blue-50 text-brand-primary flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-file-invoice-dollar"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-brand-dark">FY 2024 Audited Financials</h5>
+                                <p class="text-xs text-slate-500">PDF • 1.1 MB</p>
+                            </div>
+                        </div>
+                        <i class="fa-solid fa-download text-slate-300 group-hover:text-brand-primary transition-colors"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. ANNUAL REPORTS -->
+    <section id="reports" class="py-24 px-4 bg-brand-primary relative overflow-hidden scroll-mt-40">
+        <div class="glow-blob bg-brand-accent top-0 right-[-10%] scale-150 opacity-20"></div>
+        <div class="absolute inset-0 research-grid opacity-20" style="background-image: radial-gradient(#FFFFFF 1px, transparent 1px);"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h3 class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-2 bg-white/10 inline-block px-3 py-1 rounded-full backdrop-blur-md border border-white/20">Measuring Success</h3>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Annual Impact Reports</h2>
+                <p class="mt-4 text-slate-300 max-w-2xl mx-auto">Comprehensive overviews of our fieldwork, scientific findings, and community stories from the past years.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Report Card -->
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden reveal group hover:-translate-y-2 transition-transform shadow-lg">
+                    <div class="h-48 bg-slate-800 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-5xl font-extrabold text-white/90 drop-shadow-lg">2025</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-2">2025 Impact Report</h4>
+                        <p class="text-sm text-slate-300 mb-6 line-clamp-2">Detailed breakdown of the Biodiversity Project expansion and the launch of the mobile STEM initiative in Bagmati.</p>
+                        <button class="w-full bg-brand-highlight hover:bg-orange-600 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2 shadow-md">
+                            <i class="fa-solid fa-download"></i> Download Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Report Card -->
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden reveal group hover:-translate-y-2 transition-transform shadow-lg" style="transition-delay: 100ms;">
+                    <div class="h-48 bg-slate-800 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-5xl font-extrabold text-white/90 drop-shadow-lg">2024</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-2">2024 Impact Report</h4>
+                        <p class="text-sm text-slate-300 mb-6 line-clamp-2">Review of our foundational health camps and the early stages of the women's digital literacy program.</p>
+                        <button class="w-full border border-white/30 hover:bg-white/10 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-download"></i> Download Report
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Report Card -->
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl overflow-hidden reveal group hover:-translate-y-2 transition-transform shadow-lg hidden lg:block" style="transition-delay: 200ms;">
+                    <div class="h-48 bg-slate-800 relative overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity">
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <span class="text-5xl font-extrabold text-white/90 drop-shadow-lg">2023</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-bold text-white mb-2">2023 Foundation Report</h4>
+                        <p class="text-sm text-slate-300 mb-6 line-clamp-2">Our inaugural report detailing the establishment of Nitya Bimba Sewa and our first community needs assessment.</p>
+                        <button class="w-full border border-white/30 hover:bg-white/10 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-download"></i> Download Report
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. POLICIES -->
+    <section id="policies" class="py-24 px-4 bg-white relative border-b border-slate-100 scroll-mt-40 overflow-hidden">
+        <div class="glow-blob bg-brand-accent/5 top-1/2 left-[80%] -translate-x-1/2 -translate-y-1/2 scale-150"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 reveal">
+                <div class="max-w-2xl">
+                    <span class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-2 block">Institutional Integrity</span>
+                    <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-4">Organizational Policies</h2>
+                    <p class="text-slate-600 leading-relaxed">To ensure a safe, equitable, and legally compliant environment for our beneficiaries and staff, NBS rigorously adheres to the following core policies.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Policy Card -->
+                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md transition-all reveal">
+                    <div class="w-12 h-12 rounded-full bg-indigo-100 text-brand-accent flex items-center justify-center text-xl flex-shrink-0">
+                        <i class="fa-solid fa-child-reaching"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark mb-1">Child Safeguarding Policy</h4>
+                        <p class="text-sm text-slate-600 mb-3">Strict protocols ensuring the safety and privacy of minors during our educational and health interventions.</p>
+                        <a href="#" class="text-xs font-bold text-brand-primary uppercase hover:text-brand-accent transition-colors"><i class="fa-solid fa-file-pdf mr-1"></i> Read Policy</a>
+                    </div>
+                </div>
+
+                <!-- Policy Card -->
+                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md transition-all reveal" style="transition-delay: 100ms;">
+                    <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xl flex-shrink-0">
+                        <i class="fa-solid fa-ban"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark mb-1">Anti-Bribery & Corruption</h4>
+                        <p class="text-sm text-slate-600 mb-3">Zero-tolerance policy towards fraudulent practices, ensuring all funds are utilized purely for intended objectives.</p>
+                        <a href="#" class="text-xs font-bold text-brand-primary uppercase hover:text-brand-accent transition-colors"><i class="fa-solid fa-file-pdf mr-1"></i> Read Policy</a>
+                    </div>
+                </div>
+
+                <!-- Policy Card -->
+                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md transition-all reveal">
+                    <div class="w-12 h-12 rounded-full bg-emerald-100 text-brand-secondary flex items-center justify-center text-xl flex-shrink-0">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark mb-1">Environmental Safeguards</h4>
+                        <p class="text-sm text-slate-600 mb-3">Mandatory ecological assessments prior to any physical infrastructure or community development project.</p>
+                        <a href="#" class="text-xs font-bold text-brand-primary uppercase hover:text-brand-accent transition-colors"><i class="fa-solid fa-file-pdf mr-1"></i> Read Policy</a>
+                    </div>
+                </div>
+
+                <!-- Policy Card -->
+                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md transition-all reveal" style="transition-delay: 100ms;">
+                    <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-xl flex-shrink-0">
+                        <i class="fa-solid fa-scale-balanced"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark mb-1">Equal Opportunity & Diversity</h4>
+                        <p class="text-sm text-slate-600 mb-3">Commitment to non-discrimination in hiring, Vigya council selection, and beneficiary targeting.</p>
+                        <a href="#" class="text-xs font-bold text-brand-primary uppercase hover:text-brand-accent transition-colors"><i class="fa-solid fa-file-pdf mr-1"></i> Read Policy</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. GOVERNANCE DOCUMENTS -->
+    <section id="governance" class="py-24 px-4 bg-brand-bg relative overflow-hidden scroll-mt-40">
+        <div class="max-w-7xl mx-auto relative z-10 text-center reveal">
+            <h3 class="text-brand-secondary font-bold tracking-wider uppercase text-sm mb-2">Legal Standing</h3>
+            <h2 class="text-3xl md:text-4xl font-bold text-brand-dark mb-12">Governance Documents</h2>
+
+            <div class="flex flex-wrap justify-center gap-6">
+                <!-- Cert 1 -->
+                <div class="glass-card p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all w-72">
+                    <i class="fa-solid fa-certificate text-5xl text-brand-secondary mb-6 drop-shadow-sm"></i>
+                    <h4 class="font-bold text-brand-dark text-sm mb-2">NGO Registration Certificate</h4>
+                    <p class="text-xs text-slate-500 mb-6">Govt. of Nepal / Bagmati Prov.</p>
+                    <button class="text-xs font-bold text-brand-primary border border-brand-primary px-4 py-2 rounded-full hover:bg-brand-primary hover:text-white transition-colors w-full">View Document</button>
+                </div>
+
+                <!-- Cert 2 -->
+                <div class="glass-card p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all w-72">
+                    <i class="fa-solid fa-handshake-angle text-5xl text-brand-primary mb-6 drop-shadow-sm"></i>
+                    <h4 class="font-bold text-brand-dark text-sm mb-2">SWC Affiliation Certificate</h4>
+                    <p class="text-xs text-slate-500 mb-6">Social Welfare Council</p>
+                    <button class="text-xs font-bold text-brand-primary border border-brand-primary px-4 py-2 rounded-full hover:bg-brand-primary hover:text-white transition-colors w-full">View Document</button>
+                </div>
+
+                <!-- Cert 3 -->
+                <div class="glass-card p-8 rounded-2xl border border-slate-200 shadow-sm hover:shadow-lg transition-all w-72">
+                    <i class="fa-solid fa-users-viewfinder text-5xl text-brand-accent mb-6 drop-shadow-sm"></i>
+                    <h4 class="font-bold text-brand-dark text-sm mb-2">Board Meeting Summaries</h4>
+                    <p class="text-xs text-slate-500 mb-6">Latest AGM Minutes (2025)</p>
+                    <button class="text-xs font-bold text-brand-primary border border-brand-primary px-4 py-2 rounded-full hover:bg-brand-primary hover:text-white transition-colors w-full">View Document</button>
+                </div>
+            </div>
+            
+            <p class="text-sm text-slate-500 mt-12 max-w-2xl mx-auto glass-card p-4 rounded-xl border border-slate-200">
+                Nitya Bimba Sewa's executive board meets quarterly to review project progress and financial allocations. For specific inquiries regarding our legal standing or to request further documentation for grant applications, please <a href="contact.html" class="text-brand-primary font-bold hover:text-brand-accent">contact our administrative office</a>.
+            </p>
+        </div>
+    </section>
+
+    <!-- Master Footer with Tight Spacing & Icons -->
+    <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white">Nitya Bimba Sewa</span>
+                </div>
+                <p class="text-sm mb-4 leading-relaxed">Where scientific knowledge meets compassion. Registered SWC-affiliated NGO in Nepal.</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-all shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-highlight hover:text-white transition-all shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-sm"><i class="fa-brands fa-tiktok text-xs"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Navigation</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="team.html" class="hover:text-white transition-colors">Our Team</a></li>
+                    <li><a href="our-work.html" class="hover:text-white transition-colors">Core Pillars</a></li>
+                    <li><a href="projects.html" class="hover:text-white transition-colors">Initiatives</a></li>
+                    <li><a href="impact.html" class="hover:text-white transition-colors">Our Impact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
+                    <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
+                    <li><a href="transparency.html" class="text-white transition-colors">Transparency</a></li>
+                    <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Legal & Connect</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
+                </ul>
+                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-all">Donate to a Project</a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
+    </footer>
+
+    <!-- GSAP Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // 1. Hero Entrance
+            gsap.set(".hero-elem", { visibility: "visible" });
+            gsap.fromTo('.hero-elem', 
+                { y: 40, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power4.out", delay: 0.3 }
+            );
+
+            // 2. Scroll Reveal Animations
+            gsap.set(".reveal", { visibility: "visible" });
+            const revealElements = document.querySelectorAll(".reveal");
+            revealElements.forEach((elem) => {
+                gsap.fromTo(elem,
+                    { y: 50, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: "top 85%", 
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // 3. Progress Bar Animation (Financials)
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const targetWidth = bar.getAttribute('data-width');
+                gsap.fromTo(bar, 
+                    { width: "0%" }, 
+                    { 
+                        width: targetWidth, 
+                        duration: 1.5, 
+                        ease: "power3.out", 
+                        scrollTrigger: { 
+                            trigger: "#financials", 
+                            start: "top 75%" 
+                        } 
+                    }
+                );
+            });
+
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if(mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Navbar background effect on scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-xl', 'border-brand-primary/5');
+                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    navbar.classList.remove('shadow-xl', 'border-brand-primary/5');
+                    navbar.style.background = 'rgba(249, 250, 251, 0.85)';
+                }
+            });
+
+            // --- CATEGORY NAV LOGIC (SCROLLSPY & CLICK) ---
+            const sections = document.querySelectorAll("section[id]");
+            const navLinks = document.querySelectorAll(".category-nav-link");
+
+            // 1. Smooth Click Interception
+            navLinks.forEach(link => {
+                link.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute("href");
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        // Immediately update active styling
+                        navLinks.forEach(l => {
+                            l.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            l.classList.add("text-slate-500");
+                        });
+                        this.classList.remove("text-slate-500");
+                        this.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+
+                        // Smooth scroll to the section
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // 2. ScrollSpy (Updates nav when naturally scrolling)
+            window.addEventListener("scroll", () => {
+                let current = "";
+                sections.forEach((section) => {
+                    const sectionTop = section.offsetTop;
+                    // Offset buffer to trigger nav change just before hitting the exact top
+                    if (window.scrollY >= (sectionTop - 250)) {
+                        current = section.getAttribute("id");
+                    }
+                });
+
+                if (current) {
+                    navLinks.forEach((link) => {
+                        link.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                        link.classList.add("text-slate-500");
+                        if (link.getAttribute("href").includes(current)) {
+                            link.classList.remove("text-slate-500");
+                            link.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                        }
+                    });
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media & Gallery | Nitya Bimba Sewa</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#F9FAFB',
+                            primary: '#1E3A8A', // Science Blue
+                            secondary: '#16A34A', // Environment Green
+                            accent: '#6366F1', // Education Indigo
+                            highlight: '#F59E0B', // Welfare Orange
+                            dark: '#1F2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; color: #1F2937; overflow-x: hidden; }
+        
+        .glass-nav {
+            background: rgba(249, 250, 251, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(30, 58, 138, 0.1);
+        }
+
+        .hero-inner-bg {
+            background: linear-gradient(rgba(30, 58, 138, 0.95), rgba(30, 58, 138, 0.85)), 
+                        url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop') center/cover fixed;
+        }
+
+        .research-grid {
+            background-image: radial-gradient(rgba(30, 58, 138, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- Next Level Gradients --- */
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #1E3A8A 0%, #6366F1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glow-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .reveal, .hero-elem { opacity: 0; visibility: hidden; }
+
+        /* Masonry Grid Setup */
+        .masonry-grid {
+            column-count: 1;
+            column-gap: 1.5rem;
+        }
+        @media (min-width: 640px) { .masonry-grid { column-count: 2; } }
+        @media (min-width: 1024px) { .masonry-grid { column-count: 3; } }
+        
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            cursor: pointer;
+            border: 1px solid rgba(226, 232, 240, 1);
+            background: #fff;
+        }
+        
+        .masonry-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .masonry-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(31, 41, 55, 0.9) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: flex-end;
+            padding: 1.5rem;
+        }
+        
+        .masonry-item:hover img { transform: scale(1.05); }
+        .masonry-item:hover .masonry-overlay { opacity: 1; }
+        .masonry-item:hover { box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08); border-color: rgba(99, 102, 241, 0.3); }
+
+        /* Simple Lightbox */
+        #lightbox {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            inset: 0;
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(5px);
+        }
+        #lightbox.active { display: flex; align-items: center; justify-content: center; }
+        
+        .filter-btn { outline: none; }
+    </style>
+</head>
+<body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
+
+    <!-- Navigation (Master Template) -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:shadow-lg transition-all group-hover:rotate-180 duration-700">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-brand-primary">Nitya Bimba Sewa</span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex space-x-6 items-center font-medium text-sm text-slate-600">
+                    <a href="index.html" class="hover:text-brand-primary transition-colors">Home</a>
+
+                    <!-- About Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="about.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">About Us</a>
+                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
+                            <a href="transparency.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Transparency</a>
+                            <a href="faq.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">FAQ</a>
+                        </div>
+                    </div>
+
+                    <!-- Work Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
+                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
+                            <a href="impact.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Impact & Results</a>
+                        </div>
+                    </div>
+
+                    <!-- Knowledge Dropdown (Active) -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 text-brand-accent transition-colors border-b-2 border-brand-accent pb-1">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="research.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Research & Publications</a>
+                            <a href="media.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">Media Gallery</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Engage Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="get-involved.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Get Involved</a>
+                            <a href="partners.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Partners</a>
+                            <a href="news.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">News & Insights</a>
+                        </div>
+                    </div>
+
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
+                    
+                    <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg flex items-center gap-2 font-bold transform hover:scale-105 transition-all">
+                        <i class="fa-solid fa-heart text-white"></i> Donate
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+            <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
+                <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Organization</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Transparency</a>
+                        <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Work</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
+                        <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
+                        <a href="impact.html" class="text-slate-600 hover:text-brand-accent text-sm">Impact & Results</a>
+                    </div>
+                </div>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Knowledge</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="research.html" class="text-slate-600 hover:text-brand-accent text-sm">Research & Publications</a>
+                        <a href="media.html" class="text-brand-accent text-sm font-bold">Media Gallery</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Engage</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="get-involved.html" class="text-slate-600 hover:text-brand-accent text-sm">Get Involved</a>
+                        <a href="partners.html" class="text-slate-600 hover:text-brand-accent text-sm">Partners</a>
+                        <a href="news.html" class="text-slate-600 hover:text-brand-accent text-sm">News & Insights</a>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
+                
+                <div class="pt-6 pb-2">
+                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Inner Hero Section -->
+    <section class="relative pt-32 pb-16 lg:pt-40 lg:pb-20 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
+        <div class="absolute inset-0 research-grid opacity-20"></div>
+        
+        <div class="max-w-4xl mx-auto z-10 reveal">
+            <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Visualizing Change</h3>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-4 tracking-tight hero-elem">
+                Media & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Gallery.</span>
+            </h1>
+            <p class="text-lg text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
+                A visual repository of our fieldwork across Nepal. See the real faces, communities, and scientific interventions driven by your support.
+            </p>
+        </div>
+    </section>
+
+    <!-- Filter Nav -->
+    <div class="bg-white py-6 border-b border-slate-200 sticky top-20 z-40 hidden md:block glass-nav">
+        <div class="max-w-4xl mx-auto px-4 flex justify-center gap-6 text-sm font-bold uppercase tracking-wider flex-wrap" id="gallery-filters">
+            <button class="filter-btn text-brand-primary border-b-2 border-brand-primary pb-1 transition-colors" data-filter="all">All Photos</button>
+            <button class="filter-btn text-slate-500 hover:text-brand-primary transition-colors" data-filter="science">Science Labs</button>
+            <button class="filter-btn text-slate-500 hover:text-brand-secondary transition-colors" data-filter="environment">Environment</button>
+            <button class="filter-btn text-slate-500 hover:text-brand-highlight transition-colors" data-filter="health">Health Camps</button>
+            <button class="filter-btn text-slate-500 hover:text-brand-accent transition-colors" data-filter="education">Digital Ed</button>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <section class="py-16 px-4 bg-brand-bg relative min-h-screen overflow-hidden">
+        <div class="glow-blob bg-brand-primary opacity-[0.05] top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="max-w-7xl mx-auto reveal relative z-10">
+            
+            <div class="masonry-grid" id="gallery-container">
+                
+                <!-- Item 1: Science -->
+                <div class="masonry-item gallery-item block" data-category="science" onclick="openLightbox(this.querySelector('img').src, 'Mobile Micro-Lab Session, Nuwakot')">
+                    <img src="https://images.unsplash.com/photo-1564069114553-7215e1ff1890?q=80&w=2069&auto=format&fit=crop" alt="Science Lab">
+                    <div class="masonry-overlay">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-brand-primary text-white text-xs font-bold rounded mb-2">Science Lab</span>
+                            <h4 class="text-white font-bold">Mobile Micro-Lab Session</h4>
+                            <p class="text-white/80 text-xs mt-1"><i class="fa-solid fa-location-dot"></i> Nuwakot District</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 2: Environment -->
+                <div class="masonry-item gallery-item block" data-category="environment" onclick="openLightbox(this.querySelector('img').src, 'Medicinal Herb Mapping, Parsa')">
+                    <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?q=80&w=2041&auto=format&fit=crop" alt="Environment">
+                    <div class="masonry-overlay">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-brand-secondary text-white text-xs font-bold rounded mb-2">Environment</span>
+                            <h4 class="text-white font-bold">Medicinal Herb Mapping</h4>
+                            <p class="text-white/80 text-xs mt-1"><i class="fa-solid fa-location-dot"></i> Parsa Community Forest</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 3: Health -->
+                <div class="masonry-item gallery-item block" data-category="health" onclick="openLightbox(this.querySelector('img').src, 'Free Medical Screening, Makwanpur')">
+                    <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=2070&auto=format&fit=crop" alt="Health Camp" style="aspect-ratio: 3/4; object-fit: cover;">
+                    <div class="masonry-overlay">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-brand-highlight text-white text-xs font-bold rounded mb-2">Health Camp</span>
+                            <h4 class="text-white font-bold">Free Medical Screening</h4>
+                            <p class="text-white/80 text-xs mt-1"><i class="fa-solid fa-location-dot"></i> Makwanpur</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 4: Education -->
+                <div class="masonry-item gallery-item block" data-category="education" onclick="openLightbox(this.querySelector('img').src, 'Women\'s Digital Bootcamp Graduation')">
+                    <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2069&auto=format&fit=crop" alt="Digital Ed">
+                    <div class="masonry-overlay">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-brand-accent text-white text-xs font-bold rounded mb-2">Digital Ed</span>
+                            <h4 class="text-white font-bold">Women's Digital Bootcamp Graduation</h4>
+                            <p class="text-white/80 text-xs mt-1"><i class="fa-solid fa-location-dot"></i> Kathmandu Valley</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 5: Science -->
+                <div class="masonry-item gallery-item block" data-category="science" onclick="openLightbox(this.querySelector('img').src, 'Student interacting with Physics Kit')">
+                    <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop" alt="Science Kit">
+                    <div class="masonry-overlay">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-brand-primary text-white text-xs font-bold rounded mb-2">Science Lab</span>
+                            <h4 class="text-white font-bold">Physics Kit Interaction</h4>
+                            <p class="text-white/80 text-xs mt-1"><i class="fa-solid fa-location-dot"></i> Bagmati Province</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 6: Environment -->
+                <div class="masonry-item gallery-item block" data-category="environment" onclick="openLightbox(this.querySelector('img').src, 'Local Farmers Cooperative Meeting')">
+                    <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop" alt="Agriculture">
+                    <div class="masonry-overlay">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-brand-secondary text-white text-xs font-bold rounded mb-2">Environment</span>
+                            <h4 class="text-white font-bold">Farmers Cooperative Meeting</h4>
+                            <p class="text-white/80 text-xs mt-1"><i class="fa-solid fa-location-dot"></i> Chitwan</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Item 7: Health -->
+                <div class="masonry-item gallery-item block" data-category="health" onclick="openLightbox(this.querySelector('img').src, 'Psychosocial Counseling Session')">
+                    <img src="https://images.unsplash.com/photo-1527613426406-880902c63c3a?q=80&w=2070&auto=format&fit=crop" alt="Counseling">
+                    <div class="masonry-overlay">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-brand-highlight text-white text-xs font-bold rounded mb-2">Health Camp</span>
+                            <h4 class="text-white font-bold">Psychosocial Counseling</h4>
+                            <p class="text-white/80 text-xs mt-1"><i class="fa-solid fa-location-dot"></i> Nuwakot District</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HIDDEN ITEMS (Loaded on Button Click) -->
+                <!-- Item 8: Education -->
+                <div class="masonry-item gallery-item hidden-photo hidden" data-category="education" onclick="openLightbox(this.querySelector('img').src, 'Rural Tech Infrastructure Setup')">
+                    <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140bef2?q=80&w=2070&auto=format&fit=crop" alt="Education Infrastructure">
+                    <div class="masonry-overlay">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-brand-accent text-white text-xs font-bold rounded mb-2">Digital Ed</span>
+                            <h4 class="text-white font-bold">Rural Tech Infrastructure Setup</h4>
+                            <p class="text-white/80 text-xs mt-1"><i class="fa-solid fa-location-dot"></i> Lalitpur Outskirts</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 9: Environment -->
+                <div class="masonry-item gallery-item hidden-photo hidden" data-category="environment" onclick="openLightbox(this.querySelector('img').src, 'Organic Composting Workshop')">
+                    <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=2070&auto=format&fit=crop" alt="Organic Composting" style="aspect-ratio: 3/4; object-fit: cover;">
+                    <div class="masonry-overlay">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-brand-secondary text-white text-xs font-bold rounded mb-2">Environment</span>
+                            <h4 class="text-white font-bold">Organic Composting Workshop</h4>
+                            <p class="text-white/80 text-xs mt-1"><i class="fa-solid fa-location-dot"></i> Chitwan Farmlands</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Item 10: Science -->
+                <div class="masonry-item gallery-item hidden-photo hidden" data-category="science" onclick="openLightbox(this.querySelector('img').src, 'Chemistry Demonstration by NBS Volunteer')">
+                    <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=2070&auto=format&fit=crop" alt="Chemistry Demo">
+                    <div class="masonry-overlay">
+                        <div>
+                            <span class="inline-block px-2 py-1 bg-brand-primary text-white text-xs font-bold rounded mb-2">Science Lab</span>
+                            <h4 class="text-white font-bold">Chemistry Demonstration</h4>
+                            <p class="text-white/80 text-xs mt-1"><i class="fa-solid fa-location-dot"></i> Bagmati Provincial School</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12 reveal">
+                <button id="load-more-photos-btn" class="bg-white border border-slate-300 text-slate-600 hover:text-brand-primary hover:border-brand-primary font-bold py-3 px-8 rounded-full transition-all text-sm shadow-sm hover:shadow-md">
+                    Load More Photos
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Banner -->
+    <section class="py-24 bg-brand-primary text-center px-4 relative overflow-hidden">
+        <div class="glow-blob bg-brand-accent top-0 left-[-10%] scale-150 opacity-20"></div>
+        <div class="glow-blob bg-brand-secondary bottom-0 right-[-10%] scale-150 opacity-20"></div>
+        <div class="absolute inset-0 research-grid opacity-10" style="background-image: radial-gradient(#FFFFFF 1px, transparent 1px);"></div>
+        
+        <div class="max-w-3xl mx-auto relative z-10 reveal">
+            <h2 class="text-4xl md:text-5xl font-black text-white mb-6">Support Our Vision</h2>
+            <p class="text-white/80 mb-10 text-lg">Help us continue capturing these stories of change. Your donations make these community interventions possible.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold py-4 px-10 rounded-full shadow-2xl transition-transform hover:-translate-y-1">
+                    Donate Now
+                </a>
+                <a href="contact.html" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-4 px-10 rounded-full backdrop-blur-md transition-transform hover:-translate-y-1">
+                    Become a Volunteer
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lightbox Element -->
+    <div id="lightbox" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 text-white text-4xl hover:text-brand-highlight transition-colors">&times;</button>
+        <div class="relative max-w-5xl w-full p-4 flex flex-col items-center" onclick="event.stopPropagation()">
+            <img id="lightbox-img" src="" alt="Enlarged view" class="max-h-[80vh] w-auto rounded-lg shadow-2xl">
+            <p id="lightbox-caption" class="text-white text-lg font-medium mt-4 bg-black/50 px-4 py-2 rounded-full backdrop-blur-sm"></p>
+        </div>
+    </div>
+
+    <!-- Master Footer with Tight Spacing & Icons -->
+    <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white">Nitya Bimba Sewa</span>
+                </div>
+                <p class="text-sm mb-4 leading-relaxed">Where scientific knowledge meets compassion. Registered SWC-affiliated NGO in Nepal.</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-all shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-highlight hover:text-white transition-all shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-sm"><i class="fa-brands fa-tiktok text-xs"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Navigation</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="team.html" class="hover:text-white transition-colors">Our Team</a></li>
+                    <li><a href="our-work.html" class="hover:text-white transition-colors">Core Pillars</a></li>
+                    <li><a href="projects.html" class="hover:text-white transition-colors">Initiatives</a></li>
+                    <li><a href="impact.html" class="hover:text-white transition-colors">Our Impact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
+                    <li><a href="media.html" class="text-white transition-colors">Media Gallery</a></li>
+                    <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
+                    <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Legal & Connect</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
+                </ul>
+                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-all">Donate to a Project</a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
+    </footer>
+
+    <!-- GSAP & Custom Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        // Lightbox Functions (Global scope so inline onclick works)
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCaption = document.getElementById('lightbox-caption');
+
+        function openLightbox(imgSrc, caption) {
+            lightboxImg.src = imgSrc;
+            lightboxCaption.textContent = caption;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; // Restore scrolling
+        }
+
+        document.addEventListener("DOMContentLoaded", (event) => {
+            // 1. GSAP Scroll Animations
+            gsap.registerPlugin(ScrollTrigger);
+            
+            gsap.set(".hero-elem", { visibility: "visible" });
+            gsap.fromTo('.hero-elem', 
+                { y: 40, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power4.out", delay: 0.3 }
+            );
+
+            gsap.set(".reveal", { visibility: "visible" });
+            const revealElements = document.querySelectorAll(".reveal");
+            revealElements.forEach((elem) => {
+                gsap.fromTo(elem,
+                    { y: 30, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.6,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: "top 90%", 
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // 2. Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if(mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // 3. Navbar background effect on scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-sm');
+                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    navbar.classList.remove('shadow-sm');
+                    navbar.style.background = 'rgba(249, 250, 251, 0.85)';
+                }
+            });
+
+            // 4. Gallery Filtering & Load More Logic
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const loadMoreBtn = document.getElementById('load-more-photos-btn');
+            const hiddenPhotos = document.querySelectorAll('.hidden-photo');
+
+            // Handle Filter Clicks
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Update active button styling
+                    filterBtns.forEach(b => {
+                        b.classList.remove('text-brand-primary', 'border-b-2', 'border-brand-primary', 'pb-1');
+                        b.classList.add('text-slate-500');
+                    });
+                    btn.classList.add('text-brand-primary', 'border-b-2', 'border-brand-primary', 'pb-1');
+                    btn.classList.remove('text-slate-500');
+
+                    // Filter items
+                    const filterValue = btn.getAttribute('data-filter');
+                    
+                    galleryItems.forEach(item => {
+                        // Only process items that are currently "loaded" (i.e. don't have the hidden class)
+                        if (item.classList.contains('hidden-photo')) return;
+
+                        if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                            item.style.display = 'block';
+                            gsap.fromTo(item, {opacity: 0, scale: 0.95}, {opacity: 1, scale: 1, duration: 0.4, ease: "power2.out"});
+                        } else {
+                            item.style.display = 'none';
+                        }
+                    });
+                    
+                    // Refresh ScrollTrigger to account for new layout height
+                    setTimeout(() => ScrollTrigger.refresh(), 400);
+                });
+            });
+
+            // Handle Load More Click
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', () => {
+                    // Find the currently active filter category
+                    const activeFilterBtn = document.querySelector('.filter-btn.text-brand-primary');
+                    const activeFilter = activeFilterBtn ? activeFilterBtn.getAttribute('data-filter') : 'all';
+
+                    hiddenPhotos.forEach((photo, index) => {
+                        // Mark as loaded
+                        photo.classList.remove('hidden-photo', 'hidden');
+                        
+                        // Check if it matches current filter before displaying
+                        if (activeFilter === 'all' || photo.getAttribute('data-category') === activeFilter) {
+                            photo.style.display = 'block';
+                            gsap.fromTo(photo, 
+                                { opacity: 0, scale: 0.9, y: 20 }, 
+                                { opacity: 1, scale: 1, y: 0, duration: 0.5, delay: index * 0.1, ease: "power2.out" }
+                            );
+                        } else {
+                            photo.style.display = 'none';
+                        }
+                    });
+                    
+                    // Update button state
+                    loadMoreBtn.innerHTML = '<i class="fa-solid fa-check mr-2"></i> All Photos Loaded';
+                    loadMoreBtn.classList.add('opacity-50', 'cursor-not-allowed', 'bg-slate-50');
+                    loadMoreBtn.classList.remove('hover:text-brand-primary', 'hover:border-brand-primary', 'hover:shadow-md');
+                    loadMoreBtn.disabled = true;
+                    
+                    // Refresh ScrollTrigger metrics
+                    setTimeout(() => ScrollTrigger.refresh(), 500);
+                });
+            }
+            
+            // Allow escape key to close lightbox
+            document.addEventListener('keydown', (e) => {
+                if (e.key === "Escape" && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

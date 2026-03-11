@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Nitya Bimba Sewa</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#F9FAFB',
+                            primary: '#1E3A8A',
+                            secondary: '#16A34A',
+                            accent: '#6366F1',
+                            highlight: '#F59E0B',
+                            dark: '#1F2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; color: #1F2937; overflow-x: hidden; }
+        
+        .glass-nav {
+            background: rgba(249, 250, 251, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(30, 58, 138, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.4); 
+            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08); 
+        }
+
+        .hero-inner-bg {
+            background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.8)), 
+                        url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+        }
+
+        .research-grid {
+            background-image: radial-gradient(rgba(30, 58, 138, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- Next Level Gradients --- */
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #1E3A8A 0%, #6366F1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glow-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .reveal { opacity: 0; visibility: hidden; }
+    </style>
+</head>
+<body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
+
+    <!-- Navigation (Fully Linked - Master Template) -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:shadow-lg transition-all group-hover:rotate-180 duration-700">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-brand-primary">Nitya Bimba Sewa</span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex space-x-6 items-center font-medium text-sm text-slate-600">
+                    <a href="index.html" class="hover:text-brand-primary transition-colors">Home</a>
+
+                    <!-- About Dropdown (Active State) -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="about.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">About Us</a>
+                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
+                            <a href="transparency.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Transparency</a>
+                            <a href="faq.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">FAQ</a>
+                        </div>
+                    </div>
+
+                    <!-- Work Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
+                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
+                            <a href="impact.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Impact & Results</a>
+                        </div>
+                    </div>
+
+                    <!-- Knowledge Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="research.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Research & Publications</a>
+                            <a href="media.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Media Gallery</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Engage Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="get-involved.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Get Involved</a>
+                            <a href="partners.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Partners</a>
+                            <a href="news.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">News & Insights</a>
+                        </div>
+                    </div>
+
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
+                    
+                    <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg flex items-center gap-2 font-bold transform hover:scale-105 transition-all">
+                        <i class="fa-solid fa-heart text-white"></i> Donate
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+            <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
+                <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">About</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="about.html" class="text-brand-accent text-sm font-bold">About Us</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Transparency</a>
+                        <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Our Work</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
+                        <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
+                        <a href="impact.html" class="text-slate-600 hover:text-brand-accent text-sm">Impact & Results</a>
+                    </div>
+                </div>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Knowledge</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="research.html" class="text-slate-600 hover:text-brand-accent text-sm">Research & Publications</a>
+                        <a href="media.html" class="text-slate-600 hover:text-brand-accent text-sm">Media Gallery</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Engage</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="get-involved.html" class="text-slate-600 hover:text-brand-accent text-sm">Get Involved</a>
+                        <a href="partners.html" class="text-slate-600 hover:text-brand-accent text-sm">Partners</a>
+                        <a href="news.html" class="text-slate-600 hover:text-brand-accent text-sm">News & Insights</a>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
+                
+                <div class="pt-6 pb-2">
+                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Inner Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
+        <div class="absolute inset-0 research-grid opacity-20"></div>
+        <div class="max-w-4xl mx-auto z-10 reveal">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight hero-elem">
+                Our Identity & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Purpose.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
+                Discover the story, vision, and operational framework driving Nitya Bimba Sewa to bridge the gap between scientific inquiry and human welfare.
+            </p>
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="py-20 px-4 bg-white relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-brand-accent/5 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2"></div>
+        <div class="absolute inset-0 research-grid opacity-30 z-0 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal">
+                    <h3 class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-2">The Origin</h3>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gradient-primary mb-6">Why We Were Founded</h2>
+                    <div class="space-y-4 text-slate-600 leading-relaxed">
+                        <p>Nitya Bimba Sewa (Eternal Reflection of Service) was born from a critical observation: while scientific advancement moves rapidly, its benefits often fail to reach grassroots communities. Similarly, traditional social welfare programs frequently operate without the benefit of rigorous data and sustainable, evidence-based methodologies.</p>
+                        <p>Founded by a passionate group of scientists, social workers, and community leaders, our organization was established to serve as a vital bridge. We exist to translate complex research into actionable community empowerment, ensuring that marginalized youth, women, and children are equipped to thrive in a rapidly changing world.</p>
+                        <p class="font-bold text-brand-dark border-l-4 border-brand-accent pl-4 mt-6 py-2 bg-slate-50">"We believe that true progress happens when the precision of science meets the empathy of social service."</p>
+                    </div>
+                </div>
+                <div class="relative reveal">
+                    <div class="absolute -inset-4 bg-gradient-to-br from-brand-primary/20 to-brand-accent/20 rounded-3xl transform rotate-3 -z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140bef2?q=80&w=2070&auto=format&fit=crop" alt="Community and Science" class="rounded-2xl shadow-xl w-full object-cover h-[400px]">
+                    <div class="absolute -bottom-6 -left-6 glass-card p-6 rounded-2xl shadow-lg max-w-xs border-l-4 border-brand-secondary hidden md:block">
+                        <div class="text-3xl text-brand-secondary mb-2"><i class="fa-solid fa-hands-holding-circle"></i></div>
+                        <h4 class="font-bold text-brand-dark">Data-Driven Compassion</h4>
+                        <p class="text-xs text-slate-500 mt-1">Merging statistical rigor with human-centric care.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision & Mission -->
+    <section class="py-20 px-4 bg-brand-bg relative overflow-hidden">
+        <div class="glow-blob bg-brand-primary opacity-[0.08] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Vision -->
+                <div class="glass-card p-10 rounded-3xl reveal flex flex-col justify-center relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 rounded-bl-full -z-10 transition-transform duration-500 group-hover:scale-125"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-primary to-brand-accent text-white flex items-center justify-center text-3xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fa-regular fa-eye"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-brand-dark mb-4">Our Vision</h3>
+                    <p class="text-lg text-brand-primary font-bold leading-relaxed">
+                        "A prosperous society enriched with scientific thinking and social justice."
+                    </p>
+                    <p class="text-sm text-slate-500 mt-4 italic">एक सुदृढ, वैज्ञानिक सोचले सम्पन्न र सामाजिक रुपले न्यायपूर्ण समाजको निर्माण।</p>
+                </div>
+
+                <!-- Mission -->
+                <div class="glass-card p-10 rounded-3xl reveal flex flex-col justify-center relative overflow-hidden group" style="transition-delay: 100ms;">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-bl-full -z-10 transition-transform duration-500 group-hover:scale-125"></div>
+                    <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-accent to-brand-secondary text-white flex items-center justify-center text-3xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-bullseye"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-brand-dark mb-4">Our Mission</h3>
+                    <p class="text-lg text-slate-700 font-medium leading-relaxed">
+                        "To empower youth, women, and children by enhancing their capacity and leadership through science, education, health, and environment for positive community transformation."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Objectives -->
+    <section class="py-20 px-4 bg-white border-y border-slate-100 relative">
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h3 class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-2">What We Do</h3>
+                <h2 class="text-3xl md:text-4xl font-bold text-gradient-primary">Our Core Objectives</h2>
+                <div class="w-24 h-1 bg-gradient-to-r from-brand-accent to-brand-secondary mx-auto mt-6 rounded-full"></div>
+            </div>
+
+            <div class="space-y-6 max-w-4xl mx-auto">
+                <!-- Obj 1 -->
+                <div class="glass-card p-6 rounded-2xl flex items-start gap-5 reveal">
+                    <div class="mt-1 flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-primary to-blue-500 text-white flex items-center justify-center font-bold text-xl shadow-sm">1</div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark text-lg mb-2">Awareness & Capacity Building</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">To promote awareness in science, education, health, and environment within the community; and to conduct capacity-building and leadership development programs targeting youth, women, and children.</p>
+                    </div>
+                </div>
+                <!-- Obj 2 -->
+                <div class="glass-card p-6 rounded-2xl flex items-start gap-5 reveal">
+                    <div class="mt-1 flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-secondary to-emerald-500 text-white flex items-center justify-center font-bold text-xl shadow-sm">2</div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark text-lg mb-2">Research & Infrastructure</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">To conduct research, publication, and awareness programs in environmental conservation, biodiversity, agriculture, and community reform grounded in scientific methodology, and to develop the necessary infrastructure.</p>
+                    </div>
+                </div>
+                <!-- Obj 3 -->
+                <div class="glass-card p-6 rounded-2xl flex items-start gap-5 reveal">
+                    <div class="mt-1 flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-accent to-indigo-400 text-white flex items-center justify-center font-bold text-xl shadow-sm">3</div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark text-lg mb-2">Knowledge Dissemination</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">To disseminate scientific knowledge through virtual and physical science-related dialogues, training sessions, seminars, and educational programs.</p>
+                    </div>
+                </div>
+                <!-- Obj 4 -->
+                <div class="glass-card p-6 rounded-2xl flex items-start gap-5 reveal">
+                    <div class="mt-1 flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-primary to-slate-700 text-white flex items-center justify-center font-bold text-xl shadow-sm">4</div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark text-lg mb-2">Institutional Coordination</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">To create an appropriate environment for research work by coordinating with local, provincial, and federal government bodies, as well as national and international organizations and experts.</p>
+                    </div>
+                </div>
+                <!-- Obj 5 -->
+                <div class="glass-card p-6 rounded-2xl flex items-start gap-5 reveal">
+                    <div class="mt-1 flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-highlight to-orange-500 text-white flex items-center justify-center font-bold text-xl shadow-sm">5</div>
+                    <div>
+                        <h4 class="font-bold text-brand-dark text-lg mb-2">Social Welfare</h4>
+                        <p class="text-slate-600 text-sm leading-relaxed">To implement public interest programs providing essential financial and emotional support, as well as services to impoverished, vulnerable, and at-risk individuals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Values -->
+    <section class="py-24 px-4 bg-brand-primary relative overflow-hidden">
+        <div class="glow-blob bg-brand-accent top-0 left-[-10%] scale-150 opacity-20"></div>
+        <div class="glow-blob bg-brand-secondary bottom-0 right-[-10%] scale-150 opacity-20"></div>
+        <div class="absolute inset-0 research-grid opacity-10" style="background-image: radial-gradient(#FFFFFF 1px, transparent 1px);"></div>
+        
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="text-center mb-16 reveal">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Our Core Values</h2>
+                <p class="text-slate-300 max-w-2xl mx-auto text-lg">The principles that guide our research, partnerships, and community interventions.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl reveal hover:bg-white/15 hover:-translate-y-2 transition-all">
+                    <i class="fa-solid fa-microscope text-4xl text-brand-accent mb-6"></i>
+                    <h4 class="text-xl font-bold text-white mb-3">Scientific Rigor</h4>
+                    <p class="text-sm text-slate-300">Decisions driven by data, evidence, and objective truth.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl reveal hover:bg-white/15 hover:-translate-y-2 transition-all" style="transition-delay: 100ms;">
+                    <i class="fa-solid fa-scale-balanced text-4xl text-brand-secondary mb-6"></i>
+                    <h4 class="text-xl font-bold text-white mb-3">Social Equity</h4>
+                    <p class="text-sm text-slate-300">Ensuring our work reaches the most marginalized populations.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl reveal hover:bg-white/15 hover:-translate-y-2 transition-all" style="transition-delay: 200ms;">
+                    <i class="fa-solid fa-magnifying-glass text-4xl text-brand-highlight mb-6"></i>
+                    <h4 class="text-xl font-bold text-white mb-3">Transparency</h4>
+                    <p class="text-sm text-slate-300">Absolute accountability to our donors, partners, and beneficiaries.</p>
+                </div>
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-3xl reveal hover:bg-white/15 hover:-translate-y-2 transition-all" style="transition-delay: 300ms;">
+                    <i class="fa-solid fa-network-wired text-4xl text-brand-accent mb-6"></i>
+                    <h4 class="text-xl font-bold text-white mb-3">Collaboration</h4>
+                    <p class="text-sm text-slate-300">Working synergistically with government and global experts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Governance & Legal Status -->
+    <section class="py-24 px-4 bg-brand-bg relative">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
+            
+            <!-- Organizational Structure -->
+            <div class="glass-card p-10 rounded-3xl reveal">
+                <h3 class="text-2xl font-bold text-brand-primary mb-6 flex items-center gap-3">
+                    <i class="fa-solid fa-sitemap text-brand-accent"></i> Organizational Structure
+                </h3>
+                <p class="text-slate-600 mb-8 leading-relaxed">Nitya Bimba Sewa operates through a transparent, three-tier governance model ensuring scientific validity and grassroots efficacy.</p>
+                
+                <ul class="space-y-6">
+                    <li class="flex items-start gap-4">
+                        <div class="mt-1 w-8 h-8 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-check"></i></div>
+                        <div>
+                            <h5 class="font-bold text-brand-dark text-lg">Executive Board</h5>
+                            <p class="text-sm text-slate-500 mt-1">Responsible for strategic direction, legal compliance, and overarching policy management.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <div class="mt-1 w-8 h-8 rounded-full bg-brand-accent/10 text-brand-accent flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-check"></i></div>
+                        <div>
+                            <h5 class="font-bold text-brand-dark text-lg">Scientific Advisory Council (Vigya)</h5>
+                            <p class="text-sm text-slate-500 mt-1">A network of national and international subject-matter experts guiding research and project methodology.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-4">
+                        <div class="mt-1 w-8 h-8 rounded-full bg-brand-secondary/10 text-brand-secondary flex items-center justify-center text-sm flex-shrink-0"><i class="fa-solid fa-check"></i></div>
+                        <div>
+                            <h5 class="font-bold text-brand-dark text-lg">Field Implementation Team</h5>
+                            <p class="text-sm text-slate-500 mt-1">Local social workers, volunteers, and project managers executing initiatives at the community level.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Legal Status -->
+            <div class="glass-card p-10 rounded-3xl reveal bg-gradient-to-br from-white to-slate-50">
+                <h3 class="text-2xl font-bold text-brand-primary mb-6 flex items-center gap-3">
+                    <i class="fa-solid fa-file-shield text-brand-secondary"></i> Legal Status & Registration
+                </h3>
+                <p class="text-slate-600 mb-8 leading-relaxed">We are committed to full compliance with national laws and global standards for non-profit organizations.</p>
+                
+                <div class="space-y-4">
+                    <div class="p-5 border border-slate-200 rounded-2xl bg-white shadow-sm flex items-center justify-between group hover:border-brand-secondary transition-colors">
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Registration Entity</p>
+                            <p class="font-bold text-brand-dark">Registered NGO, Government of Nepal</p>
+                        </div>
+                        <i class="fa-solid fa-certificate text-brand-secondary text-3xl group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div class="p-5 border border-slate-200 rounded-2xl bg-white shadow-sm flex items-center justify-between group hover:border-brand-accent transition-colors">
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Province</p>
+                            <p class="font-bold text-brand-dark">Bagmati Province</p>
+                        </div>
+                        <i class="fa-solid fa-map-location-dot text-brand-accent text-3xl group-hover:scale-110 transition-transform"></i>
+                    </div>
+                    <div class="p-5 border border-slate-200 rounded-2xl bg-white shadow-sm flex items-center justify-between group hover:border-brand-primary transition-colors">
+                        <div>
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Affiliation</p>
+                            <p class="font-bold text-brand-dark">Social Welfare Council (SWC) Nepal</p>
+                        </div>
+                        <i class="fa-solid fa-handshake-angle text-brand-primary text-3xl group-hover:scale-110 transition-transform"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Master Footer with Tight Spacing & Icons -->
+    <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white">Nitya Bimba Sewa</span>
+                </div>
+                <p class="text-sm mb-4 leading-relaxed">Where scientific knowledge meets compassion. Registered SWC-affiliated NGO in Nepal.</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-all shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-highlight hover:text-white transition-all shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-sm"><i class="fa-brands fa-tiktok text-xs"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Navigation</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="team.html" class="hover:text-white transition-colors">Our Team</a></li>
+                    <li><a href="our-work.html" class="hover:text-white transition-colors">Core Pillars</a></li>
+                    <li><a href="projects.html" class="hover:text-white transition-colors">Initiatives</a></li>
+                    <li><a href="impact.html" class="hover:text-white transition-colors">Our Impact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
+                    <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
+                    <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
+                    <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Legal & Connect</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
+                </ul>
+                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-all">Donate to a Project</a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
+    </footer>
+
+    <!-- GSAP Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Scroll Reveal Animations
+            gsap.set(".reveal", { visibility: "visible" });
+            const revealElements = document.querySelectorAll(".reveal");
+            revealElements.forEach((elem) => {
+                gsap.fromTo(elem,
+                    { y: 50, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: "top 85%", 
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if(mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Navbar background effect on scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-sm');
+                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    navbar.classList.remove('shadow-sm');
+                    navbar.style.background = 'rgba(249, 250, 251, 0.85)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

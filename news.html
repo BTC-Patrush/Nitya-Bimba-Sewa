@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Insights | Nitya Bimba Sewa</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#F9FAFB',
+                            primary: '#1E3A8A', // Science Blue
+                            secondary: '#16A34A', // Environment Green
+                            accent: '#6366F1', // Education Indigo
+                            highlight: '#F59E0B', // Welfare Orange
+                            dark: '#1F2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; color: #1F2937; overflow-x: hidden; }
+        
+        .glass-nav {
+            background: rgba(249, 250, 251, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(30, 58, 138, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.4); 
+            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08); 
+        }
+
+        .hero-inner-bg {
+            background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.8)), 
+                        url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+        }
+
+        .research-grid {
+            background-image: radial-gradient(rgba(30, 58, 138, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- Next Level Gradients --- */
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #1E3A8A 0%, #6366F1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glow-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .reveal, .hero-elem { opacity: 0; visibility: hidden; }
+        
+        /* Category Badge */
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .filter-btn { outline: none; }
+    </style>
+</head>
+<body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
+
+    <!-- Navigation (Master Template) -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:shadow-lg transition-all group-hover:rotate-180 duration-700">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-brand-primary">Nitya Bimba Sewa</span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex space-x-6 items-center font-medium text-sm text-slate-600">
+                    <a href="index.html" class="hover:text-brand-primary transition-colors">Home</a>
+
+                    <!-- About Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="about.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">About Us</a>
+                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
+                            <a href="transparency.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Transparency</a>
+                            <a href="faq.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">FAQ</a>
+                        </div>
+                    </div>
+
+                    <!-- Work Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
+                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
+                            <a href="impact.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Impact & Results</a>
+                        </div>
+                    </div>
+
+                    <!-- Knowledge Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="research.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Research & Publications</a>
+                            <a href="media.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Media Gallery</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Engage Dropdown (Active) -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="get-involved.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Get Involved</a>
+                            <a href="partners.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Partners</a>
+                            <a href="news.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">News & Insights</a>
+                        </div>
+                    </div>
+
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
+                    
+                    <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg flex items-center gap-2 font-bold transform hover:scale-105 transition-all">
+                        <i class="fa-solid fa-heart text-white"></i> Donate
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+            <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
+                <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Organization</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Transparency</a>
+                        <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Work</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
+                        <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
+                        <a href="impact.html" class="text-slate-600 hover:text-brand-accent text-sm">Impact & Results</a>
+                    </div>
+                </div>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Knowledge</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="research.html" class="text-slate-600 hover:text-brand-accent text-sm">Research & Publications</a>
+                        <a href="media.html" class="text-slate-600 hover:text-brand-accent text-sm">Media Gallery</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Engage</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="get-involved.html" class="text-slate-600 hover:text-brand-accent text-sm">Get Involved</a>
+                        <a href="partners.html" class="text-slate-600 hover:text-brand-accent text-sm">Partners</a>
+                        <a href="news.html" class="text-brand-accent text-sm font-bold">News & Insights</a>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
+                
+                <div class="pt-6 pb-2">
+                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Inner Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
+        <div class="absolute inset-0 research-grid opacity-20"></div>
+        
+        <div class="max-w-5xl mx-auto z-10 reveal">
+            <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20">The NBS Blog</h3>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight hero-elem">
+                News, Science & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Insights.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
+                Stay updated with our latest community interventions, dive deep into scientific awareness topics, and read stories of profound transformation from the field.
+            </p>
+        </div>
+    </section>
+
+    <!-- Category Filter Nav -->
+    <div class="bg-white py-6 border-b border-slate-200 sticky top-20 z-40 hidden md:block glass-nav">
+        <div class="max-w-7xl mx-auto px-4 flex justify-center gap-6 text-sm font-bold uppercase tracking-wider flex-wrap">
+            <button class="filter-btn text-brand-primary border-b-2 border-brand-primary pb-1 transition-colors" data-filter="all">Latest Posts</button>
+            <button class="filter-btn text-slate-500 hover:text-brand-primary flex items-center gap-2 transition-colors" data-filter="science"><i class="fa-solid fa-microscope"></i> Science</button>
+            <button class="filter-btn text-slate-500 hover:text-brand-secondary flex items-center gap-2 transition-colors" data-filter="environment"><i class="fa-solid fa-leaf"></i> Environment</button>
+            <button class="filter-btn text-slate-500 hover:text-brand-highlight flex items-center gap-2 transition-colors" data-filter="community"><i class="fa-solid fa-users"></i> Community</button>
+            <button class="filter-btn text-slate-500 hover:text-brand-accent flex items-center gap-2 transition-colors" data-filter="events"><i class="fa-regular fa-calendar-check"></i> Events</button>
+        </div>
+    </div>
+
+    <!-- 1. FEATURED ARTICLE -->
+    <section class="py-16 px-4 bg-brand-bg relative overflow-hidden" id="featured-article" data-category="environment">
+        <div class="absolute inset-0 research-grid opacity-30 z-0 pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            <div class="glass-card rounded-3xl overflow-hidden flex flex-col lg:flex-row reveal group cursor-pointer hover:border-brand-primary/30">
+                <div class="w-full lg:w-1/2 relative overflow-hidden h-72 lg:h-auto">
+                    <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop" alt="Environment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/80 to-transparent"></div>
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <span class="category-badge bg-brand-secondary text-white mb-3">Environmental Education</span>
+                    </div>
+                </div>
+                <div class="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center bg-white">
+                    <div class="text-sm text-slate-500 font-bold mb-3 flex items-center gap-2 uppercase tracking-wider">
+                        <i class="fa-regular fa-clock"></i> March 10, 2026 &nbsp;•&nbsp; By Dr. Anita K.
+                    </div>
+                    <h2 class="text-3xl font-bold text-brand-dark mb-4 group-hover:text-brand-primary transition-colors leading-tight">Demystifying Climate Change: What It Means for Rural Farmers in Nepal</h2>
+                    <p class="text-slate-600 leading-relaxed mb-8 flex-grow text-lg">
+                        Climate change is often discussed in global terms, but its true impact is felt on local farms. We break down the science of changing monsoon patterns and offer actionable, evidence-based mitigation strategies for our agricultural communities.
+                    </p>
+                    <a href="#" class="text-brand-primary font-bold flex items-center gap-2 hover:gap-3 transition-all">
+                        Read Full Article <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. ARTICLE GRID -->
+    <section class="py-16 px-4 bg-white relative border-y border-slate-100 overflow-hidden">
+        <div class="glow-blob bg-brand-accent opacity-[0.05] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 scroll-mt-40" id="news-grid">
+                
+                <!-- Article 1 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-accent/40 cursor-pointer" data-category="events">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=2070&auto=format&fit=crop" alt="Event" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-accent text-white shadow-md">Event Updates</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">March 01, 2026</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-accent transition-colors">Highlights from the Kathmandu STEM Expo</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Over 500 students gathered to interact with our mobile micro-labs. See the winning student projects and download the event recap.</p>
+                        <a href="#" class="text-brand-accent font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 2 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-primary/40 cursor-pointer" data-category="science">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=2070&auto=format&fit=crop" alt="Science" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-primary text-white shadow-md">Science Awareness</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">February 22, 2026</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-primary transition-colors">The Science of Clean Water: Filtration Explained</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">A deep dive into the microscopic organisms present in rural water sources and how accessible biosand filters eradicate 99% of pathogens.</p>
+                        <a href="#" class="text-brand-primary font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 3 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-highlight/40 cursor-pointer" data-category="community">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?q=80&w=2069&auto=format&fit=crop" alt="Community" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-highlight text-white shadow-md">Community Stories</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">February 15, 2026</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-highlight transition-colors">Meet Sunita: Breaking Barriers in Tech</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">How a young mother from a marginalized community used our digital literacy bootcamp to launch her own online handicraft business.</p>
+                        <a href="#" class="text-brand-highlight font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 4 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-secondary/40 cursor-pointer" data-category="environment">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=2070&auto=format&fit=crop" alt="Environment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-secondary text-white shadow-md">Environmental Ed</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">February 02, 2026</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-secondary transition-colors">5 Plants That Naturally Restore Soil Health</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Our researchers identify indigenous plants that act as natural nitrogen fixers, offering a free alternative to synthetic fertilizers.</p>
+                        <a href="#" class="text-brand-secondary font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 5 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-accent/40 cursor-pointer" data-category="events">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop" alt="Event" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-accent text-white shadow-md">Event Updates</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">January 25, 2026</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-accent transition-colors">Upcoming: Regional Health Camp</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">We are deploying our medical and psychosocial team to the Makwanpur district next month. Find out how you can volunteer or benefit.</p>
+                        <a href="#" class="text-brand-accent font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 6 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-primary/40 cursor-pointer" data-category="science">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?q=80&w=2080&auto=format&fit=crop" alt="Science" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-primary text-white shadow-md">Science Awareness</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">January 10, 2026</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-primary transition-colors">Why Mental Health is a Biological Issue</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Breaking the stigma: Exploring the neurobiology behind trauma and why psychosocial counseling is a scientific necessity.</p>
+                        <a href="#" class="text-brand-primary font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 7 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-secondary/40 cursor-pointer" data-category="environment">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1509391366360-2e959784a276?q=80&w=2072&auto=format&fit=crop" alt="Environment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-secondary text-white shadow-md">Environmental Ed</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">December 14, 2025</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-secondary transition-colors">Solar Irrigation Systems Deployed in Parsa</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">A look at our new community-managed solar water pumps saving hundreds of hours of manual labor for local farmers.</p>
+                        <a href="#" class="text-brand-secondary font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 8 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-highlight/40 cursor-pointer" data-category="community">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1529390079861-591de354faf5?q=80&w=2070&auto=format&fit=crop" alt="Community" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-highlight text-white shadow-md">Community Stories</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">November 30, 2025</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-highlight transition-colors">Empowering Youth: The Civic Leadership Workshop</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Meet the 30 young adults who recently graduated from our program and are now actively participating in local municipal planning.</p>
+                        <a href="#" class="text-brand-highlight font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 9 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-primary/40 cursor-pointer" data-category="science">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1614935151651-0bea6508ab6b?q=80&w=2125&auto=format&fit=crop" alt="Science" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-primary text-white shadow-md">Science Awareness</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">November 12, 2025</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-primary transition-colors">Understanding Soil Microbiomes</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">How the invisible ecosystem beneath our feet determines the nutritional value of the crops we eat, explained simply.</p>
+                        <a href="#" class="text-brand-primary font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 10 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-accent/40 cursor-pointer" data-category="events">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2012&auto=format&fit=crop" alt="Event" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-accent text-white shadow-md">Event Updates</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">October 25, 2025</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-accent transition-colors">Annual NGO Collaboration Summit</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Nitya Bimba Sewa presented our mobile lab findings to over 40 international organizations at the Kathmandu summit.</p>
+                        <a href="#" class="text-brand-accent font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 11 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-highlight/40 cursor-pointer" data-category="community">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1544928147-79a2dbc1f389?q=80&w=2070&auto=format&fit=crop" alt="Community" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-highlight text-white shadow-md">Community Stories</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">October 05, 2025</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-highlight transition-colors">Maternal Nutrition Drive Completes Phase 1</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Over 300 expectant mothers received vital iron supplements and nutritional education in our recent fieldwork push.</p>
+                        <a href="#" class="text-brand-highlight font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 12 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-secondary/40 cursor-pointer" data-category="environment">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=2074&auto=format&fit=crop" alt="Environment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-secondary text-white shadow-md">Environmental Ed</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">September 18, 2025</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-secondary transition-colors">Reforestation Success: 10,000 Saplings Planted</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Volunteers and local farmers successfully completed the massive planting drive to combat soil erosion in the region.</p>
+                        <a href="#" class="text-brand-secondary font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- No Results Message -->
+                <div id="no-results" class="hidden col-span-full text-center py-12">
+                    <i class="fa-regular fa-folder-open text-4xl text-slate-300 mb-4"></i>
+                    <h3 class="text-xl font-bold text-brand-dark">No articles found</h3>
+                    <p class="text-slate-500 mt-2">There are currently no articles matching this category.</p>
+                </div>
+
+            </div>
+
+            <!-- Dynamic Pagination Container -->
+            <div class="flex justify-center mt-16 reveal pagination-controls">
+                <nav class="flex items-center gap-3" id="pagination-nav">
+                    <!-- JavaScript will inject pagination buttons here -->
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. NEWSLETTER SIGNUP -->
+    <section class="py-24 px-4 bg-brand-primary relative overflow-hidden text-center">
+        <div class="absolute inset-0 research-grid opacity-20" style="background-image: radial-gradient(#FFFFFF 1px, transparent 1px);"></div>
+        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-brand-accent/30 rounded-full blur-[120px] pointer-events-none"></div>
+        
+        <div class="max-w-2xl mx-auto relative z-10 reveal">
+            <i class="fa-regular fa-paper-plane text-5xl text-brand-highlight mb-6"></i>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Never Miss an Update</h2>
+            <p class="text-slate-300 mb-8 text-lg">Join our community of researchers, volunteers, and change-makers. Get bi-monthly science insights and project updates delivered straight to your inbox.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                <input type="email" placeholder="Enter your email address" class="flex-grow px-6 py-4 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-brand-highlight bg-white/10 backdrop-blur-sm text-white placeholder-white/50 text-center sm:text-left shadow-inner">
+                <button type="submit" class="bg-gradient-to-r from-brand-highlight to-orange-600 hover:shadow-[0_10px_30px_rgba(245,158,11,0.4)] text-white font-bold py-4 px-8 rounded-full transition-transform hover:-translate-y-1 whitespace-nowrap">
+                    Subscribe
+                </button>
+            </form>
+            <p class="text-xs text-white/50 mt-6 font-medium tracking-wider uppercase">We respect your privacy. No spam, ever. Unsubscribe at any time.</p>
+        </div>
+    </section>
+
+    <!-- Master Footer with Tight Spacing & Icons -->
+    <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white">Nitya Bimba Sewa</span>
+                </div>
+                <p class="text-sm mb-4 leading-relaxed">Where scientific knowledge meets compassion. Registered SWC-affiliated NGO in Nepal.</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-all shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-highlight hover:text-white transition-all shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-sm"><i class="fa-brands fa-tiktok text-xs"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Navigation</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="team.html" class="hover:text-white transition-colors">Our Team</a></li>
+                    <li><a href="our-work.html" class="hover:text-white transition-colors">Core Pillars</a></li>
+                    <li><a href="projects.html" class="hover:text-white transition-colors">Initiatives</a></li>
+                    <li><a href="impact.html" class="hover:text-white transition-colors">Our Impact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
+                    <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
+                    <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
+                    <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Legal & Connect</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
+                </ul>
+                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-all">Donate to a Project</a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
+    </footer>
+
+    <!-- GSAP Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // 1. Hero Entrance
+            gsap.set(".hero-elem", { visibility: "visible" });
+            gsap.fromTo('.hero-elem', 
+                { y: 40, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power4.out", delay: 0.3 }
+            );
+
+            // 2. Scroll Reveal Animations
+            gsap.set(".reveal", { visibility: "visible" });
+            const revealElements = document.querySelectorAll(".reveal");
+            revealElements.forEach((elem) => {
+                gsap.fromTo(elem,
+                    { y: 50, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: "top 85%", 
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // --- FILTER & PAGINATION LOGIC ---
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            // Select ONLY the items inside the grid (ignoring the pinned featured article)
+            const newsItems = Array.from(document.querySelectorAll('#news-grid .news-item'));
+            const noResultsMsg = document.getElementById('no-results');
+            const paginationNav = document.getElementById('pagination-nav');
+            const featuredArticle = document.getElementById('featured-article');
+
+            let currentPage = 1;
+            const itemsPerPage = 6;
+            let currentFilter = 'all';
+
+            function renderGrid() {
+                // 1. Handle Featured Article Visibility
+                if (featuredArticle) {
+                    if (currentFilter === 'all' || featuredArticle.getAttribute('data-category') === currentFilter) {
+                        featuredArticle.style.display = 'flex';
+                    } else {
+                        featuredArticle.style.display = 'none';
+                    }
+                }
+
+                // 2. Filter Grid Items
+                const filteredItems = newsItems.filter(item => {
+                    return currentFilter === 'all' || item.getAttribute('data-category') === currentFilter;
+                });
+
+                // 3. Calculate Pagination Limits
+                const totalPages = Math.ceil(filteredItems.length / itemsPerPage) || 1;
+                if (currentPage > totalPages) currentPage = totalPages; // safety bound
+
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+
+                // 4. Update Grid UI
+                let visibleCount = 0;
+                newsItems.forEach(item => item.style.display = 'none'); // Hide all
+
+                filteredItems.forEach((item, index) => {
+                    if (index >= startIndex && index < endIndex) {
+                        item.style.display = 'flex';
+                        visibleCount++;
+                        // Soft fade-in animation for active items
+                        gsap.fromTo(item, {opacity: 0, y: 15}, {opacity: 1, y: 0, duration: 0.4, ease: "power2.out"});
+                    }
+                });
+
+                // 5. Handle empty states & Draw Pagination
+                if (visibleCount === 0) {
+                    noResultsMsg.style.display = 'block';
+                    paginationNav.style.display = 'none';
+                } else {
+                    noResultsMsg.style.display = 'none';
+                    paginationNav.style.display = 'flex';
+                    drawPaginationButtons(totalPages);
+                }
+
+                // Force GSAP ScrollTrigger to recalculate layout dimensions
+                setTimeout(() => ScrollTrigger.refresh(), 400);
+            }
+
+            function drawPaginationButtons(totalPages) {
+                paginationNav.innerHTML = '';
+                
+                // Hide pagination completely if only 1 page
+                if(totalPages <= 1) {
+                    paginationNav.style.display = 'none';
+                    return;
+                }
+
+                // Previous Button
+                const prevBtn = document.createElement('button');
+                prevBtn.className = `w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center transition-colors ${currentPage === 1 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-500 hover:bg-slate-50 hover:text-brand-primary hover:border-brand-primary'}`;
+                prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
+                prevBtn.disabled = currentPage === 1;
+                prevBtn.addEventListener('click', () => {
+                    if (currentPage > 1) { 
+                        currentPage--; 
+                        renderGrid(); 
+                        document.getElementById('news-grid').scrollIntoView({behavior: 'smooth', block: 'start'}); 
+                    }
+                });
+                paginationNav.appendChild(prevBtn);
+
+                // Numbered Page Buttons
+                for (let i = 1; i <= totalPages; i++) {
+                    const pageBtn = document.createElement('button');
+                    if (i === currentPage) {
+                        pageBtn.className = 'w-12 h-12 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent text-white font-bold flex items-center justify-center shadow-lg';
+                    } else {
+                        pageBtn.className = 'w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center text-slate-600 font-bold hover:bg-slate-50 hover:text-brand-primary hover:border-brand-primary transition-all';
+                    }
+                    pageBtn.textContent = i;
+                    pageBtn.addEventListener('click', () => {
+                        currentPage = i;
+                        renderGrid();
+                        document.getElementById('news-grid').scrollIntoView({behavior: 'smooth', block: 'start'});
+                    });
+                    paginationNav.appendChild(pageBtn);
+                }
+
+                // Next Button
+                const nextBtn = document.createElement('button');
+                nextBtn.className = `w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center transition-colors ${currentPage === totalPages ? 'text-slate-300 cursor-not-allowed' : 'text-slate-500 hover:bg-slate-50 hover:text-brand-primary hover:border-brand-primary'}`;
+                nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
+                nextBtn.disabled = currentPage === totalPages;
+                nextBtn.addEventListener('click', () => {
+                    if (currentPage < totalPages) { 
+                        currentPage++; 
+                        renderGrid(); 
+                        document.getElementById('news-grid').scrollIntoView({behavior: 'smooth', block: 'start'}); 
+                    }
+                });
+                paginationNav.appendChild(nextBtn);
+            }
+
+            // Bind Category Nav Filters
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    
+                    // Update tab styling
+                    filterBtns.forEach(b => {
+                        b.classList.remove('text-brand-primary', 'border-b-2', 'border-brand-primary', 'pb-1');
+                        b.classList.add('text-slate-500');
+                    });
+                    btn.classList.add('text-brand-primary', 'border-b-2', 'border-brand-primary', 'pb-1');
+                    btn.classList.remove('text-slate-500');
+
+                    currentFilter = btn.getAttribute('data-filter');
+                    currentPage = 1; // Always reset to page 1 on new filter
+                    renderGrid();
+                });
+            });
+
+            // Initial render call on page load
+            renderGrid();
+
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            if(mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Navbar background effect on scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-xl', 'border-brand-primary/5');
+                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    navbar.classList.remove('shadow-xl', 'border-brand-primary/5');
+                    navbar.style.background = 'rgba(249, 250, 251, 0.85)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

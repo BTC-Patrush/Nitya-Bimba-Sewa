@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ | Nitya Bimba Sewa</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            bg: '#F9FAFB',
+                            primary: '#1E3A8A', // Science Blue
+                            secondary: '#16A34A', // Environment Green
+                            accent: '#6366F1', // Education Indigo
+                            highlight: '#F59E0B', // Welfare Orange
+                            dark: '#1F2937'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; color: #1F2937; overflow-x: hidden; }
+        
+        .glass-nav {
+            background: rgba(249, 250, 251, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(30, 58, 138, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.4); 
+            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08); 
+        }
+
+        .hero-inner-bg {
+            background: linear-gradient(rgba(30, 58, 138, 0.95), rgba(30, 58, 138, 0.85)), 
+                        url('https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?q=80&w=2049&auto=format&fit=crop') center/cover fixed;
+        }
+
+        .research-grid {
+            background-image: radial-gradient(rgba(30, 58, 138, 0.1) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+
+        /* --- Next Level Gradients --- */
+        .text-gradient-primary {
+            background: linear-gradient(135deg, #1E3A8A 0%, #6366F1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .glow-blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .reveal, .hero-elem { opacity: 0; visibility: hidden; }
+
+        /* Accordion Animation */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), padding 0.4s ease-in-out, opacity 0.3s ease-in-out;
+            opacity: 0;
+        }
+        .faq-item.active .faq-answer {
+            opacity: 1;
+        }
+        .faq-icon {
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+            background-color: #1E3A8A;
+            color: white;
+        }
+    </style>
+</head>
+<body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
+
+    <!-- Navigation (Master Template) -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:shadow-lg transition-all group-hover:rotate-180 duration-700">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-brand-primary">Nitya Bimba Sewa</span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex space-x-6 items-center font-medium text-sm text-slate-600">
+                    <a href="index.html" class="hover:text-brand-primary transition-colors">Home</a>
+
+                    <!-- About Dropdown (Active) -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 text-brand-accent transition-colors border-b-2 border-brand-accent pb-1">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="about.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">About Us</a>
+                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
+                            <a href="transparency.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Transparency</a>
+                            <a href="faq.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">FAQ</a>
+                        </div>
+                    </div>
+
+                    <!-- Work Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
+                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
+                            <a href="impact.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Impact & Results</a>
+                        </div>
+                    </div>
+
+                    <!-- Knowledge Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="research.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Research & Publications</a>
+                            <a href="media.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Media Gallery</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Engage Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
+                            <a href="get-involved.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Get Involved</a>
+                            <a href="partners.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Partners</a>
+                            <a href="news.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">News & Insights</a>
+                        </div>
+                    </div>
+
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
+                    
+                    <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg flex items-center gap-2 font-bold transform hover:scale-105 transition-all">
+                        <i class="fa-solid fa-heart text-white"></i> Donate
+                    </a>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+            <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
+                <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Organization</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Transparency</a>
+                        <a href="faq.html" class="text-brand-accent text-sm font-bold">FAQ</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Work</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
+                        <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
+                        <a href="impact.html" class="text-slate-600 hover:text-brand-accent text-sm">Impact & Results</a>
+                    </div>
+                </div>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Knowledge</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="research.html" class="text-slate-600 hover:text-brand-accent text-sm">Research & Publications</a>
+                        <a href="media.html" class="text-slate-600 hover:text-brand-accent text-sm">Media Gallery</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Engage</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="get-involved.html" class="text-slate-600 hover:text-brand-accent text-sm">Get Involved</a>
+                        <a href="partners.html" class="text-slate-600 hover:text-brand-accent text-sm">Partners</a>
+                        <a href="news.html" class="text-slate-600 hover:text-brand-accent text-sm">News & Insights</a>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
+                
+                <div class="pt-6 pb-2">
+                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Inner Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
+        <div class="absolute inset-0 research-grid opacity-20"></div>
+        
+        <div class="max-w-5xl mx-auto z-10 reveal">
+            <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">How We Operate</h3>
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight hero-elem">
+                Frequently Asked <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Questions.</span>
+            </h1>
+            <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
+                Find quick answers about our research, funding, volunteering opportunities, and institutional partnerships.
+            </p>
+        </div>
+    </section>
+
+    <!-- Category Nav -->
+    <div class="bg-white py-6 border-b border-slate-200 sticky top-20 z-40 hidden md:block glass-nav">
+        <div class="max-w-7xl mx-auto px-4 flex justify-center gap-8 text-sm font-bold uppercase tracking-wider">
+            <a href="#general" class="category-nav-link text-brand-primary border-b-2 border-brand-primary pb-1 transition-colors">General Info</a>
+            <a href="#donations" class="category-nav-link text-slate-500 hover:text-brand-highlight transition-colors">Donations & Funding</a>
+            <a href="#volunteering" class="category-nav-link text-slate-500 hover:text-brand-accent transition-colors">Volunteering</a>
+            <a href="#partnerships" class="category-nav-link text-slate-500 hover:text-brand-secondary transition-colors">Partnerships</a>
+        </div>
+    </div>
+
+    <!-- FAQ Content Section -->
+    <section class="py-20 px-4 bg-brand-bg relative">
+        <div class="max-w-4xl mx-auto space-y-16">
+            
+            <!-- Category 1: General -->
+            <section id="general" class="reveal scroll-mt-40">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class="fa-solid fa-circle-info text-2xl text-brand-primary"></i>
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark">General Information</h2>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Q1 -->
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-primary/30 transition-colors">
+                        <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8">What exactly does Nitya Bimba Sewa do?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-primary flex-shrink-0 faq-icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-6 bg-slate-50/50">
+                            <p class="text-slate-600 leading-relaxed py-4 border-t border-slate-100">
+                                We are an NGO that bridges the gap between scientific research and grassroots social work. We operate across 4 pillars: Science & Education (mobile STEM labs), Environmental Resilience (biodiversity mapping), Community Wellbeing (health & mental health camps), and Leadership & Justice (digital literacy for women and youth).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-primary/30 transition-colors">
+                        <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8">Is Nitya Bimba Sewa a legally registered organization?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-primary flex-shrink-0 faq-icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-6 bg-slate-50/50">
+                            <p class="text-slate-600 leading-relaxed py-4 border-t border-slate-100">
+                                Yes. We are officially registered with the Government of Nepal (Bagmati Province) and affiliated with the national Social Welfare Council (SWC). You can view our legal standing on our <a href="transparency.html" class="text-brand-primary hover:underline font-bold">Transparency page</a>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-primary/30 transition-colors">
+                        <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8">Where are your projects located?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-primary flex-shrink-0 faq-icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-6 bg-slate-50/50">
+                            <p class="text-slate-600 leading-relaxed py-4 border-t border-slate-100">
+                                Our headquarters is in Kathmandu, but our fieldwork focuses primarily on rural and marginalized communities within Bagmati Province and neighboring districts (like Makwanpur, Nuwakot, and Chitwan). We are gradually scaling our mobile labs and health camps nationwide.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category 2: Donations & Funding -->
+            <section id="donations" class="reveal scroll-mt-40 relative">
+                <div class="glow-blob bg-brand-highlight opacity-[0.05] top-1/2 left-0 -translate-x-1/2 -translate-y-1/2"></div>
+                <div class="flex items-center gap-3 mb-6 relative z-10">
+                    <i class="fa-solid fa-hand-holding-dollar text-2xl text-brand-highlight"></i>
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark">Donations & Funding</h2>
+                </div>
+                
+                <div class="space-y-4 relative z-10">
+                    <!-- Q4 -->
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-highlight/30 transition-colors border-l-4 border-brand-highlight">
+                        <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8">How much of my donation goes directly to the field?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-highlight flex-shrink-0 faq-icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-6 bg-slate-50/50">
+                            <p class="text-slate-600 leading-relaxed py-4 border-t border-slate-100">
+                                We are proud to state that over <strong>82%</strong> of all funding directly supports program execution and fieldwork. The remaining 18% covers necessary administrative, operational, and fundraising costs to keep the organization sustainable. Our accounts are audited annually by an independent CPA.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-highlight/30 transition-colors">
+                        <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8">Are my donations tax-deductible?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-highlight flex-shrink-0 faq-icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-6 bg-slate-50/50">
+                            <p class="text-slate-600 leading-relaxed py-4 border-t border-slate-100">
+                                For donors within Nepal, donations may be eligible for tax exemption under current national tax laws regarding registered SWC-affiliated NGOs. We provide an official receipt for all donations. International donors should consult their local tax advisor to see if foreign NGO donations qualify for deductions in their country.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-highlight/30 transition-colors">
+                        <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8">Can I donate using eSewa, Khalti, or Fonepay?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-highlight flex-shrink-0 faq-icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-6 bg-slate-50/50">
+                            <p class="text-slate-600 leading-relaxed py-4 border-t border-slate-100">
+                                Yes! Local giving is crucial to our mission. You can easily make transfers using your digital wallet to our official ID, or by scanning the Fonepay QR code available on our <a href="donate.html#payment-options" class="text-brand-highlight font-bold hover:underline">Donate page</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category 3: Volunteering & Internships -->
+            <section id="volunteering" class="reveal scroll-mt-40 relative">
+                <div class="glow-blob bg-brand-accent opacity-[0.05] top-1/2 right-0 translate-x-1/2 -translate-y-1/2"></div>
+                <div class="flex items-center gap-3 mb-6 relative z-10">
+                    <i class="fa-solid fa-hands-holding-child text-2xl text-brand-accent"></i>
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark">Volunteering & Internships</h2>
+                </div>
+                
+                <div class="space-y-4 relative z-10">
+                    <!-- Q7 -->
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-accent/30 transition-colors border-l-4 border-brand-accent">
+                        <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8">Do I need a science or medical background to volunteer?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-accent flex-shrink-0 faq-icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-6 bg-slate-50/50">
+                            <p class="text-slate-600 leading-relaxed py-4 border-t border-slate-100">
+                                Not at all! While we do need doctors, nurses, and science teachers for specific roles, we heavily rely on general volunteers for logistics, community mobilization, data entry, and digital literacy training. Passion and dedication are the most important requirements.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-accent/30 transition-colors">
+                        <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8">Will I receive a certificate for my internship?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-accent flex-shrink-0 faq-icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-6 bg-slate-50/50">
+                            <p class="text-slate-600 leading-relaxed py-4 border-t border-slate-100">
+                                Yes. All university students who successfully complete our structured 3-to-6-month academic internship program will receive an official experience certificate and a letter of recommendation detailing their specific contributions to our research or fieldwork.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Category 4: Partnerships -->
+            <section id="partnerships" class="reveal scroll-mt-40">
+                <div class="flex items-center gap-3 mb-6">
+                    <i class="fa-solid fa-handshake text-2xl text-brand-secondary"></i>
+                    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark">Partnerships & Corporate CSR</h2>
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Q9 -->
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-secondary/30 transition-colors border-l-4 border-brand-secondary">
+                        <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8">How can our company execute our CSR funds through NBS?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-secondary flex-shrink-0 faq-icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-6 bg-slate-50/50">
+                            <p class="text-slate-600 leading-relaxed py-4 border-t border-slate-100">
+                                We offer turnkey solutions for Corporate Social Responsibility (CSR). We can align your corporate goals with our ongoing projects (like adopting a school lab or sponsoring a health camp). We handle all logistics, government compliance, and provide you with a comprehensive post-project impact report and media assets. Contact our team via the <a href="contact.html" class="text-brand-secondary hover:underline font-bold">Contact page</a> to request our Partnership Deck.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Q10 -->
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-secondary/30 transition-colors">
+                        <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8">What is the Vigya Council, and how do I join?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-secondary flex-shrink-0 faq-icon">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </div>
+                        </div>
+                        <div class="faq-answer px-6 bg-slate-50/50">
+                            <p class="text-slate-600 leading-relaxed py-4 border-t border-slate-100">
+                                The 'Vigya' (Expert) Council is a network of subject-matter experts (PhDs, doctors, researchers, environmentalists) who volunteer their knowledge to guide our methodologies and peer-review our publications. If you have advanced experience in our core fields and wish to contribute your intellectual capital, you can apply via the <a href="get-involved.html#membership" class="text-brand-secondary hover:underline font-bold">Membership section</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Still Have Questions CTA -->
+            <div class="mt-16 bg-gradient-to-r from-brand-primary to-brand-accent rounded-3xl p-10 text-center relative overflow-hidden reveal">
+                <div class="absolute inset-0 research-grid opacity-20" style="background-image: radial-gradient(#FFFFFF 1px, transparent 1px);"></div>
+                <div class="relative z-10">
+                    <h3 class="text-2xl font-bold text-white mb-4">Still have questions?</h3>
+                    <p class="text-slate-300 mb-8 max-w-lg mx-auto">If you couldn't find what you were looking for, our team is ready to help you directly.</p>
+                    <a href="contact.html" class="inline-block bg-white text-brand-primary font-bold px-8 py-3.5 rounded-full hover:bg-slate-50 transition-colors shadow-lg hover:shadow-xl hover:-translate-y-1">
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Master Footer with Tight Spacing & Icons -->
+    <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white">Nitya Bimba Sewa</span>
+                </div>
+                <p class="text-sm mb-4 leading-relaxed">Where scientific knowledge meets compassion. Registered SWC-affiliated NGO in Nepal.</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-all shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-highlight hover:text-white transition-all shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-sm"><i class="fa-brands fa-tiktok text-xs"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Navigation</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="team.html" class="hover:text-white transition-colors">Our Team</a></li>
+                    <li><a href="our-work.html" class="hover:text-white transition-colors">Core Pillars</a></li>
+                    <li><a href="projects.html" class="hover:text-white transition-colors">Initiatives</a></li>
+                    <li><a href="impact.html" class="hover:text-white transition-colors">Our Impact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
+                    <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
+                    <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
+                    <li><a href="faq.html" class="text-white transition-colors">Help & FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Legal & Connect</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
+                </ul>
+                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-all">Donate to a Project</a>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
+    </footer>
+
+    <!-- GSAP Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", (event) => {
+            gsap.registerPlugin(ScrollTrigger);
+
+            // 1. Hero Entrance
+            gsap.set(".hero-elem", { visibility: "visible" });
+            gsap.fromTo('.hero-elem', 
+                { y: 40, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power4.out", delay: 0.3 }
+            );
+
+            // 2. Scroll Reveal Animations
+            gsap.set(".reveal", { visibility: "visible" });
+            const revealElements = document.querySelectorAll(".reveal");
+            revealElements.forEach((elem) => {
+                gsap.fromTo(elem,
+                    { y: 50, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.8,
+                        ease: "power2.out",
+                        scrollTrigger: {
+                            trigger: elem,
+                            start: "top 85%", 
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            });
+
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if(mobileBtn && mobileMenu) {
+                mobileBtn.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            // Navbar background effect on scroll
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-xl', 'border-brand-primary/5');
+                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    navbar.classList.remove('shadow-xl', 'border-brand-primary/5');
+                    navbar.style.background = 'rgba(249, 250, 251, 0.85)';
+                }
+            });
+
+            // --- CATEGORY NAV LOGIC (SCROLLSPY & CLICK) ---
+            const sections = document.querySelectorAll("section[id]");
+            const navLinks = document.querySelectorAll(".category-nav-link");
+
+            // 1. Smooth Click Interception
+            navLinks.forEach(link => {
+                link.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute("href");
+                    const targetSection = document.querySelector(targetId);
+                    
+                    if (targetSection) {
+                        // Immediately update active styling
+                        navLinks.forEach(l => {
+                            l.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            l.classList.add("text-slate-500");
+                        });
+                        this.classList.remove("text-slate-500");
+                        this.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+
+                        // Smooth scroll to the section
+                        targetSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // 2. ScrollSpy (Updates nav when naturally scrolling)
+            window.addEventListener("scroll", () => {
+                let current = "";
+                sections.forEach((section) => {
+                    const sectionTop = section.offsetTop;
+                    // Offset buffer to trigger nav change just before hitting the exact top
+                    if (window.scrollY >= (sectionTop - 250)) {
+                        current = section.getAttribute("id");
+                    }
+                });
+
+                if (current) {
+                    navLinks.forEach((link) => {
+                        link.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                        link.classList.add("text-slate-500");
+                        if (link.getAttribute("href").includes(current)) {
+                            link.classList.remove("text-slate-500");
+                            link.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                        }
+                    });
+                }
+            });
+
+            // --- FAQ ACCORDION LOGIC ---
+            const faqItems = document.querySelectorAll('.faq-item');
+            
+            faqItems.forEach(item => {
+                const header = item.querySelector('.p-6'); // The clickable header area
+                const answer = item.querySelector('.faq-answer');
+                
+                header.addEventListener('click', () => {
+                    const isActive = item.classList.contains('active');
+                    
+                    // Close all other accordions (Optional, but usually preferred)
+                    faqItems.forEach(otherItem => {
+                        otherItem.classList.remove('active');
+                        otherItem.querySelector('.faq-answer').style.maxHeight = null;
+                        
+                        // Reset icon color
+                        const icon = otherItem.querySelector('.faq-icon');
+                        if (icon) {
+                            icon.style.backgroundColor = "";
+                            icon.style.color = "";
+                        }
+                    });
+
+                    // Open the clicked one
+                    if (!isActive) {
+                        item.classList.add('active');
+                        answer.style.maxHeight = answer.scrollHeight + "px"; 
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

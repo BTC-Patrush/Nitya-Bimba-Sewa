@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +41,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; color: #1F2937; overflow-x: hidden; }
         
         .glass-nav {
-            background: rgba(249, 250, 251, 0.85);
+            background: rgba(249, 250, 251, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(30, 58, 138, 0.1);
@@ -52,13 +52,14 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(226, 232, 240, 1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            /* Super silky 0.6s easing for the smooth hover enforced globally */
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
         }
 
         .glass-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(99, 102, 241, 0.4); 
-            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08); 
+            transform: translateY(-8px);
+            border-color: rgba(99, 102, 241, 0.4) !important; 
+            box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15) !important; 
         }
 
         .hero-inner-bg {
@@ -89,7 +90,7 @@
             pointer-events: none;
         }
 
-        .reveal, .hero-elem { opacity: 0; visibility: hidden; }
+        .reveal, .hero-elem, .kinetic-text { opacity: 0; visibility: hidden; }
 
         /* Accordion Animation */
         .faq-answer {
@@ -109,11 +110,31 @@
             background-color: #1E3A8A;
             color: white;
         }
+
+        /* Search Overlay Styles */
+        #search-overlay {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #search-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Fix for SplitType breaking Tailwind background gradients */
+        .bg-clip-text .word,
+        .text-gradient-primary .word {
+            background: inherit;
+            background-image: inherit;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 <body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
 
-    <!-- Navigation (Master Template) -->
+    <!-- Navigation (Master Premium Header) -->
     <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -128,77 +149,89 @@
                 <div class="hidden lg:flex space-x-6 items-center font-medium text-sm text-slate-600">
                     <a href="index.html" class="hover:text-brand-primary transition-colors">Home</a>
 
-                    <!-- About Dropdown (Active) -->
+                    <!-- About Dropdown (Active Marker) -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 text-brand-accent transition-colors border-b-2 border-brand-accent pb-1">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="about.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">About Us</a>
-                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
-                            <a href="transparency.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Transparency</a>
-                            <a href="faq.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">FAQ</a>
+                        <button class="flex items-center gap-1 text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">
+                            About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="about.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">About Us</a>
+                            <a href="team.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Our Team</a>
+                            <a href="transparency.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Transparency</a>
+                            <a href="faq.html" class="px-5 py-2.5 text-sm font-medium text-brand-primary bg-brand-primary/5 pl-7 transition-all duration-300">FAQ</a>
                         </div>
                     </div>
 
-                    <!-- Work Dropdown -->
+                    <!-- Our Work Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
-                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
-                            <a href="impact.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Impact & Results</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="our-work.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Core Pillars</a>
+                            <a href="projects.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Projects</a>
+                            <a href="impact.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Impact & Results</a>
                         </div>
                     </div>
 
                     <!-- Knowledge Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="research.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Research & Publications</a>
-                            <a href="media.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Media Gallery</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="research.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Research & Publications</a>
+                            <a href="media.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Media Gallery</a>
                         </div>
                     </div>
                     
                     <!-- Engage Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="get-involved.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Get Involved</a>
-                            <a href="partners.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Partners</a>
-                            <a href="news.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">News & Insights</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="get-involved.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Get Involved</a>
+                            <a href="partners.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Partners</a>
+                            <a href="news.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">News & Insights</a>
                         </div>
                     </div>
 
-                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact Us</a>
                     
-                    <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg flex items-center gap-2 font-bold transform hover:scale-105 transition-all">
-                        <i class="fa-solid fa-heart text-white"></i> Donate
-                    </a>
+                    <!-- Desktop Search Button -->
+                    <button onclick="toggleSearch()" class="px-5 py-2 rounded-full border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all flex items-center gap-2 font-bold text-sm shadow-sm hover:shadow-md group">
+                        <i class="fa-solid fa-magnifying-glass group-hover:text-white transition-colors"></i> Search
+                    </button>
                 </div>
 
-                <!-- Mobile menu button -->
-                <div class="lg:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2">
-                        <i class="fa-solid fa-bars text-2xl"></i>
+                <!-- Mobile menu button & Search -->
+                <div class="lg:hidden flex items-center gap-3">
+                    <button onclick="toggleSearch()" class="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-all shadow-sm">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2 w-10 h-10 flex items-center justify-center">
+                        <i class="fa-solid fa-bars text-2xl transition-all"></i>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+        <div id="mobile-menu" class="opacity-0 invisible -translate-y-4 transition-all duration-300 ease-out lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
             <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
                 <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
                 
-                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Organization</span>
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">About</span>
                     <div class="flex flex-col space-y-3 pl-2">
                         <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
-                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
-                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Transparency</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Leadership Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Corporate Governance</a>
                         <a href="faq.html" class="text-brand-accent text-sm font-bold">FAQ</a>
                     </div>
                 </div>
 
-                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Work</span>
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Our Work</span>
                     <div class="flex flex-col space-y-3 pl-2">
                         <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
                         <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
@@ -221,14 +254,26 @@
                     </div>
                 </div>
 
-                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
-                
-                <div class="pt-6 pb-2">
-                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
-                </div>
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4 pb-4">Contact Us</a>
             </div>
         </div>
     </nav>
+
+    <!-- Fullscreen Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[100] flex-col items-center justify-start pt-32 px-4">
+        <button onclick="toggleSearch()" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors text-4xl">
+            &times;
+        </button>
+        <div class="w-full max-w-3xl relative">
+            <i class="fa-solid fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-2xl text-slate-400"></i>
+            <input type="text" id="global-search" placeholder="Search projects, research, or news..." class="w-full bg-transparent border-b-2 border-slate-600 focus:border-brand-accent text-white text-3xl md:text-5xl py-6 pl-16 pr-4 focus:outline-none transition-colors placeholder-slate-600">
+        </div>
+        <div class="w-full max-w-3xl mt-8 flex flex-wrap gap-3">
+            <span class="text-slate-400 text-sm mr-2 mt-1">Popular:</span>
+            <a href="search.html?q=Environment" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">Environmental Conservation</a>
+            <a href="search.html?q=STEM" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">STEM Labs</a>
+        </div>
+    </div>
 
     <!-- Inner Hero Section -->
     <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
@@ -237,11 +282,11 @@
         <div class="absolute inset-0 research-grid opacity-20"></div>
         
         <div class="max-w-5xl mx-auto z-10 reveal">
-            <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">How We Operate</h3>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight hero-elem">
+            <h3 class="hero-elem text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20">How We Operate</h3>
+            <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
                 Frequently Asked <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Questions.</span>
             </h1>
-            <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
+            <p class="hero-elem text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed">
                 Find quick answers about our research, funding, volunteering opportunities, and institutional partnerships.
             </p>
         </div>
@@ -265,15 +310,15 @@
             <section id="general" class="reveal scroll-mt-40">
                 <div class="flex items-center gap-3 mb-6">
                     <i class="fa-solid fa-circle-info text-2xl text-brand-primary"></i>
-                    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark">General Information</h2>
+                    <h2 class="kinetic-text text-2xl md:text-3xl font-bold text-brand-dark">General Information</h2>
                 </div>
                 
                 <div class="space-y-4">
                     <!-- Q1 -->
-                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-primary/30 transition-colors">
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer group">
                         <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
-                            <h3 class="font-bold text-brand-dark text-lg pr-8">What exactly does Nitya Bimba Sewa do?</h3>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-primary flex-shrink-0 faq-icon">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8 group-hover:text-brand-primary transition-colors">What exactly does Nitya Bimba Sewa do?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-primary flex-shrink-0 faq-icon group-hover:bg-brand-primary/10">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
@@ -285,10 +330,10 @@
                     </div>
 
                     <!-- Q2 -->
-                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-primary/30 transition-colors">
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer group">
                         <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
-                            <h3 class="font-bold text-brand-dark text-lg pr-8">Is Nitya Bimba Sewa a legally registered organization?</h3>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-primary flex-shrink-0 faq-icon">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8 group-hover:text-brand-primary transition-colors">Is Nitya Bimba Sewa a legally registered organization?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-primary flex-shrink-0 faq-icon group-hover:bg-brand-primary/10">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
@@ -300,10 +345,10 @@
                     </div>
 
                     <!-- Q3 -->
-                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-primary/30 transition-colors">
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer group">
                         <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
-                            <h3 class="font-bold text-brand-dark text-lg pr-8">Where are your projects located?</h3>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-primary flex-shrink-0 faq-icon">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8 group-hover:text-brand-primary transition-colors">Where are your projects located?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-primary flex-shrink-0 faq-icon group-hover:bg-brand-primary/10">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
@@ -321,15 +366,15 @@
                 <div class="glow-blob bg-brand-highlight opacity-[0.05] top-1/2 left-0 -translate-x-1/2 -translate-y-1/2"></div>
                 <div class="flex items-center gap-3 mb-6 relative z-10">
                     <i class="fa-solid fa-hand-holding-dollar text-2xl text-brand-highlight"></i>
-                    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark">Donations & Funding</h2>
+                    <h2 class="kinetic-text text-2xl md:text-3xl font-bold text-brand-dark">Donations & Funding</h2>
                 </div>
                 
                 <div class="space-y-4 relative z-10">
                     <!-- Q4 -->
-                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-highlight/30 transition-colors border-l-4 border-brand-highlight">
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer border-l-4 border-brand-highlight group">
                         <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
-                            <h3 class="font-bold text-brand-dark text-lg pr-8">How much of my donation goes directly to the field?</h3>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-highlight flex-shrink-0 faq-icon">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8 group-hover:text-brand-highlight transition-colors">How much of my donation goes directly to the field?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-highlight flex-shrink-0 faq-icon group-hover:bg-brand-highlight/10">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
@@ -341,10 +386,10 @@
                     </div>
 
                     <!-- Q5 -->
-                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-highlight/30 transition-colors">
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer group">
                         <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
-                            <h3 class="font-bold text-brand-dark text-lg pr-8">Are my donations tax-deductible?</h3>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-highlight flex-shrink-0 faq-icon">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8 group-hover:text-brand-highlight transition-colors">Are my donations tax-deductible?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-highlight flex-shrink-0 faq-icon group-hover:bg-brand-highlight/10">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
@@ -356,10 +401,10 @@
                     </div>
 
                     <!-- Q6 -->
-                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-highlight/30 transition-colors">
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer group">
                         <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
-                            <h3 class="font-bold text-brand-dark text-lg pr-8">Can I donate using eSewa, Khalti, or Fonepay?</h3>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-highlight flex-shrink-0 faq-icon">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8 group-hover:text-brand-highlight transition-colors">Can I donate using eSewa, Khalti, or Fonepay?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-highlight flex-shrink-0 faq-icon group-hover:bg-brand-highlight/10">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
@@ -377,15 +422,15 @@
                 <div class="glow-blob bg-brand-accent opacity-[0.05] top-1/2 right-0 translate-x-1/2 -translate-y-1/2"></div>
                 <div class="flex items-center gap-3 mb-6 relative z-10">
                     <i class="fa-solid fa-hands-holding-child text-2xl text-brand-accent"></i>
-                    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark">Volunteering & Internships</h2>
+                    <h2 class="kinetic-text text-2xl md:text-3xl font-bold text-brand-dark">Volunteering & Internships</h2>
                 </div>
                 
                 <div class="space-y-4 relative z-10">
                     <!-- Q7 -->
-                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-accent/30 transition-colors border-l-4 border-brand-accent">
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer border-l-4 border-brand-accent group">
                         <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
-                            <h3 class="font-bold text-brand-dark text-lg pr-8">Do I need a science or medical background to volunteer?</h3>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-accent flex-shrink-0 faq-icon">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8 group-hover:text-brand-accent transition-colors">Do I need a science or medical background to volunteer?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-accent flex-shrink-0 faq-icon group-hover:bg-brand-accent/10">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
@@ -397,10 +442,10 @@
                     </div>
 
                     <!-- Q8 -->
-                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-accent/30 transition-colors">
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer group">
                         <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
-                            <h3 class="font-bold text-brand-dark text-lg pr-8">Will I receive a certificate for my internship?</h3>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-accent flex-shrink-0 faq-icon">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8 group-hover:text-brand-accent transition-colors">Will I receive a certificate for my internship?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-accent flex-shrink-0 faq-icon group-hover:bg-brand-accent/10">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
@@ -417,15 +462,15 @@
             <section id="partnerships" class="reveal scroll-mt-40">
                 <div class="flex items-center gap-3 mb-6">
                     <i class="fa-solid fa-handshake text-2xl text-brand-secondary"></i>
-                    <h2 class="text-2xl md:text-3xl font-bold text-brand-dark">Partnerships & Corporate CSR</h2>
+                    <h2 class="kinetic-text text-2xl md:text-3xl font-bold text-brand-dark">Partnerships & Corporate CSR</h2>
                 </div>
                 
                 <div class="space-y-4">
                     <!-- Q9 -->
-                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-secondary/30 transition-colors border-l-4 border-brand-secondary">
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer border-l-4 border-brand-secondary group">
                         <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
-                            <h3 class="font-bold text-brand-dark text-lg pr-8">How can our company execute our CSR funds through NBS?</h3>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-secondary flex-shrink-0 faq-icon">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8 group-hover:text-brand-secondary transition-colors">How can our company execute our CSR funds through NBS?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-secondary flex-shrink-0 faq-icon group-hover:bg-brand-secondary/10">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
@@ -437,10 +482,10 @@
                     </div>
 
                     <!-- Q10 -->
-                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer hover:border-brand-secondary/30 transition-colors">
+                    <div class="glass-card rounded-2xl overflow-hidden faq-item cursor-pointer group">
                         <div class="p-6 flex justify-between items-center bg-white border-b border-transparent transition-colors">
-                            <h3 class="font-bold text-brand-dark text-lg pr-8">What is the Vigya Council, and how do I join?</h3>
-                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-secondary flex-shrink-0 faq-icon">
+                            <h3 class="font-bold text-brand-dark text-lg pr-8 group-hover:text-brand-secondary transition-colors">What is the Vigya Council, and how do I join?</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-brand-secondary flex-shrink-0 faq-icon group-hover:bg-brand-secondary/10">
                                 <i class="fa-solid fa-chevron-down"></i>
                             </div>
                         </div>
@@ -459,7 +504,7 @@
                 <div class="relative z-10">
                     <h3 class="text-2xl font-bold text-white mb-4">Still have questions?</h3>
                     <p class="text-slate-300 mb-8 max-w-lg mx-auto">If you couldn't find what you were looking for, our team is ready to help you directly.</p>
-                    <a href="contact.html" class="inline-block bg-white text-brand-primary font-bold px-8 py-3.5 rounded-full hover:bg-slate-50 transition-colors shadow-lg hover:shadow-xl hover:-translate-y-1">
+                    <a href="contact.html" class="inline-block bg-white text-brand-primary font-bold px-8 py-3.5 rounded-full hover:bg-slate-50 transition-transform shadow-lg hover:shadow-xl hover:-translate-y-1">
                         Contact Us
                     </a>
                 </div>
@@ -468,8 +513,8 @@
         </div>
     </section>
 
-    <!-- Master Footer with Tight Spacing & Icons -->
-    <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
+    <!-- Master Footer -->
+    <footer class="bg-gray-900 text-slate-400 py-12 border-t border-slate-800 text-left">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1">
                 <div class="flex items-center gap-2 mb-3">
@@ -504,7 +549,7 @@
                     <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
                     <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
                     <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
-                    <li><a href="faq.html" class="text-white transition-colors">Help & FAQ</a></li>
+                    <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
                 </ul>
             </div>
             <div>
@@ -514,116 +559,291 @@
                     <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
                     <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
                 </ul>
-                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-all">Donate to a Project</a>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
     </footer>
 
+    <!-- SplitType Script -->
+    <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.3/umd/index.min.js"></script>
+
     <!-- GSAP Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+    
     <script>
+        // Global scope function for inline onclick handlers
+        function toggleSearch() {
+            const overlay = document.getElementById("search-overlay");
+            const searchInput = document.getElementById("global-search");
+
+            if (overlay.classList.contains("active")) {
+                overlay.classList.remove("active");
+                document.body.style.overflow = "auto"; // Restore page scrolling
+            } else {
+                overlay.classList.add("active");
+                document.body.style.overflow = "hidden"; // Lock page scrolling
+                if (searchInput) {
+                    searchInput.value = "";
+                    setTimeout(() => searchInput.focus(), 100);
+                }
+            }
+        }
+
+        // Close overlay if user presses Escape key
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                const overlay = document.getElementById("search-overlay");
+                if (overlay && overlay.classList.contains("active")) toggleSearch();
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", (event) => {
             gsap.registerPlugin(ScrollTrigger);
 
-            // 1. Hero Entrance
-            gsap.set(".hero-elem", { visibility: "visible" });
-            gsap.fromTo('.hero-elem', 
-                { y: 40, opacity: 0 }, 
-                { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power4.out", delay: 0.3 }
-            );
-
-            // 2. Scroll Reveal Animations
-            gsap.set(".reveal", { visibility: "visible" });
-            const revealElements = document.querySelectorAll(".reveal");
-            revealElements.forEach((elem) => {
-                gsap.fromTo(elem,
-                    { y: 50, opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: elem,
-                            start: "top 85%", 
-                            toggleActions: "play none none reverse"
-                        }
-                    }
-                );
+            // --- INITIALIZE LENIS (SUPER SILKY CONFIG) ---
+            const lenis = new Lenis({
+                lerp: 0.05, 
+                wheelMultiplier: 0.8, 
+                smoothWheel: true, 
+                normalizeWheel: true, 
+                smoothTouch: false, 
             });
 
-            // Mobile Menu Toggle
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            if(mobileBtn && mobileMenu) {
-                mobileBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
+            // Sync Lenis with GSAP ScrollTrigger
+            lenis.on('scroll', ScrollTrigger.update);
+
+            gsap.ticker.add((time)=>{
+                lenis.raf(time * 1000);
+            });
+            
+            gsap.ticker.lagSmoothing(0);
+
+            // Listen for "Enter" key on the overlay input to redirect to search.html
+            const globalSearchInput = document.getElementById("global-search");
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener("keypress", function (e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        const query = this.value.trim();
+                        if (query.length > 0) {
+                            window.location.href = "search.html?q=" + encodeURIComponent(query);
+                        }
+                    }
                 });
             }
 
-            // Navbar background effect on scroll
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('shadow-xl', 'border-brand-primary/5');
-                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                } else {
-                    navbar.classList.remove('shadow-xl', 'border-brand-primary/5');
-                    navbar.style.background = 'rgba(249, 250, 251, 0.85)';
+            // 1. Initial Hero Animation
+            const heroElements = document.querySelectorAll(".hero-elem");
+            gsap.set(heroElements, { visibility: "visible" });
+            gsap.fromTo(
+              heroElements,
+              { y: 30, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                stagger: 0.15,
+                ease: "power3.out",
+                delay: 0.2,
+                onStart: function() {
+                  heroElements.forEach(el => el.style.transitionProperty = 'none');
+                },
+                onComplete: function() {
+                  heroElements.forEach(el => {
+                    el.style.transitionProperty = '';
+                    gsap.set(el, { clearProps: "transform" });
+                  });
                 }
+              }
+            );
+
+            // 2. Scroll Reveal Animations (Standard fades)
+            gsap.set(".reveal", { visibility: "visible" });
+            const revealElements = document.querySelectorAll(".reveal");
+            revealElements.forEach((elem) => {
+              let delayTime = 0;
+              if (elem.style.transitionDelay) {
+                delayTime = parseFloat(elem.style.transitionDelay) / 1000;
+                elem.style.transitionDelay = ''; 
+              }
+
+              gsap.fromTo(
+                elem,
+                { y: 40, opacity: 0 },
+                {
+                  y: 0,
+                  opacity: 1,
+                  duration: 0.8,
+                  delay: delayTime,
+                  ease: "power2.out",
+                  scrollTrigger: {
+                    trigger: elem,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse",
+                  },
+                  onStart: () => {
+                    elem.style.transitionProperty = 'none';
+                  },
+                  onComplete: () => {
+                    elem.style.transitionProperty = '';
+                    gsap.set(elem, { clearProps: "transform" });
+                  }
+                }
+              );
+            });
+
+            // 3. Kinetic Typography (Bulletproof Split Text)
+            const kineticTexts = document.querySelectorAll(".kinetic-text");
+            
+            // Force the parent wrapper to be visible so we never have a blank screen
+            gsap.set(kineticTexts, { visibility: "visible", opacity: 1 });
+            
+            if (typeof SplitType !== 'undefined') {
+                kineticTexts.forEach((text) => {
+                    const splitText = new SplitType(text, { types: 'words' });
+                    
+                    gsap.fromTo(
+                        splitText.words,
+                        { y: 30, opacity: 0 },
+                        {
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.8,
+                            stagger: 0.05,
+                            ease: "power3.out",
+                            scrollTrigger: {
+                                trigger: text,
+                                start: "top 85%",
+                                toggleActions: "play none none reverse"
+                            }
+                        }
+                    );
+                });
+            } else {
+                // FALLBACK: If an adblocker blocks SplitType, gracefully fade in the entire text block natively
+                kineticTexts.forEach((text) => {
+                    gsap.fromTo(
+                        text,
+                        { y: 30, opacity: 0 },
+                        {
+                            y: 0,
+                            opacity: 1,
+                            duration: 1,
+                            ease: "power3.out",
+                            scrollTrigger: {
+                                trigger: text,
+                                start: "top 85%",
+                                toggleActions: "play none none reverse"
+                            }
+                        }
+                    );
+                });
+            }
+
+            // Mobile Menu Toggle with Animation & Scroll Lock
+            const mobileBtn = document.getElementById("mobile-menu-btn");
+            const mobileMenu = document.getElementById("mobile-menu");
+
+            if (mobileBtn && mobileMenu) {
+              const mobileIcon = mobileBtn.querySelector("i");
+              let isMenuOpen = false;
+
+              function toggleMobileMenu() {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                  mobileMenu.classList.remove("opacity-0", "invisible", "-translate-y-4");
+                  document.body.style.overflow = "hidden";
+                  if (mobileIcon) {
+                    mobileIcon.classList.remove("fa-bars");
+                    mobileIcon.classList.add("fa-xmark");
+                  }
+                } else {
+                  mobileMenu.classList.add("opacity-0", "invisible", "-translate-y-4");
+                  document.body.style.overflow = ""; 
+                  if (mobileIcon) {
+                    mobileIcon.classList.remove("fa-xmark");
+                    mobileIcon.classList.add("fa-bars");
+                  }
+                }
+              }
+
+              mobileBtn.addEventListener("click", toggleMobileMenu);
+
+              // Close mobile menu when a link is clicked
+              const mobileLinks = mobileMenu.querySelectorAll("a");
+              mobileLinks.forEach((link) => {
+                link.addEventListener("click", () => {
+                  if (isMenuOpen) toggleMobileMenu();
+                });
+              });
+            }
+
+            // Navbar background effect on scroll
+            const navbar = document.getElementById("navbar");
+            window.addEventListener("scroll", () => {
+              if (window.scrollY > 50) {
+                navbar.classList.add("shadow-sm");
+                navbar.style.background = "rgba(255, 255, 255, 0.98)";
+              } else {
+                navbar.classList.remove("shadow-sm");
+                navbar.style.background = "rgba(249, 250, 251, 0.85)";
+              }
             });
 
             // --- CATEGORY NAV LOGIC (SCROLLSPY & CLICK) ---
             const sections = document.querySelectorAll("section[id]");
             const navLinks = document.querySelectorAll(".category-nav-link");
 
-            // 1. Smooth Click Interception
-            navLinks.forEach(link => {
-                link.addEventListener("click", function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute("href");
-                    const targetSection = document.querySelector(targetId);
-                    
-                    if (targetSection) {
-                        // Immediately update active styling
-                        navLinks.forEach(l => {
-                            l.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
-                            l.classList.add("text-slate-500");
-                        });
-                        this.classList.remove("text-slate-500");
-                        this.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+            if(navLinks.length > 0 && sections.length > 0) {
+                // 1. Smooth Click Interception
+                navLinks.forEach(link => {
+                    link.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute("href");
+                        const targetSection = document.querySelector(targetId);
+                        
+                        if (targetSection) {
+                            // Immediately update active styling
+                            navLinks.forEach(l => {
+                                l.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                                l.classList.add("text-slate-500");
+                            });
+                            this.classList.remove("text-slate-500");
+                            this.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
 
-                        // Smooth scroll to the section
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
-
-            // 2. ScrollSpy (Updates nav when naturally scrolling)
-            window.addEventListener("scroll", () => {
-                let current = "";
-                sections.forEach((section) => {
-                    const sectionTop = section.offsetTop;
-                    // Offset buffer to trigger nav change just before hitting the exact top
-                    if (window.scrollY >= (sectionTop - 250)) {
-                        current = section.getAttribute("id");
-                    }
-                });
-
-                if (current) {
-                    navLinks.forEach((link) => {
-                        link.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
-                        link.classList.add("text-slate-500");
-                        if (link.getAttribute("href").includes(current)) {
-                            link.classList.remove("text-slate-500");
-                            link.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            // Smooth scroll to the section using Lenis
+                            lenis.scrollTo(targetSection, { offset: -160, duration: 1.5 });
                         }
                     });
-                }
-            });
+                });
+
+                // 2. ScrollSpy (Updates nav when naturally scrolling)
+                window.addEventListener("scroll", () => {
+                    let current = "";
+                    sections.forEach((section) => {
+                        const sectionTop = section.offsetTop;
+                        // Offset buffer to trigger nav change just before hitting the exact top
+                        if (window.scrollY >= (sectionTop - 250)) {
+                            current = section.getAttribute("id");
+                        }
+                    });
+
+                    if (current) {
+                        navLinks.forEach((link) => {
+                            link.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            link.classList.add("text-slate-500");
+                            if (link.getAttribute("href").includes(current)) {
+                                link.classList.remove("text-slate-500");
+                                link.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            }
+                        });
+                    }
+                });
+            }
 
             // --- FAQ ACCORDION LOGIC ---
             const faqItems = document.querySelectorAll('.faq-item');
@@ -635,7 +855,7 @@
                 header.addEventListener('click', () => {
                     const isActive = item.classList.contains('active');
                     
-                    // Close all other accordions (Optional, but usually preferred)
+                    // Close all other accordions
                     faqItems.forEach(otherItem => {
                         otherItem.classList.remove('active');
                         otherItem.querySelector('.faq-answer').style.maxHeight = null;

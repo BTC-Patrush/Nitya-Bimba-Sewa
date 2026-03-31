@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +41,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; color: #1F2937; overflow-x: hidden; }
         
         .glass-nav {
-            background: rgba(249, 250, 251, 0.85);
+            background: rgba(249, 250, 251, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(30, 58, 138, 0.1);
@@ -52,13 +52,14 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(226, 232, 240, 1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            /* Super silky 0.6s easing for the smooth hover */
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .glass-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: rgba(99, 102, 241, 0.4); 
-            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08); 
+            box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15); 
         }
 
         .hero-inner-bg {
@@ -89,7 +90,7 @@
             pointer-events: none;
         }
 
-        .reveal, .hero-elem { opacity: 0; visibility: hidden; }
+        .reveal, .hero-elem, .kinetic-text { opacity: 0; visibility: hidden; }
         
         /* Category Badge */
         .category-badge {
@@ -105,11 +106,31 @@
         }
 
         .filter-btn { outline: none; }
+        
+        /* Search Overlay Styles */
+        #search-overlay {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #search-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Fix for SplitType breaking Tailwind background gradients */
+        .bg-clip-text .word,
+        .text-gradient-primary .word {
+            background: inherit;
+            background-image: inherit;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 <body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
 
-    <!-- Navigation (Master Template) -->
+    <!-- Navigation (Master Premium Header) -->
     <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -126,75 +147,87 @@
 
                     <!-- About Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="about.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">About Us</a>
-                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
-                            <a href="transparency.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Transparency</a>
-                            <a href="faq.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">FAQ</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-48 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="about.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">About Us</a>
+                            <a href="team.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Our Team</a>
+                            <a href="transparency.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Transparency</a>
+                            <a href="faq.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">FAQ</a>
                         </div>
                     </div>
 
-                    <!-- Work Dropdown -->
+                    <!-- Our Work Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
-                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
-                            <a href="impact.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Impact & Results</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="our-work.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Core Pillars</a>
+                            <a href="projects.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Projects</a>
+                            <a href="impact.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Impact & Results</a>
                         </div>
                     </div>
 
                     <!-- Knowledge Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="research.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Research & Publications</a>
-                            <a href="media.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Media Gallery</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="research.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Research & Publications</a>
+                            <a href="media.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Media Gallery</a>
                         </div>
                     </div>
                     
-                    <!-- Engage Dropdown (Active) -->
+                    <!-- Engage Dropdown (Active Marker) -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="get-involved.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Get Involved</a>
-                            <a href="partners.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Partners</a>
-                            <a href="news.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">News & Insights</a>
+                        <button class="flex items-center gap-1 text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">
+                            Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="get-involved.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Get Involved</a>
+                            <a href="partners.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Partners</a>
+                            <a href="news.html" class="px-5 py-2.5 text-sm font-medium text-brand-primary bg-brand-primary/5 pl-7 transition-all duration-300">News & Insights</a>
                         </div>
                     </div>
 
                     <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
                     
-                    <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg flex items-center gap-2 font-bold transform hover:scale-105 transition-all">
-                        <i class="fa-solid fa-heart text-white"></i> Donate
-                    </a>
+                    <!-- Desktop Search Button -->
+                    <button onclick="toggleSearch()" class="px-5 py-2 rounded-full border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all flex items-center gap-2 font-bold text-sm shadow-sm hover:shadow-md group">
+                        <i class="fa-solid fa-magnifying-glass group-hover:text-white transition-colors"></i> Search
+                    </button>
                 </div>
 
-                <!-- Mobile menu button -->
-                <div class="lg:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2">
-                        <i class="fa-solid fa-bars text-2xl"></i>
+                <!-- Mobile menu button & Search -->
+                <div class="lg:hidden flex items-center gap-3">
+                    <button onclick="toggleSearch()" class="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-all shadow-sm">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2 w-10 h-10 flex items-center justify-center">
+                        <i class="fa-solid fa-bars text-2xl transition-all"></i>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+        <div id="mobile-menu" class="opacity-0 invisible -translate-y-4 transition-all duration-300 ease-out lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
             <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
                 <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
                 
-                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Organization</span>
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">About</span>
                     <div class="flex flex-col space-y-3 pl-2">
-                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
-                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
-                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Transparency</a>
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">Who We Are</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Leadership Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Corporate Governance</a>
                         <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
                     </div>
                 </div>
 
-                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Work</span>
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Our Work</span>
                     <div class="flex flex-col space-y-3 pl-2">
                         <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
                         <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
@@ -217,14 +250,26 @@
                     </div>
                 </div>
 
-                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
-                
-                <div class="pt-6 pb-2">
-                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
-                </div>
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4 pb-4">Contact Us</a>
             </div>
         </div>
     </nav>
+
+    <!-- Fullscreen Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[100] flex-col items-center justify-start pt-32 px-4">
+        <button onclick="toggleSearch()" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors text-4xl">
+            &times;
+        </button>
+        <div class="w-full max-w-3xl relative">
+            <i class="fa-solid fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-2xl text-slate-400"></i>
+            <input type="text" id="global-search" placeholder="Search services, research, or news..." class="w-full bg-transparent border-b-2 border-slate-600 focus:border-brand-accent text-white text-3xl md:text-5xl py-6 pl-16 pr-4 focus:outline-none transition-colors placeholder-slate-600">
+        </div>
+        <div class="w-full max-w-3xl mt-8 flex flex-wrap gap-3">
+            <span class="text-slate-400 text-sm mr-2 mt-1">Popular:</span>
+            <a href="search.html?q=Environment" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">Environmental Conservation</a>
+            <a href="search.html?q=STEM" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">STEM Labs</a>
+        </div>
+    </div>
 
     <!-- Inner Hero Section -->
     <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
@@ -233,11 +278,11 @@
         <div class="absolute inset-0 research-grid opacity-20"></div>
         
         <div class="max-w-5xl mx-auto z-10 reveal">
-            <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20">The NBS Blog</h3>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight hero-elem">
+            <h3 class="hero-elem text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20">The NBS Blog</h3>
+            <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
                 News, Science & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Insights.</span>
             </h1>
-            <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
+            <p class="hero-elem text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed">
                 Stay updated with our latest community interventions, dive deep into scientific awareness topics, and read stories of profound transformation from the field.
             </p>
         </div>
@@ -263,7 +308,7 @@
                     <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop" alt="Environment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                     <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/80 to-transparent"></div>
                     <div class="absolute bottom-6 left-6 right-6">
-                        <span class="category-badge bg-brand-secondary text-white mb-3">Environmental Education</span>
+                        <span class="category-badge bg-brand-secondary text-white mb-3 shadow-md">Environmental Education</span>
                     </div>
                 </div>
                 <div class="w-full lg:w-1/2 p-8 lg:p-12 flex flex-col justify-center bg-white">
@@ -481,6 +526,54 @@
                     </div>
                 </div>
 
+                <!-- Article 13 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-primary/40 cursor-pointer" data-category="science">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1564069114553-7215e1ff1890?q=80&w=2069&auto=format&fit=crop" alt="Science" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-primary text-white shadow-md">Science Awareness</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">August 10, 2025</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-primary transition-colors">Expanding the Mobile Lab Fleet</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Thanks to our recent corporate partnerships, we are adding five new mobile micro-labs to our active rotation across Bagmati Province.</p>
+                        <a href="#" class="text-brand-primary font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 14 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-highlight/40 cursor-pointer" data-category="community">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?q=80&w=2074&auto=format&fit=crop" alt="Community" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-highlight text-white shadow-md">Community Stories</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">July 22, 2025</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-highlight transition-colors">Celebrating Our Volunteer Network</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">A spotlight on the dedicated nurses, educators, and logistics coordinators who dedicate their weekends to our remote outreach programs.</p>
+                        <a href="#" class="text-brand-highlight font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
+                <!-- Article 15 -->
+                <div class="news-item glass-card rounded-2xl overflow-hidden group flex flex-col h-full hover:border-brand-secondary/40 cursor-pointer" data-category="environment">
+                    <div class="relative h-56 overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1519608487953-e999c86e7455?q=80&w=2070&auto=format&fit=crop" alt="Environment" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                        <div class="absolute top-4 left-4">
+                            <span class="category-badge bg-brand-secondary text-white shadow-md">Environmental Ed</span>
+                        </div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow bg-white">
+                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-2">June 05, 2025</div>
+                        <h3 class="text-xl font-bold text-brand-dark mb-3 group-hover:text-brand-secondary transition-colors">Local Water Testing Results Published</h3>
+                        <p class="text-slate-600 text-sm leading-relaxed mb-6 flex-grow">Our latest field study reveals a 40% reduction in waterborne pathogens in villages utilizing our newly deployed biosand filters.</p>
+                        <a href="#" class="text-brand-secondary font-bold text-sm mt-auto">Read More &rarr;</a>
+                    </div>
+                </div>
+
                 <!-- No Results Message -->
                 <div id="no-results" class="hidden col-span-full text-center py-12">
                     <i class="fa-regular fa-folder-open text-4xl text-slate-300 mb-4"></i>
@@ -506,7 +599,7 @@
         
         <div class="max-w-2xl mx-auto relative z-10 reveal">
             <i class="fa-regular fa-paper-plane text-5xl text-brand-highlight mb-6"></i>
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Never Miss an Update</h2>
+            <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-white mb-4">Never Miss an Update</h2>
             <p class="text-slate-300 mb-8 text-lg">Join our community of researchers, volunteers, and change-makers. Get bi-monthly science insights and project updates delivered straight to your inbox.</p>
             
             <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
@@ -519,7 +612,7 @@
         </div>
     </section>
 
-    <!-- Master Footer with Tight Spacing & Icons -->
+    <!-- Master Footer -->
     <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1">
@@ -565,46 +658,146 @@
                     <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
                     <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
                 </ul>
-                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-all">Donate to a Project</a>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
     </footer>
 
+    <!-- SplitType Script -->
+    <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.3/umd/index.min.js"></script>
+
     <!-- GSAP Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+
     <script>
+        // Global scope function for inline onclick handlers
+        function toggleSearch() {
+            const overlay = document.getElementById("search-overlay");
+            const searchInput = document.getElementById("global-search");
+
+            if (overlay.classList.contains("active")) {
+                overlay.classList.remove("active");
+                document.body.style.overflow = "auto"; // Restore page scrolling
+            } else {
+                overlay.classList.add("active");
+                document.body.style.overflow = "hidden"; // Lock page scrolling
+                if (searchInput) {
+                    searchInput.value = "";
+                    setTimeout(() => searchInput.focus(), 100);
+                }
+            }
+        }
+
+        // Close overlay if user presses Escape key
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                const overlay = document.getElementById("search-overlay");
+                if (overlay && overlay.classList.contains("active")) toggleSearch();
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", (event) => {
             gsap.registerPlugin(ScrollTrigger);
 
-            // 1. Hero Entrance
-            gsap.set(".hero-elem", { visibility: "visible" });
-            gsap.fromTo('.hero-elem', 
-                { y: 40, opacity: 0 }, 
-                { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power4.out", delay: 0.3 }
-            );
+            // --- INITIALIZE LENIS (SUPER SILKY CONFIG) ---
+            const lenis = new Lenis({
+                lerp: 0.05, 
+                wheelMultiplier: 0.8, 
+                smoothWheel: true, 
+                normalizeWheel: true, 
+                smoothTouch: false, 
+            });
 
-            // 2. Scroll Reveal Animations
-            gsap.set(".reveal", { visibility: "visible" });
-            const revealElements = document.querySelectorAll(".reveal");
-            revealElements.forEach((elem) => {
-                gsap.fromTo(elem,
-                    { y: 50, opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: elem,
-                            start: "top 85%", 
-                            toggleActions: "play none none reverse"
+            // Sync Lenis with GSAP ScrollTrigger
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time)=>{ lenis.raf(time * 1000); });
+            gsap.ticker.lagSmoothing(0);
+
+            // Listen for "Enter" key on the overlay input to redirect to search.html
+            const globalSearchInput = document.getElementById("global-search");
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener("keypress", function (e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        const query = this.value.trim();
+                        if (query.length > 0) {
+                            window.location.href = "search.html?q=" + encodeURIComponent(query);
                         }
                     }
-                );
+                });
+            }
+
+            // 1. Initial Hero Animation
+            const heroElements = document.querySelectorAll(".hero-elem");
+            gsap.set(heroElements, { visibility: "visible" });
+            gsap.fromTo(
+              heroElements,
+              { y: 30, opacity: 0 },
+              {
+                y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2,
+                onStart: function() { heroElements.forEach(el => el.style.transitionProperty = 'none'); },
+                onComplete: function() {
+                  heroElements.forEach(el => {
+                    el.style.transitionProperty = '';
+                    gsap.set(el, { clearProps: "transform" });
+                  });
+                }
+              }
+            );
+
+            // 2. Scroll Reveal Animations (Outside of dynamic grid)
+            gsap.set(".reveal:not(.news-item)", { visibility: "visible" });
+            const revealElements = document.querySelectorAll(".reveal:not(.news-item)");
+            revealElements.forEach((elem) => {
+              let delayTime = 0;
+              if (elem.style.transitionDelay) {
+                delayTime = parseFloat(elem.style.transitionDelay) / 1000;
+                elem.style.transitionDelay = ''; 
+              }
+
+              gsap.fromTo(
+                elem,
+                { y: 40, opacity: 0 },
+                {
+                  y: 0, opacity: 1, duration: 0.8, delay: delayTime, ease: "power2.out",
+                  scrollTrigger: { trigger: elem, start: "top 85%", toggleActions: "play none none reverse" },
+                  onStart: () => { elem.style.transitionProperty = 'none'; },
+                  onComplete: () => { elem.style.transitionProperty = ''; gsap.set(elem, { clearProps: "transform" }); }
+                }
+              );
             });
+
+            // 3. Kinetic Typography (Bulletproof Split Text)
+            const kineticTexts = document.querySelectorAll(".kinetic-text");
+            gsap.set(kineticTexts, { visibility: "visible", opacity: 1 });
+            if (typeof SplitType !== 'undefined') {
+                kineticTexts.forEach((text) => {
+                    const splitText = new SplitType(text, { types: 'words' });
+                    gsap.fromTo(
+                        splitText.words,
+                        { y: 30, opacity: 0 },
+                        {
+                            y: 0, opacity: 1, duration: 0.8, stagger: 0.05, ease: "power3.out",
+                            scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" }
+                        }
+                    );
+                });
+            } else {
+                kineticTexts.forEach((text) => {
+                    gsap.fromTo(
+                        text,
+                        { y: 30, opacity: 0 },
+                        {
+                            y: 0, opacity: 1, duration: 1, ease: "power3.out",
+                            scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" }
+                        }
+                    );
+                });
+            }
 
             // --- FILTER & PAGINATION LOGIC ---
             const filterBtns = document.querySelectorAll('.filter-btn');
@@ -618,59 +811,88 @@
             const itemsPerPage = 6;
             let currentFilter = 'all';
 
-            function renderGrid() {
-                // 1. Handle Featured Article Visibility
+            // Main function to calculate pages and render items smoothly
+            function renderGrid(animate = false) {
+                // 1. Filter Grid Items
+                const filteredItems = newsItems.filter(item => {
+                    return currentFilter === 'all' || item.getAttribute('data-category') === currentFilter;
+                });
+
+                // 2. Calculate Pagination Limits
+                const totalPages = Math.ceil(filteredItems.length / itemsPerPage) || 1;
+                if (currentPage > totalPages) currentPage = totalPages; 
+
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+
+                // 3. Handle Featured Article Visibility
                 if (featuredArticle) {
-                    if (currentFilter === 'all' || featuredArticle.getAttribute('data-category') === currentFilter) {
+                    if (currentPage === 1 && (currentFilter === 'all' || featuredArticle.getAttribute('data-category') === currentFilter)) {
                         featuredArticle.style.display = 'flex';
                     } else {
                         featuredArticle.style.display = 'none';
                     }
                 }
 
-                // 2. Filter Grid Items
-                const filteredItems = newsItems.filter(item => {
-                    return currentFilter === 'all' || item.getAttribute('data-category') === currentFilter;
-                });
-
-                // 3. Calculate Pagination Limits
-                const totalPages = Math.ceil(filteredItems.length / itemsPerPage) || 1;
-                if (currentPage > totalPages) currentPage = totalPages; // safety bound
-
-                const startIndex = (currentPage - 1) * itemsPerPage;
-                const endIndex = startIndex + itemsPerPage;
-
-                // 4. Update Grid UI
-                let visibleCount = 0;
-                newsItems.forEach(item => item.style.display = 'none'); // Hide all
-
-                filteredItems.forEach((item, index) => {
-                    if (index >= startIndex && index < endIndex) {
-                        item.style.display = 'flex';
-                        visibleCount++;
-                        // Soft fade-in animation for active items
-                        gsap.fromTo(item, {opacity: 0, y: 15}, {opacity: 1, y: 0, duration: 0.4, ease: "power2.out"});
-                    }
-                });
-
-                // 5. Handle empty states & Draw Pagination
-                if (visibleCount === 0) {
-                    noResultsMsg.style.display = 'block';
-                    paginationNav.style.display = 'none';
+                // 4. Animate out currently visible items (if pagination clicked)
+                const currentVisible = newsItems.filter(item => item.style.display !== 'none');
+                
+                if (animate && currentVisible.length > 0) {
+                    gsap.to(currentVisible, {
+                        opacity: 0, 
+                        y: -10, 
+                        duration: 0.2,
+                        stagger: 0.02,
+                        onComplete: updateDOM
+                    });
                 } else {
-                    noResultsMsg.style.display = 'none';
-                    paginationNav.style.display = 'flex';
-                    drawPaginationButtons(totalPages);
+                    updateDOM();
                 }
 
-                // Force GSAP ScrollTrigger to recalculate layout dimensions
-                setTimeout(() => ScrollTrigger.refresh(), 400);
+                // 5. Swap items and animate them in
+                function updateDOM() {
+                    let visibleCount = 0;
+                    newsItems.forEach(item => item.style.display = 'none'); // Hide all initially
+
+                    const itemsToShow = [];
+                    filteredItems.forEach((item, index) => {
+                        if (index >= startIndex && index < endIndex) {
+                            item.style.display = 'flex';
+                            item.style.opacity = '0'; // Prepare for fade in
+                            itemsToShow.push(item);
+                            visibleCount++;
+                        }
+                    });
+
+                    // Update UI states
+                    if (visibleCount === 0) {
+                        noResultsMsg.style.display = 'block';
+                        paginationNav.style.display = 'none';
+                    } else {
+                        noResultsMsg.style.display = 'none';
+                        paginationNav.style.display = 'flex';
+                        drawPaginationButtons(totalPages);
+                        
+                        // Animate in new items smoothly
+                        gsap.fromTo(itemsToShow, 
+                            {opacity: 0, y: 15}, 
+                            {
+                                opacity: 1, y: 0, duration: 0.4, stagger: 0.05, ease: "power2.out",
+                                onStart: () => { itemsToShow.forEach(el => el.style.transitionProperty = 'none'); },
+                                onComplete: () => { itemsToShow.forEach(el => { el.style.transitionProperty = ''; gsap.set(el, {clearProps: "transform"}); }); }
+                            }
+                        );
+                    }
+                    
+                    // Force GSAP ScrollTrigger to recalculate layout dimensions
+                    ScrollTrigger.refresh();
+                }
             }
 
+            // Function to build the pagination controls dynamically
             function drawPaginationButtons(totalPages) {
                 paginationNav.innerHTML = '';
                 
-                // Hide pagination completely if only 1 page
                 if(totalPages <= 1) {
                     paginationNav.style.display = 'none';
                     return;
@@ -678,14 +900,14 @@
 
                 // Previous Button
                 const prevBtn = document.createElement('button');
-                prevBtn.className = `w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center transition-colors ${currentPage === 1 ? 'text-slate-300 cursor-not-allowed' : 'text-slate-500 hover:bg-slate-50 hover:text-brand-primary hover:border-brand-primary'}`;
+                prevBtn.className = `w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all shadow-sm ${currentPage === 1 ? 'border-slate-100 text-slate-300 cursor-not-allowed bg-slate-50' : 'border-slate-200 text-brand-primary hover:bg-brand-primary hover:text-white hover:border-brand-primary cursor-pointer'}`;
                 prevBtn.innerHTML = '<i class="fa-solid fa-chevron-left"></i>';
                 prevBtn.disabled = currentPage === 1;
                 prevBtn.addEventListener('click', () => {
                     if (currentPage > 1) { 
                         currentPage--; 
-                        renderGrid(); 
-                        document.getElementById('news-grid').scrollIntoView({behavior: 'smooth', block: 'start'}); 
+                        renderGrid(true); 
+                        lenis.scrollTo(document.getElementById('news-grid'), { offset: -120 });
                     }
                 });
                 paginationNav.appendChild(prevBtn);
@@ -694,29 +916,31 @@
                 for (let i = 1; i <= totalPages; i++) {
                     const pageBtn = document.createElement('button');
                     if (i === currentPage) {
-                        pageBtn.className = 'w-12 h-12 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent text-white font-bold flex items-center justify-center shadow-lg';
+                        pageBtn.className = 'w-12 h-12 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent text-white font-bold flex items-center justify-center shadow-lg transform scale-110 transition-transform';
                     } else {
                         pageBtn.className = 'w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center text-slate-600 font-bold hover:bg-slate-50 hover:text-brand-primary hover:border-brand-primary transition-all';
                     }
                     pageBtn.textContent = i;
                     pageBtn.addEventListener('click', () => {
-                        currentPage = i;
-                        renderGrid();
-                        document.getElementById('news-grid').scrollIntoView({behavior: 'smooth', block: 'start'});
+                        if (currentPage !== i) {
+                            currentPage = i;
+                            renderGrid(true);
+                            lenis.scrollTo(document.getElementById('news-grid'), { offset: -120 });
+                        }
                     });
                     paginationNav.appendChild(pageBtn);
                 }
 
                 // Next Button
                 const nextBtn = document.createElement('button');
-                nextBtn.className = `w-12 h-12 rounded-full border-2 border-slate-200 flex items-center justify-center transition-colors ${currentPage === totalPages ? 'text-slate-300 cursor-not-allowed' : 'text-slate-500 hover:bg-slate-50 hover:text-brand-primary hover:border-brand-primary'}`;
+                nextBtn.className = `w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all shadow-sm ${currentPage === totalPages ? 'border-slate-100 text-slate-300 cursor-not-allowed bg-slate-50' : 'border-slate-200 text-brand-primary hover:bg-brand-primary hover:text-white hover:border-brand-primary cursor-pointer'}`;
                 nextBtn.innerHTML = '<i class="fa-solid fa-chevron-right"></i>';
                 nextBtn.disabled = currentPage === totalPages;
                 nextBtn.addEventListener('click', () => {
                     if (currentPage < totalPages) { 
                         currentPage++; 
-                        renderGrid(); 
-                        document.getElementById('news-grid').scrollIntoView({behavior: 'smooth', block: 'start'}); 
+                        renderGrid(true); 
+                        lenis.scrollTo(document.getElementById('news-grid'), { offset: -120 });
                     }
                 });
                 paginationNav.appendChild(nextBtn);
@@ -737,21 +961,49 @@
 
                     currentFilter = btn.getAttribute('data-filter');
                     currentPage = 1; // Always reset to page 1 on new filter
-                    renderGrid();
+                    renderGrid(true); // Call with 'true' for crossfade animation
                 });
             });
 
-            // Initial render call on page load
-            renderGrid();
+            // Initial render call on page load (without animation)
+            renderGrid(false);
 
             // Mobile Menu Toggle
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            if(mobileBtn && mobileMenu) {
-                mobileBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
+            const mobileBtn = document.getElementById("mobile-menu-btn");
+            const mobileMenu = document.getElementById("mobile-menu");
+
+            if (mobileBtn && mobileMenu) {
+              const mobileIcon = mobileBtn.querySelector("i");
+              let isMenuOpen = false;
+
+              function toggleMobileMenu() {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                  mobileMenu.classList.remove("opacity-0", "invisible", "-translate-y-4");
+                  document.body.style.overflow = "hidden";
+                  if (mobileIcon) {
+                    mobileIcon.classList.remove("fa-bars");
+                    mobileIcon.classList.add("fa-xmark");
+                  }
+                } else {
+                  mobileMenu.classList.add("opacity-0", "invisible", "-translate-y-4");
+                  document.body.style.overflow = ""; 
+                  if (mobileIcon) {
+                    mobileIcon.classList.remove("fa-xmark");
+                    mobileIcon.classList.add("fa-bars");
+                  }
+                }
+              }
+
+              mobileBtn.addEventListener("click", toggleMobileMenu);
+
+              // Close mobile menu when a link is clicked
+              const mobileLinks = mobileMenu.querySelectorAll("a");
+              mobileLinks.forEach((link) => {
+                link.addEventListener("click", () => {
+                  if (isMenuOpen) toggleMobileMenu();
                 });
+              });
             }
 
             // Navbar background effect on scroll

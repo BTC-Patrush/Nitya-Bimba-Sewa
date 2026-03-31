@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +41,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; color: #1F2937; overflow-x: hidden; }
         
         .glass-nav {
-            background: rgba(249, 250, 251, 0.85);
+            background: rgba(249, 250, 251, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(30, 58, 138, 0.1);
@@ -52,13 +52,14 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(226, 232, 240, 1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            /* Super silky 0.6s easing for the smooth hover */
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .glass-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: rgba(99, 102, 241, 0.4); 
-            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08); 
+            box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15); 
         }
 
         .hero-inner-bg {
@@ -89,20 +90,40 @@
             pointer-events: none;
         }
 
-        .reveal, .hero-elem { opacity: 0; visibility: hidden; }
+        .reveal, .hero-elem, .kinetic-text { opacity: 0; visibility: hidden; }
         
         /* Custom radio buttons for donation */
         .donation-radio:checked + label {
             background-color: #1E3A8A;
             color: white;
             border-color: #1E3A8A;
-            box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Search Overlay Styles */
+        #search-overlay {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #search-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        /* Fix for SplitType breaking Tailwind background gradients */
+        .bg-clip-text .word,
+        .text-gradient-primary .word {
+            background: inherit;
+            background-image: inherit;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
     </style>
 </head>
 <body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
 
-    <!-- Navigation (Master Template) -->
+    <!-- Navigation (Master Premium Header) -->
     <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -119,75 +140,87 @@
 
                     <!-- About Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="about.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">About Us</a>
-                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
-                            <a href="transparency.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Transparency</a>
-                            <a href="faq.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">FAQ</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="about.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">About Us</a>
+                            <a href="team.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Our Team</a>
+                            <a href="transparency.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Transparency</a>
+                            <a href="faq.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">FAQ</a>
                         </div>
                     </div>
 
-                    <!-- Work Dropdown -->
+                    <!-- Our Work Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
-                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
-                            <a href="impact.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Impact & Results</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="our-work.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Core Pillars</a>
+                            <a href="projects.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Projects</a>
+                            <a href="impact.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Impact & Results</a>
                         </div>
                     </div>
 
                     <!-- Knowledge Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="research.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Research & Publications</a>
-                            <a href="media.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Media Gallery</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="research.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Research & Publications</a>
+                            <a href="media.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Media Gallery</a>
                         </div>
                     </div>
                     
-                    <!-- Engage Dropdown (Active) -->
+                    <!-- Engage Dropdown (Active Marker) -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 text-brand-accent transition-colors border-b-2 border-brand-accent pb-1">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="get-involved.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">Get Involved</a>
-                            <a href="partners.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Partners</a>
-                            <a href="news.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">News & Insights</a>
+                        <button class="flex items-center gap-1 text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">
+                            Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="get-involved.html" class="px-5 py-2.5 text-sm font-medium text-brand-primary bg-brand-primary/5 pl-7 transition-all duration-300">Get Involved</a>
+                            <a href="partners.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Partners</a>
+                            <a href="news.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">News & Insights</a>
                         </div>
                     </div>
 
-                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact Us</a>
                     
-                    <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg flex items-center gap-2 font-bold transform hover:scale-105 transition-all">
-                        <i class="fa-solid fa-heart text-white"></i> Donate
-                    </a>
+                    <!-- Desktop Search Button -->
+                    <button onclick="toggleSearch()" class="px-5 py-2 rounded-full border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all flex items-center gap-2 font-bold text-sm shadow-sm hover:shadow-md group">
+                        <i class="fa-solid fa-magnifying-glass group-hover:text-white transition-colors"></i> Search
+                    </button>
                 </div>
 
-                <!-- Mobile menu button -->
-                <div class="lg:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2">
-                        <i class="fa-solid fa-bars text-2xl"></i>
+                <!-- Mobile menu button & Search -->
+                <div class="lg:hidden flex items-center gap-3">
+                    <button onclick="toggleSearch()" class="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-all shadow-sm">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2 w-10 h-10 flex items-center justify-center">
+                        <i class="fa-solid fa-bars text-2xl transition-all"></i>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+        <div id="mobile-menu" class="opacity-0 invisible -translate-y-4 transition-all duration-300 ease-out lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
             <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
                 <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
                 
-                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Organization</span>
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">About</span>
                     <div class="flex flex-col space-y-3 pl-2">
-                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
-                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
-                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Transparency</a>
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">Who We Are</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Leadership Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Corporate Governance</a>
                         <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
                     </div>
                 </div>
 
-                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Work</span>
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Our Work</span>
                     <div class="flex flex-col space-y-3 pl-2">
                         <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
                         <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
@@ -210,14 +243,26 @@
                     </div>
                 </div>
 
-                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
-                
-                <div class="pt-6 pb-2">
-                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
-                </div>
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4 pb-4">Contact Us</a>
             </div>
         </div>
     </nav>
+
+    <!-- Fullscreen Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[100] flex-col items-center justify-start pt-32 px-4">
+        <button onclick="toggleSearch()" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors text-4xl">
+            &times;
+        </button>
+        <div class="w-full max-w-3xl relative">
+            <i class="fa-solid fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-2xl text-slate-400"></i>
+            <input type="text" id="global-search" placeholder="Search projects, research, or news..." class="w-full bg-transparent border-b-2 border-slate-600 focus:border-brand-accent text-white text-3xl md:text-5xl py-6 pl-16 pr-4 focus:outline-none transition-colors placeholder-slate-600">
+        </div>
+        <div class="w-full max-w-3xl mt-8 flex flex-wrap gap-3">
+            <span class="text-slate-400 text-sm mr-2 mt-1">Popular:</span>
+            <a href="search.html?q=Environment" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">Environmental Conservation</a>
+            <a href="search.html?q=STEM" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">STEM Labs</a>
+        </div>
+    </div>
 
     <!-- Inner Hero Section -->
     <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
@@ -227,11 +272,11 @@
         
         <div class="max-w-5xl mx-auto z-10 reveal">
             <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Become a Catalyst</h3>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight hero-elem">
+            <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
                 Join Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Mission.</span>
             </h1>
             <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
-                Whether you want to volunteer your skills, intern in the field, build a corporate partnership, or fund a project, your contribution drives evidence-based social welfare.
+                Whether you want to volunteer your skills, intern in the field, or build a corporate partnership, your contribution drives evidence-based social welfare.
             </p>
         </div>
     </section>
@@ -242,7 +287,6 @@
             <a href="#volunteer" class="category-nav-link text-brand-primary border-b-2 border-brand-primary pb-1 flex items-center gap-2 transition-colors"><i class="fa-solid fa-hands-holding-child"></i> Volunteer & Intern</a>
             <a href="#membership" class="category-nav-link text-slate-500 hover:text-brand-accent flex items-center gap-2 transition-colors"><i class="fa-solid fa-id-card"></i> Membership</a>
             <a href="#partnerships" class="category-nav-link text-slate-500 hover:text-brand-secondary flex items-center gap-2 transition-colors"><i class="fa-solid fa-handshake"></i> Partnerships</a>
-            <a href="#donate" class="category-nav-link text-slate-500 hover:text-brand-highlight flex items-center gap-2 transition-colors"><i class="fa-solid fa-heart"></i> Donate</a>
         </div>
     </div>
 
@@ -254,13 +298,13 @@
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="text-center mb-16 reveal">
                 <h3 class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-2">Lend Your Skills</h3>
-                <h2 class="text-3xl md:text-4xl font-bold text-gradient-primary mb-4">Volunteer & Internship Programs</h2>
+                <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-gradient-primary mb-4">Volunteer & Internship Programs</h2>
                 <p class="mt-4 text-slate-600 max-w-2xl mx-auto">Gain hands-on experience in the field of scientific social work. We offer structured programs for both dedicated volunteers and university students.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <!-- Volunteer Card -->
-                <div class="glass-card p-8 lg:p-10 rounded-3xl reveal hover:border-brand-accent/40 transition-colors flex flex-col h-full group">
+                <div class="glass-card p-8 lg:p-10 rounded-3xl reveal flex flex-col h-full group">
                     <div class="w-16 h-16 rounded-2xl bg-brand-accent/10 text-brand-accent flex items-center justify-center text-3xl shadow-sm mb-6 border border-brand-accent/20 group-hover:scale-110 transition-transform">
                         <i class="fa-solid fa-users"></i>
                     </div>
@@ -277,7 +321,7 @@
                 </div>
 
                 <!-- Internship Card -->
-                <div class="glass-card p-8 lg:p-10 rounded-3xl reveal hover:border-brand-secondary/40 transition-colors flex flex-col h-full group" style="transition-delay: 100ms;">
+                <div class="glass-card p-8 lg:p-10 rounded-3xl reveal flex flex-col h-full group" style="transition-delay: 100ms;">
                     <div class="w-16 h-16 rounded-2xl bg-brand-secondary/10 text-brand-secondary flex items-center justify-center text-3xl shadow-sm mb-6 border border-brand-secondary/20 group-hover:scale-110 transition-transform">
                         <i class="fa-solid fa-user-graduate"></i>
                     </div>
@@ -303,7 +347,7 @@
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal">
                 <div>
                     <h3 class="text-brand-primary font-bold tracking-wider uppercase text-sm mb-2">Be Part of the Core</h3>
-                    <h2 class="text-3xl md:text-4xl font-bold text-brand-dark">Official Membership</h2>
+                    <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-brand-dark">Official Membership</h2>
                 </div>
                 <div class="mt-4 md:mt-0">
                     <p class="text-slate-500 max-w-md text-sm md:text-right">Join our organizational network. We offer distinct membership tiers for general supporters and subject-matter experts.</p>
@@ -312,7 +356,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- General Member -->
-                <div class="glass-card rounded-3xl p-8 hover:shadow-xl hover:border-brand-accent/30 transition-all reveal bg-slate-50/50 flex flex-col">
+                <div class="glass-card rounded-3xl p-8 reveal bg-slate-50/50 flex flex-col">
                     <h3 class="text-xl font-bold text-brand-primary mb-2">General Membership</h3>
                     <p class="text-slate-600 text-sm mb-6 pb-6 border-b border-slate-200">For community members, local leaders, and advocates passionate about our dual mission.</p>
                     <ul class="space-y-4 text-sm text-slate-600 mb-8 flex-grow">
@@ -326,7 +370,7 @@
                 </div>
 
                 <!-- Vigya Council -->
-                <div class="border-2 border-brand-primary bg-gradient-to-br from-brand-primary/5 to-transparent rounded-3xl p-8 hover:shadow-xl transition-all reveal relative overflow-hidden flex flex-col" style="transition-delay: 100ms;">
+                <div class="border-2 border-brand-primary bg-gradient-to-br from-brand-primary/5 to-transparent rounded-3xl p-8 reveal relative overflow-hidden flex flex-col hover:-translate-y-2 hover:shadow-xl transition-all" style="transition-delay: 100ms;">
                     <div class="absolute -right-6 -top-6 text-brand-primary/10 text-9xl"><i class="fa-solid fa-brain"></i></div>
                     <div class="relative z-10 flex flex-col h-full">
                         <div>
@@ -357,7 +401,7 @@
         <div class="max-w-7xl mx-auto relative z-10">
             <div class="text-center mb-16 reveal">
                 <span class="inline-block bg-white/10 text-white border border-white/20 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-4">Institutional Cooperation</span>
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Partner With Us</h2>
+                <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-white mb-4">Partner With Us</h2>
                 <p class="mt-4 text-slate-300 max-w-2xl mx-auto text-lg">We collaborate with local governments, global NGOs, and corporate CSR wings to execute large-scale, sustainable interventions.</p>
             </div>
 
@@ -390,102 +434,8 @@
         </div>
     </section>
 
-    <!-- 4. DONATION INFORMATION -->
-    <section id="donate" class="py-24 px-4 bg-brand-bg relative border-b border-slate-200 scroll-mt-40 overflow-hidden">
-        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-highlight/10 rounded-full blur-[80px] pointer-events-none"></div>
-        <div class="glow-blob bg-brand-highlight opacity-[0.05] top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2"></div>
-        
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="flex flex-col lg:flex-row gap-16 items-start">
-                
-                <!-- Donation Info -->
-                <div class="w-full lg:w-1/2 reveal">
-                    <h3 class="text-brand-highlight font-bold tracking-wider uppercase text-sm mb-2"><i class="fa-solid fa-heart"></i> Fuel the Mission</h3>
-                    <h2 class="text-3xl md:text-5xl font-bold text-brand-dark mb-6 leading-tight">Invest in Evidence-Based Welfare.</h2>
-                    <p class="text-slate-600 text-lg leading-relaxed mb-8">Nitya Bimba Sewa operates with 100% financial transparency. Your donations directly fund our mobile science labs, health camps, and vital research initiatives.</p>
-                    
-                    <div class="space-y-4 mb-8">
-                        <div class="flex items-center gap-5 p-5 bg-white rounded-2xl shadow-sm border border-slate-100 hover:border-brand-primary/30 transition-colors">
-                            <div class="w-14 h-14 flex-shrink-0 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold text-lg">$25</div>
-                            <p class="text-sm text-slate-600 leading-relaxed">Funds the educational materials for one girl in our digital literacy program.</p>
-                        </div>
-                        <div class="flex items-center gap-5 p-5 bg-white rounded-2xl shadow-sm border border-slate-100 hover:border-brand-secondary/30 transition-colors">
-                            <div class="w-14 h-14 flex-shrink-0 rounded-full bg-brand-secondary/10 flex items-center justify-center text-brand-secondary font-bold text-lg">$50</div>
-                            <p class="text-sm text-slate-600 leading-relaxed">Provides vital medicines and screening for five patients at a rural health camp.</p>
-                        </div>
-                        <div class="flex items-center gap-5 p-5 bg-white rounded-2xl shadow-sm border border-slate-100 hover:border-brand-accent/30 transition-colors">
-                            <div class="w-14 h-14 flex-shrink-0 rounded-full bg-brand-accent/10 flex items-center justify-center text-brand-accent font-bold text-lg">$100</div>
-                            <p class="text-sm text-slate-600 leading-relaxed">Sponsors a full day of mobile STEM laboratory sessions in a municipal school.</p>
-                        </div>
-                    </div>
-                    
-                    <p class="text-xs text-slate-500 flex items-start gap-2 bg-slate-50 p-4 rounded-xl"><i class="fa-solid fa-shield-halved mt-1 text-brand-primary"></i> Secure processing. All donations receive an official tax-deductible receipt (where applicable by local laws) and our annual financial audit report.</p>
-                </div>
-
-                <!-- Donation Form Widget -->
-                <div class="w-full lg:w-1/2 glass-card p-8 lg:p-12 rounded-3xl reveal border-t-4 border-t-brand-highlight shadow-2xl">
-                    <h3 class="text-2xl font-bold text-brand-dark mb-8 text-center">Make a Secure Donation</h3>
-                    
-                    <form class="space-y-6">
-                        <!-- Donation Type -->
-                        <div class="flex p-1 bg-slate-100 rounded-xl relative">
-                            <input type="hidden" id="donation-frequency" name="frequency" value="one-time">
-                            <button type="button" id="btn-one-time" class="flex-1 py-3 text-sm font-bold bg-white shadow rounded-lg text-brand-primary transition-all duration-300">One-Time</button>
-                            <button type="button" id="btn-monthly" class="flex-1 py-3 text-sm font-bold text-slate-500 hover:text-brand-dark transition-all duration-300">Monthly Gift</button>
-                        </div>
-
-                        <!-- Amount Selection -->
-                        <div class="grid grid-cols-3 gap-3">
-                            <div>
-                                <input type="radio" id="amt1" name="amount" value="25" class="hidden donation-radio">
-                                <label for="amt1" class="amount-label block text-center border-2 border-slate-200 rounded-xl py-4 font-bold text-slate-600 cursor-pointer transition-all hover:border-brand-primary text-lg">$25</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="amt2" name="amount" value="50" class="hidden donation-radio" checked>
-                                <label for="amt2" class="amount-label block text-center border-2 border-slate-200 rounded-xl py-4 font-bold text-slate-600 cursor-pointer transition-all hover:border-brand-primary text-lg">$50</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="amt3" name="amount" value="100" class="hidden donation-radio">
-                                <label for="amt3" class="amount-label block text-center border-2 border-slate-200 rounded-xl py-4 font-bold text-slate-600 cursor-pointer transition-all hover:border-brand-primary text-lg">$100</label>
-                            </div>
-                        </div>
-                        
-                        <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-slate-400">$</span>
-                            <input type="number" id="custom-amount" placeholder="Enter Custom Amount" class="w-full px-10 py-4 rounded-xl border-2 border-slate-200 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary font-bold text-lg bg-slate-50">
-                        </div>
-
-                        <!-- Project Designation -->
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-2">Designate to Project (Optional)</label>
-                            <select class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary bg-slate-50 text-slate-600">
-                                <option>Area of Greatest Need</option>
-                                <option>STEM Micro-Labs</option>
-                                <option>Community Health Camps</option>
-                                <option>Women's Digital Literacy</option>
-                                <option>Biodiversity Research</option>
-                            </select>
-                        </div>
-
-                        <!-- Personal Info -->
-                        <div class="grid grid-cols-2 gap-4">
-                            <input type="text" placeholder="First Name" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary bg-slate-50">
-                            <input type="text" placeholder="Last Name" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary bg-slate-50">
-                        </div>
-                        <input type="email" placeholder="Email Address" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-primary focus:ring-1 focus:ring-brand-primary bg-slate-50">
-
-                        <button type="button" id="submit-donation" class="w-full bg-gradient-to-r from-brand-highlight to-orange-600 hover:shadow-[0_10px_20px_rgba(245,158,11,0.3)] text-white font-extrabold py-5 rounded-xl transition-transform hover:-translate-y-1 text-lg flex justify-center items-center gap-2">
-                            <i class="fa-solid fa-lock text-sm"></i> <span id="submit-btn-text">Continue to Secure Payment</span>
-                        </button>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- Master Footer with Tight Spacing & Icons -->
-    <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
+    <!-- Master Footer -->
+    <footer class="bg-gray-900 text-slate-400 py-12 border-t border-slate-800 text-left">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1">
                 <div class="flex items-center gap-2 mb-3">
@@ -518,7 +468,7 @@
                 <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
                 <ul class="space-y-2 text-sm font-medium text-left">
                     <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
-                    <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
+                    <li><a href="media.html" class="text-white transition-colors">Media Gallery</a></li>
                     <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
                     <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
                 </ul>
@@ -530,155 +480,240 @@
                     <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
                     <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
                 </ul>
-                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-all">Donate to a Project</a>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
     </footer>
 
     <!-- GSAP Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.3/umd/index.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+
     <script>
+        // Global scope function for inline onclick handlers
+        function toggleSearch() {
+            const overlay = document.getElementById("search-overlay");
+            const searchInput = document.getElementById("global-search");
+
+            if (overlay.classList.contains("active")) {
+                overlay.classList.remove("active");
+                document.body.style.overflow = "auto"; 
+            } else {
+                overlay.classList.add("active");
+                document.body.style.overflow = "hidden"; 
+                if (searchInput) {
+                    searchInput.value = "";
+                    setTimeout(() => searchInput.focus(), 100);
+                }
+            }
+        }
+
+        // Close overlay if user presses Escape key
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                const overlay = document.getElementById("search-overlay");
+                if (overlay && overlay.classList.contains("active")) toggleSearch();
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", (event) => {
             gsap.registerPlugin(ScrollTrigger);
 
-            // 1. Hero Entrance
-            gsap.set(".hero-elem", { visibility: "visible" });
-            gsap.fromTo('.hero-elem', 
-                { y: 40, opacity: 0 }, 
-                { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power4.out", delay: 0.3 }
-            );
-
-            // 2. Scroll Reveal Animations
-            gsap.set(".reveal", { visibility: "visible" });
-            const revealElements = document.querySelectorAll(".reveal");
-            revealElements.forEach((elem) => {
-                gsap.fromTo(elem,
-                    { y: 50, opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: elem,
-                            start: "top 85%", 
-                            toggleActions: "play none none reverse"
-                        }
-                    }
-                );
+            // --- INITIALIZE LENIS ---
+            const lenis = new Lenis({
+                lerp: 0.05, 
+                wheelMultiplier: 0.8, 
+                smoothWheel: true, 
+                normalizeWheel: true, 
+                smoothTouch: false, 
             });
 
-            // Mobile Menu Toggle
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            if(mobileBtn && mobileMenu) {
-                mobileBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
+            // Sync Lenis with GSAP ScrollTrigger
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time)=>{ lenis.raf(time * 1000); });
+            gsap.ticker.lagSmoothing(0);
+
+            // Listen for "Enter" key on the overlay input to redirect to search.html
+            const globalSearchInput = document.getElementById("global-search");
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener("keypress", function (e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        const query = this.value.trim();
+                        if (query.length > 0) {
+                            window.location.href = "search.html?q=" + encodeURIComponent(query);
+                        }
+                    }
                 });
             }
 
-            // Navbar background effect on scroll
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('shadow-xl', 'border-brand-primary/5');
-                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                } else {
-                    navbar.classList.remove('shadow-xl', 'border-brand-primary/5');
-                    navbar.style.background = 'rgba(249, 250, 251, 0.85)';
+            // 1. Initial Hero Animation
+            const heroElements = document.querySelectorAll(".hero-elem");
+            gsap.set(heroElements, { visibility: "visible" });
+            gsap.fromTo(
+              heroElements,
+              { y: 30, opacity: 0 },
+              {
+                y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2,
+                onStart: function() { heroElements.forEach(el => el.style.transitionProperty = 'none'); },
+                onComplete: function() {
+                  heroElements.forEach(el => {
+                    el.style.transitionProperty = '';
+                    gsap.set(el, { clearProps: "transform" });
+                  });
                 }
+              }
+            );
+
+            // 2. Scroll Reveal Animations 
+            gsap.set(".reveal", { visibility: "visible" });
+            const revealElements = document.querySelectorAll(".reveal");
+            revealElements.forEach((elem) => {
+              let delayTime = 0;
+              if (elem.style.transitionDelay) {
+                delayTime = parseFloat(elem.style.transitionDelay) / 1000;
+                elem.style.transitionDelay = ''; 
+              }
+              gsap.fromTo(
+                elem,
+                { y: 40, opacity: 0 },
+                {
+                  y: 0, opacity: 1, duration: 0.8, delay: delayTime, ease: "power2.out",
+                  scrollTrigger: { trigger: elem, start: "top 85%", toggleActions: "play none none reverse" },
+                  onStart: () => { elem.style.transitionProperty = 'none'; },
+                  onComplete: () => { elem.style.transitionProperty = ''; gsap.set(elem, { clearProps: "transform" }); }
+                }
+              );
+            });
+
+            // 3. Kinetic Typography (Bulletproof Split Text)
+            const kineticTexts = document.querySelectorAll(".kinetic-text");
+            gsap.set(kineticTexts, { visibility: "visible", opacity: 1 });
+            if (typeof SplitType !== 'undefined') {
+                kineticTexts.forEach((text) => {
+                    const splitText = new SplitType(text, { types: 'words' });
+                    gsap.fromTo(
+                        splitText.words,
+                        { y: 30, opacity: 0 },
+                        {
+                            y: 0, opacity: 1, duration: 0.8, stagger: 0.05, ease: "power3.out",
+                            scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" }
+                        }
+                    );
+                });
+            } else {
+                kineticTexts.forEach((text) => {
+                    gsap.fromTo(
+                        text,
+                        { y: 30, opacity: 0 },
+                        {
+                            y: 0, opacity: 1, duration: 1, ease: "power3.out",
+                            scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" }
+                        }
+                    );
+                });
+            }
+
+            // Mobile Menu Toggle
+            const mobileBtn = document.getElementById("mobile-menu-btn");
+            const mobileMenu = document.getElementById("mobile-menu");
+
+            if (mobileBtn && mobileMenu) {
+              const mobileIcon = mobileBtn.querySelector("i");
+              let isMenuOpen = false;
+
+              function toggleMobileMenu() {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                  mobileMenu.classList.remove("opacity-0", "invisible", "-translate-y-4");
+                  document.body.style.overflow = "hidden";
+                  if (mobileIcon) {
+                    mobileIcon.classList.remove("fa-bars");
+                    mobileIcon.classList.add("fa-xmark");
+                  }
+                } else {
+                  mobileMenu.classList.add("opacity-0", "invisible", "-translate-y-4");
+                  document.body.style.overflow = ""; 
+                  if (mobileIcon) {
+                    mobileIcon.classList.remove("fa-xmark");
+                    mobileIcon.classList.add("fa-bars");
+                  }
+                }
+              }
+
+              mobileBtn.addEventListener("click", toggleMobileMenu);
+
+              const mobileLinks = mobileMenu.querySelectorAll("a");
+              mobileLinks.forEach((link) => {
+                link.addEventListener("click", () => {
+                  if (isMenuOpen) toggleMobileMenu();
+                });
+              });
+            }
+
+            // Navbar background effect on scroll
+            const navbar = document.getElementById("navbar");
+            window.addEventListener("scroll", () => {
+              if (window.scrollY > 50) {
+                navbar.classList.add("shadow-sm");
+                navbar.style.background = "rgba(255, 255, 255, 0.98)";
+              } else {
+                navbar.classList.remove("shadow-sm");
+                navbar.style.background = "rgba(249, 250, 251, 0.85)";
+              }
             });
 
             // --- CATEGORY NAV LOGIC (SCROLLSPY & CLICK) ---
             const sections = document.querySelectorAll("section[id]");
             const navLinks = document.querySelectorAll(".category-nav-link");
 
-            // 1. Smooth Click Interception
-            navLinks.forEach(link => {
-                link.addEventListener("click", function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute("href");
-                    const targetSection = document.querySelector(targetId);
-                    
-                    if (targetSection) {
-                        // Immediately update active styling
-                        navLinks.forEach(l => {
-                            l.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
-                            l.classList.add("text-slate-500");
-                        });
-                        this.classList.remove("text-slate-500");
-                        this.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+            if(navLinks.length > 0 && sections.length > 0) {
+                // 1. Smooth Click Interception
+                navLinks.forEach(link => {
+                    link.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute("href");
+                        const targetSection = document.querySelector(targetId);
+                        
+                        if (targetSection) {
+                            navLinks.forEach(l => {
+                                l.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                                l.classList.add("text-slate-500");
+                            });
+                            this.classList.remove("text-slate-500");
+                            this.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
 
-                        // Smooth scroll to the section
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
-
-            // 2. ScrollSpy (Updates nav when naturally scrolling)
-            window.addEventListener("scroll", () => {
-                let current = "";
-                sections.forEach((section) => {
-                    const sectionTop = section.offsetTop;
-                    // Offset buffer to trigger nav change just before hitting the exact top
-                    if (window.scrollY >= (sectionTop - 250)) {
-                        current = section.getAttribute("id");
-                    }
-                });
-
-                if (current) {
-                    navLinks.forEach((link) => {
-                        link.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
-                        link.classList.add("text-slate-500");
-                        if (link.getAttribute("href").includes(current)) {
-                            link.classList.remove("text-slate-500");
-                            link.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            // Smooth scroll to the section using Lenis
+                            lenis.scrollTo(targetSection, { offset: -160, duration: 1.5 });
                         }
                     });
-                }
-            });
-
-            // --- DONATION FREQUENCY TOGGLE LOGIC ---
-            const btnOneTime = document.getElementById('btn-one-time');
-            const btnMonthly = document.getElementById('btn-monthly');
-            const freqInput = document.getElementById('donation-frequency');
-            const amountLabels = document.querySelectorAll('.amount-label');
-            const amountRadios = document.querySelectorAll('.donation-radio');
-            const submitBtnText = document.getElementById('submit-btn-text');
-
-            const oneTimeAmounts = [25, 50, 100];
-            const monthlyAmounts = [10, 25, 50];
-
-            function updateDonationUI(type) {
-                const amounts = type === 'monthly' ? monthlyAmounts : oneTimeAmounts;
-                
-                // Update Button Styles
-                if (type === 'monthly') {
-                    btnMonthly.className = 'flex-1 py-3 text-sm font-bold bg-white shadow rounded-lg text-brand-primary transition-all duration-300';
-                    btnOneTime.className = 'flex-1 py-3 text-sm font-bold text-slate-500 hover:text-brand-dark transition-all duration-300';
-                    freqInput.value = 'monthly';
-                    submitBtnText.textContent = 'Setup Monthly Gift';
-                } else {
-                    btnOneTime.className = 'flex-1 py-3 text-sm font-bold bg-white shadow rounded-lg text-brand-primary transition-all duration-300';
-                    btnMonthly.className = 'flex-1 py-3 text-sm font-bold text-slate-500 hover:text-brand-dark transition-all duration-300';
-                    freqInput.value = 'one-time';
-                    submitBtnText.textContent = 'Continue to Secure Payment';
-                }
-
-                // Update Radio Button Values & Labels
-                amountLabels.forEach((label, index) => {
-                    label.textContent = '$' + amounts[index];
-                    amountRadios[index].value = amounts[index];
                 });
-            }
 
-            if (btnOneTime && btnMonthly) {
-                btnOneTime.addEventListener('click', () => updateDonationUI('one-time'));
-                btnMonthly.addEventListener('click', () => updateDonationUI('monthly'));
+                // 2. ScrollSpy (Updates nav when naturally scrolling)
+                window.addEventListener("scroll", () => {
+                    let current = "";
+                    sections.forEach((section) => {
+                        const sectionTop = section.offsetTop;
+                        if (window.scrollY >= (sectionTop - 250)) {
+                            current = section.getAttribute("id");
+                        }
+                    });
+
+                    if (current) {
+                        navLinks.forEach((link) => {
+                            link.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            link.classList.add("text-slate-500");
+                            if (link.getAttribute("href").includes(current)) {
+                                link.classList.remove("text-slate-500");
+                                link.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            }
+                        });
+                    }
+                });
             }
         });
     </script>

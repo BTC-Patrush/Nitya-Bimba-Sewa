@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Results | Nitya Bimba Sewa</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- FontAwesome for Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            colors: {
+              brand: {
+                bg: "#F9FAFB", // Clean research feel
+                primary: "#1E3A8A", // Scientific trust
+                secondary: "#16A34A", // Sustainability
+                accent: "#6366F1", // Innovation
+                highlight: "#F59E0B", // Human action
+                dark: "#1F2937", // Text Dark Gray
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* Custom Styles & Clean Light Glassmorphism */
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f9fafb;
+        color: #1f2937;
+        overflow-x: hidden;
+      }
+
+      .glass-nav {
+        background: rgba(249, 250, 251, 0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(30, 58, 138, 0.1);
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(226, 232, 240, 1);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+      }
+
+      .glass-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(99, 102, 241, 0.4);
+        box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15);
+      }
+
+      /* --- Next Level Gradients & Blobs --- */
+      .text-gradient-primary {
+        background: linear-gradient(135deg, #1e3a8a 0%, #6366f1 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .glow-blob {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.15;
+        z-index: 0;
+        pointer-events: none;
+      }
+      
+      /* Search Overlay Styles */
+      #search-overlay {
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      #search-overlay.active {
+        display: flex;
+        opacity: 1;
+      }
+      
+      /* Hide elements before GSAP loads to prevent flashing */
+      .reveal, .hero-elem, .kinetic-text {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      /* Fix for SplitType breaking Tailwind background gradients */
+      .bg-clip-text .word,
+      .text-gradient-primary .word {
+        background: inherit;
+        background-image: inherit;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    </style>
+  </head>
+  <body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
+    
+    <!-- Navigation (Master Premium Header - Matches About/Team/Our Work) -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="flex-shrink-0 flex items-center gap-2 cursor-pointer group">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-xl shadow-md group-hover:shadow-lg transition-all group-hover:rotate-180 duration-700">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-brand-primary">Nitya Bimba Sewa</span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden lg:flex space-x-6 items-center font-medium text-sm text-slate-600">
+                    <a href="index.html" class="hover:text-brand-primary transition-colors">Home</a>
+
+                    <!-- About Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="about.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">About Us</a>
+                            <a href="team.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Our Team</a>
+                            <a href="transparency.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Transparency</a>
+                            <a href="faq.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">FAQ</a>
+                        </div>
+                    </div>
+
+                    <!-- Our Work Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="our-work.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Core Pillars</a>
+                            <a href="projects.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Projects</a>
+                            <a href="impact.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Impact & Results</a>
+                        </div>
+                    </div>
+
+                    <!-- Knowledge Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="research.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Research & Publications</a>
+                            <a href="media.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Media Gallery</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Engage Dropdown -->
+                    <div class="relative group py-6">
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="get-involved.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Get Involved</a>
+                            <a href="partners.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Partners</a>
+                            <a href="news.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">News & Insights</a>
+                        </div>
+                    </div>
+
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact Us</a>
+                    
+                    <!-- Desktop Search Button -->
+                    <button onclick="toggleSearch()" class="px-5 py-2 rounded-full border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all flex items-center gap-2 font-bold text-sm shadow-sm hover:shadow-md group">
+                        <i class="fa-solid fa-magnifying-glass group-hover:text-white transition-colors"></i> Search
+                    </button>
+                </div>
+
+                <!-- Mobile menu button & Search -->
+                <div class="lg:hidden flex items-center gap-3">
+                    <button onclick="toggleSearch()" class="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-all shadow-sm">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2 w-10 h-10 flex items-center justify-center">
+                        <i class="fa-solid fa-bars text-2xl transition-all"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="opacity-0 invisible -translate-y-4 transition-all duration-300 ease-out lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+            <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
+                <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">About</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Leadership Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Corporate Governance</a>
+                        <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Our Work</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
+                        <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
+                        <a href="impact.html" class="text-slate-600 hover:text-brand-accent text-sm">Impact & Results</a>
+                    </div>
+                </div>
+                
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Knowledge</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="research.html" class="text-slate-600 hover:text-brand-accent text-sm">Research & Publications</a>
+                        <a href="media.html" class="text-slate-600 hover:text-brand-accent text-sm">Media Gallery</a>
+                    </div>
+                </div>
+
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Engage</span>
+                    <div class="flex flex-col space-y-3 pl-2">
+                        <a href="get-involved.html" class="text-slate-600 hover:text-brand-accent text-sm">Get Involved</a>
+                        <a href="partners.html" class="text-slate-600 hover:text-brand-accent text-sm">Partners</a>
+                        <a href="news.html" class="text-slate-600 hover:text-brand-accent text-sm">News & Insights</a>
+                    </div>
+                </div>
+
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4 pb-4">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Fullscreen Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[100] flex-col items-center justify-start pt-32 px-4">
+        <button onclick="toggleSearch()" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors text-4xl">
+            &times;
+        </button>
+        <div class="w-full max-w-3xl relative">
+            <i class="fa-solid fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-2xl text-slate-400"></i>
+            <input type="text" id="global-search" placeholder="Search services, research, or news..." class="w-full bg-transparent border-b-2 border-slate-600 focus:border-brand-accent text-white text-3xl md:text-5xl py-6 pl-16 pr-4 focus:outline-none transition-colors placeholder-slate-600">
+        </div>
+        <div class="w-full max-w-3xl mt-8 flex flex-wrap gap-3">
+            <span class="text-slate-400 text-sm mr-2 mt-1">Popular:</span>
+            <a href="search.html?q=Environment" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">Environmental Conservation</a>
+            <a href="search.html?q=STEM" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">STEM Labs</a>
+        </div>
+    </div>
+
+    <!-- Search Results Section -->
+    <section class="relative pt-40 pb-24 min-h-[80vh] flex flex-col items-center px-4 overflow-hidden bg-brand-bg">
+        <div class="glow-blob bg-brand-accent top-20 left-10"></div>
+        <div class="glow-blob bg-brand-primary bottom-10 right-10"></div>
+
+        <div class="max-w-4xl w-full z-10 relative">
+            <div class="mb-10 text-center md:text-left reveal">
+                <h3 class="text-brand-primary font-bold tracking-wider uppercase text-sm mb-2">Search Results</h3>
+                <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-brand-dark leading-tight mb-4 tracking-tight">
+                    Discover <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-brand-accent">Insights.</span>
+                </h1>
+                <p class="text-slate-500 text-lg" id="search-status">Searching database for: <span id="search-query-display" class="text-brand-accent italic font-bold">"..."</span></p>
+            </div>
+
+            <!-- Dynamic Results Container -->
+            <div id="results-container" class="space-y-4">
+                <!-- Javascript will inject results here -->
+            </div>
+            
+            <!-- FALLBACK EMPTY STATE (The Not Found Page) -->
+            <div id="empty-state" class="hidden w-full glass-card rounded-3xl p-10 md:p-16 text-center reveal border-t-4 border-t-rose-500 shadow-xl mt-8">
+                <div class="w-24 h-24 bg-rose-50 border border-rose-100 text-rose-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner">
+                    <i class="fa-solid fa-magnifying-glass-minus"></i>
+                </div>
+                <h2 class="text-3xl font-bold text-brand-dark mb-4">No results found for "<span id="empty-query" class="text-brand-primary"></span>"</h2>
+                <p class="text-slate-600 mb-8 max-w-lg mx-auto leading-relaxed">
+                    We couldn't find any exact matches for your search. Please check your spelling, try using broader keywords, or explore our core corporate sections below.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="index.html" class="bg-brand-primary text-white font-bold py-3.5 px-8 rounded-full shadow-md hover:shadow-lg transition-transform hover:-translate-y-1">
+                        Return Home
+                    </a>
+                    <a href="our-work.html" class="bg-white border border-slate-300 text-slate-700 hover:text-brand-primary hover:border-brand-primary font-bold py-3.5 px-8 rounded-full shadow-sm hover:shadow-md transition-all">
+                        View Core Solutions
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Master Footer -->
+    <footer class="bg-gray-900 text-slate-400 py-12 border-t border-slate-800 text-left">
+        <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="col-span-1">
+                <div class="flex items-center gap-2 mb-3">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-brand-primary to-brand-accent flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                        <i class="fa-solid fa-atom"></i>
+                    </div>
+                    <span class="font-bold text-xl text-white">Nitya Bimba Sewa</span>
+                </div>
+                <p class="text-sm mb-4 leading-relaxed">Where scientific knowledge meets compassion. Registered SWC-affiliated NGO in Nepal.</p>
+                <div class="flex gap-3">
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-all shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-highlight hover:text-white transition-all shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-sm"><i class="fa-brands fa-tiktok text-xs"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Navigation</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+                    <li><a href="team.html" class="hover:text-white transition-colors">Our Team</a></li>
+                    <li><a href="our-work.html" class="hover:text-white transition-colors">Core Pillars</a></li>
+                    <li><a href="projects.html" class="hover:text-white transition-colors">Initiatives</a></li>
+                    <li><a href="impact.html" class="hover:text-white transition-colors">Our Impact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
+                    <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
+                    <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
+                    <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Legal & Connect</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                    <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
+    </footer>
+
+    <!-- SplitType Text Animation -->
+    <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.3/umd/index.min.js"></script>
+
+    <!-- GSAP Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+
+    <script>
+      // Global scope function for inline onclick handlers
+      function toggleSearch() {
+        const overlay = document.getElementById("search-overlay");
+        const searchInput = document.getElementById("global-search");
+
+        if (overlay.classList.contains("active")) {
+          overlay.classList.remove("active");
+          document.body.style.overflow = "auto";
+        } else {
+          overlay.classList.add("active");
+          document.body.style.overflow = "hidden";
+          if (searchInput) {
+            searchInput.value = "";
+            setTimeout(() => searchInput.focus(), 100);
+          }
+        }
+      }
+
+      // Close overlay if user presses Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          const overlay = document.getElementById("search-overlay");
+          if (overlay && overlay.classList.contains("active")) toggleSearch();
+        }
+      });
+
+      // --- 1. THE SEARCH INDEX (Corporate Theme) ---
+      const siteIndex = [
+          {
+              title: "Who We Are",
+              url: "about.html",
+              description: "Learn about the mission, vision, and corporate objectives of Nitya Bimba Sewa. We bridge the gap between academic research and scalable execution.",
+              keywords: ["about", "mission", "vision", "company", "objectives", "core values", "history"]
+          },
+          {
+              title: "Leadership Team",
+              url: "team.html",
+              description: "Meet our executive board, scientific advisors, and the consultants driving our enterprise solutions.",
+              keywords: ["team", "leadership", "board", "advisors", "consultants", "staff", "president"]
+          },
+          {
+              title: "Corporate Governance",
+              url: "transparency.html",
+              description: "Review our financial audits, ESG compliance reports, and legal governance frameworks.",
+              keywords: ["transparency", "finances", "audit", "reports", "policies", "legal", "governance", "esg"]
+          },
+          {
+              title: "Core Solutions",
+              url: "our-work.html",
+              description: "Discover our four main services: EdTech & Innovation, Environmental Consultancy, Health Tech, and Corporate Training.",
+              keywords: ["services", "solutions", "edtech", "environment", "health", "training", "leadership", "stem"]
+          },
+          {
+              title: "Client Portfolio",
+              url: "projects.html",
+              description: "Explore our active deployments, including corporate tech infrastructure, biodiversity audits, and digital literacy campaigns.",
+              keywords: ["projects", "portfolio", "deployments", "clients", "biodiversity", "digital literacy"]
+          },
+          {
+              title: "Case Studies & Impact",
+              url: "impact.html",
+              description: "Read the data-driven results of our enterprise solutions and the measurable ROI of our sustainable implementations.",
+              keywords: ["case studies", "impact", "results", "roi", "data", "success"]
+          },
+          {
+              title: "Whitepapers & Research",
+              url: "research.html",
+              description: "Access our latest peer-reviewed studies, industry trend reports, and proprietary data analysis.",
+              keywords: ["research", "publications", "data", "whitepapers", "papers", "science", "trends"]
+          },
+          {
+              title: "Company News",
+              url: "news.html",
+              description: "Stay updated with our latest corporate deployments, consulting insights, and press releases.",
+              keywords: ["news", "blog", "articles", "updates", "press", "events", "insights"]
+          },
+          {
+              title: "Get Involved & Careers",
+              url: "get-involved.html",
+              description: "Find opportunities to join our team of industry experts or apply for our consultancy positions.",
+              keywords: ["careers", "jobs", "hiring", "get involved", "join"]
+          },
+          {
+              title: "Partner Network",
+              url: "partners.html",
+              description: "Information for government bodies, international organizations, and corporate clients looking to collaborate.",
+              keywords: ["partners", "clients", "csr", "government", "collaboration", "corporate", "b2b"]
+          },
+          {
+              title: "Contact Us",
+              url: "contact.html",
+              description: "Reach out to our corporate headquarters in Kathmandu. Request a consultation or submit an inquiry.",
+              keywords: ["contact", "email", "phone", "address", "headquarters", "consultation", "support"]
+          }
+      ];
+
+      document.addEventListener("DOMContentLoaded", (event) => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- INITIALIZE LENIS ---
+        const lenis = new Lenis({
+            lerp: 0.05, 
+            wheelMultiplier: 0.8, 
+            smoothWheel: true, 
+            normalizeWheel: true, 
+            smoothTouch: false, 
+        });
+
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time)=>{ lenis.raf(time * 1000); });
+        gsap.ticker.lagSmoothing(0);
+
+        // Search Overlay Listener
+        const globalSearchInput = document.getElementById("global-search");
+        if (globalSearchInput) {
+          globalSearchInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              const query = this.value.trim();
+              if (query.length > 0) {
+                window.location.href = "search.html?q=" + encodeURIComponent(query);
+              }
+            }
+          });
+        }
+
+        // --- EXECUTE SEARCH LOGIC ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const rawQuery = urlParams.get('q');
+        
+        const displayEl = document.getElementById('search-query-display');
+        const statusEl = document.getElementById('search-status');
+        const containerEl = document.getElementById('results-container');
+        const emptyStateEl = document.getElementById('empty-state');
+        const emptyQueryEl = document.getElementById('empty-query');
+        
+        if (!rawQuery || rawQuery.trim() === '') {
+            displayEl.textContent = "Nothing entered";
+            statusEl.textContent = "Please enter a search term in the search bar.";
+            emptyQueryEl.textContent = " ";
+            emptyStateEl.classList.remove('hidden');
+        } else {
+            const query = rawQuery.toLowerCase().trim();
+            displayEl.textContent = `"${rawQuery}"`;
+
+            const results = siteIndex.filter(page => {
+                const titleMatch = page.title.toLowerCase().includes(query);
+                const descMatch = page.description.toLowerCase().includes(query);
+                const keywordMatch = page.keywords.some(kw => kw.toLowerCase().includes(query));
+                return titleMatch || descMatch || keywordMatch;
+            });
+
+            statusEl.textContent = `Found ${results.length} result${results.length === 1 ? '' : 's'} in the database.`;
+
+            if (results.length === 0) {
+                emptyQueryEl.textContent = rawQuery;
+                emptyStateEl.classList.remove('hidden');
+                gsap.fromTo(emptyStateEl, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.2 });
+            } else {
+                results.forEach((result, index) => {
+                    const card = document.createElement('a');
+                    card.href = result.url;
+                    card.className = "block glass-card p-6 md:p-8 rounded-2xl hover:border-brand-primary transition-all group shadow-sm hover:shadow-md";
+                    
+                    const regex = new RegExp(`(${query})`, 'gi');
+                    const highlightedTitle = result.title.replace(regex, '<mark class="bg-brand-highlight/30 text-brand-dark px-1 rounded">$1</mark>');
+                    const highlightedDesc = result.description.replace(regex, '<mark class="bg-brand-highlight/30 text-brand-dark px-1 rounded">$1</mark>');
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <h3 class="text-xl font-bold text-brand-primary mb-2 group-hover:text-brand-accent transition-colors">${highlightedTitle}</h3>
+                            <div class="w-8 h-8 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 group-hover:bg-brand-primary group-hover:text-white transition-all flex-shrink-0">
+                                <i class="fa-solid fa-arrow-right text-sm"></i>
+                            </div>
+                        </div>
+                        <p class="text-slate-600 text-sm mb-3 leading-relaxed">${highlightedDesc}</p>
+                        <p class="text-xs text-brand-secondary font-mono tracking-wider">${result.url}</p>
+                    `;
+                    
+                    gsap.fromTo(card, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, delay: index * 0.1, ease: "power2.out" });
+                    containerEl.appendChild(card);
+                });
+            }
+        }
+
+        // --- GSAP ANIMATIONS ---
+        
+        // SplitType Kinetic Text
+        const kineticTexts = document.querySelectorAll(".kinetic-text");
+        gsap.set(kineticTexts, { visibility: "visible", opacity: 1 });
+        
+        // Wait briefly so any dynamic JS text updates (like the search query) process before splitting
+        setTimeout(() => {
+            if (typeof SplitType !== 'undefined') {
+                kineticTexts.forEach((text) => {
+                    const splitText = new SplitType(text, { types: 'words' });
+                    gsap.fromTo(splitText.words, 
+                        { y: 30, opacity: 0 }, 
+                        { y: 0, opacity: 1, duration: 0.8, stagger: 0.05, ease: "power3.out", scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" } }
+                    );
+                });
+            } else {
+                kineticTexts.forEach((text) => {
+                    gsap.fromTo(text, 
+                        { y: 30, opacity: 0 }, 
+                        { y: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" } }
+                    );
+                });
+            }
+        }, 100); // 100ms delay
+
+        // Scroll Reveals
+        gsap.set(".reveal", { visibility: "visible" });
+        const revealElements = document.querySelectorAll(".reveal");
+        revealElements.forEach((elem) => {
+          let delayTime = 0;
+          if (elem.style.transitionDelay) {
+            delayTime = parseFloat(elem.style.transitionDelay) / 1000;
+            elem.style.transitionDelay = ''; 
+          }
+          gsap.fromTo(elem, { y: 40, opacity: 0 }, {
+              y: 0, opacity: 1, duration: 0.8, delay: delayTime, ease: "power2.out",
+              scrollTrigger: { trigger: elem, start: "top 85%", toggleActions: "play none none reverse" },
+              onStart: () => { elem.style.transitionProperty = 'none'; },
+              onComplete: () => { elem.style.transitionProperty = ''; gsap.set(elem, { clearProps: "transform" }); }
+            });
+        });
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById("mobile-menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        if (mobileBtn && mobileMenu) {
+            const mobileIcon = mobileBtn.querySelector("i");
+            let isMenuOpen = false;
+            function toggleMobileMenu() {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    mobileMenu.classList.remove("opacity-0", "invisible", "-translate-y-4");
+                    document.body.style.overflow = "hidden";
+                    if (mobileIcon) mobileIcon.classList.replace("fa-bars", "fa-xmark");
+                } else {
+                    mobileMenu.classList.add("opacity-0", "invisible", "-translate-y-4");
+                    document.body.style.overflow = ""; 
+                    if (mobileIcon) mobileIcon.classList.replace("fa-xmark", "fa-bars");
+                }
+            }
+            mobileBtn.addEventListener("click", toggleMobileMenu);
+            mobileMenu.querySelectorAll("a").forEach(link => link.addEventListener("click", () => { if (isMenuOpen) toggleMobileMenu(); }));
+        }
+
+        // Navbar background effect
+        const navbar = document.getElementById("navbar");
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 50) {
+            navbar.classList.add("shadow-sm");
+            navbar.style.background = "rgba(255, 255, 255, 0.98)";
+          } else {
+            navbar.classList.remove("shadow-sm");
+            navbar.style.background = "rgba(249, 250, 251, 0.9)";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

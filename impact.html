@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +41,7 @@
         body { font-family: 'Inter', sans-serif; background-color: #F9FAFB; color: #1F2937; overflow-x: hidden; }
         
         .glass-nav {
-            background: rgba(249, 250, 251, 0.85);
+            background: rgba(249, 250, 251, 0.9);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(30, 58, 138, 0.1);
@@ -52,13 +52,14 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(226, 232, 240, 1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            /* Super silky 0.6s easing for the smooth hover */
+            transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .glass-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: rgba(99, 102, 241, 0.4); 
-            box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08); 
+            box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15); 
         }
 
         .hero-inner-bg {
@@ -89,7 +90,18 @@
             pointer-events: none;
         }
 
-        .reveal, .hero-elem { opacity: 0; visibility: hidden; }
+        /* Search Overlay Styles */
+        #search-overlay {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        #search-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .reveal, .hero-elem, .kinetic-text { opacity: 0; visibility: hidden; }
         
         /* Split card for Before & After */
         .split-card {
@@ -103,11 +115,21 @@
             .split-card { flex-direction: row; }
             .split-card > div { flex: 1; }
         }
+
+        /* Fix for SplitType breaking Tailwind background gradients */
+        .bg-clip-text .word,
+        .text-gradient-primary .word,
+        .text-gradient-vibrant .word {
+            background: inherit;
+            background-image: inherit;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
     </style>
 </head>
 <body class="text-brand-dark antialiased overflow-x-hidden bg-brand-bg">
 
-    <!-- Navigation (Master Template) -->
+    <!-- Navigation (Master Premium Header) -->
     <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
@@ -124,66 +146,78 @@
 
                     <!-- About Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="about.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">About Us</a>
-                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
-                            <a href="transparency.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Transparency</a>
-                            <a href="faq.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">FAQ</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="about.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">About Us</a>
+                            <a href="team.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Our Team</a>
+                            <a href="transparency.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Transparency</a>
+                            <a href="faq.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">FAQ</a>
                         </div>
                     </div>
 
-                    <!-- Work Dropdown (Active) -->
+                    <!-- Our Work Dropdown (Active Marker) -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 text-brand-accent transition-colors border-b-2 border-brand-accent pb-1">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
-                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
-                            <a href="impact.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">Impact & Results</a>
+                        <button class="flex items-center gap-1 text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">
+                            Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="our-work.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Core Pillars</a>
+                            <a href="projects.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Projects</a>
+                            <a href="impact.html" class="px-5 py-2.5 text-sm font-medium text-brand-primary bg-brand-primary/5 pl-7 transition-all duration-300">Impact & Results</a>
                         </div>
                     </div>
 
                     <!-- Knowledge Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="research.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Research & Publications</a>
-                            <a href="media.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Media Gallery</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="research.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Research & Publications</a>
+                            <a href="media.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Media Gallery</a>
                         </div>
                     </div>
                     
                     <!-- Engage Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5"></i></button>
-                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="get-involved.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Get Involved</a>
-                            <a href="partners.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Partners</a>
-                            <a href="news.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">News & Insights</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="get-involved.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Get Involved</a>
+                            <a href="partners.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Partners</a>
+                            <a href="news.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">News & Insights</a>
                         </div>
                     </div>
 
                     <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
                     
-                    <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white px-5 py-2.5 rounded-full shadow-md hover:shadow-lg flex items-center gap-2 font-bold transform hover:scale-105 transition-all">
-                        <i class="fa-solid fa-heart text-white"></i> Donate
-                    </a>
+                    <!-- Desktop Search Button -->
+                    <button onclick="toggleSearch()" class="px-5 py-2 rounded-full border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all flex items-center gap-2 font-bold text-sm shadow-sm hover:shadow-md group">
+                        <i class="fa-solid fa-magnifying-glass group-hover:text-white transition-colors"></i> Search
+                    </button>
                 </div>
 
-                <!-- Mobile menu button -->
-                <div class="lg:hidden flex items-center">
-                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2">
-                        <i class="fa-solid fa-bars text-2xl"></i>
+                <!-- Mobile menu button & Search -->
+                <div class="lg:hidden flex items-center gap-3">
+                    <button onclick="toggleSearch()" class="w-10 h-10 rounded-full bg-brand-primary border border-brand-primary text-white flex items-center justify-center shadow-md">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                    <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2 w-10 h-10 flex items-center justify-center">
+                        <i class="fa-solid fa-bars text-2xl transition-all"></i>
                     </button>
                 </div>
             </div>
         </div>
 
         <!-- Mobile Navigation Menu -->
-        <div id="mobile-menu" class="hidden lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
+        <div id="mobile-menu" class="opacity-0 invisible -translate-y-4 transition-all duration-300 ease-out lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 absolute top-20 left-0 w-full shadow-xl max-h-[80vh] overflow-y-auto z-40">
             <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
                 <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
                 
-                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Organization</span>
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">About</span>
                     <div class="flex flex-col space-y-3 pl-2">
                         <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
                         <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
@@ -192,7 +226,7 @@
                     </div>
                 </div>
 
-                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Work</span>
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Our Work</span>
                     <div class="flex flex-col space-y-3 pl-2">
                         <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
                         <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
@@ -215,14 +249,26 @@
                     </div>
                 </div>
 
-                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
-                
-                <div class="pt-6 pb-2">
-                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
-                </div>
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4 pb-4">Contact</a>
             </div>
         </div>
     </nav>
+
+    <!-- Fullscreen Search Overlay -->
+    <div id="search-overlay" class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[100] flex-col items-center justify-start pt-32 px-4">
+        <button onclick="toggleSearch()" class="absolute top-8 right-8 text-white/50 hover:text-white transition-colors text-4xl">
+            &times;
+        </button>
+        <div class="w-full max-w-3xl relative">
+            <i class="fa-solid fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-2xl text-slate-400"></i>
+            <input type="text" id="global-search" placeholder="Search projects, research, or news..." class="w-full bg-transparent border-b-2 border-slate-600 focus:border-brand-accent text-white text-3xl md:text-5xl py-6 pl-16 pr-4 focus:outline-none transition-colors placeholder-slate-600">
+        </div>
+        <div class="w-full max-w-3xl mt-8 flex flex-wrap gap-3">
+            <span class="text-slate-400 text-sm mr-2 mt-1">Popular:</span>
+            <a href="search.html?q=Environment" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">Environmental Conservation</a>
+            <a href="search.html?q=STEM" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">STEM Labs</a>
+        </div>
+    </div>
 
     <!-- Inner Hero Section -->
     <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
@@ -232,7 +278,7 @@
         
         <div class="max-w-5xl mx-auto z-10 reveal">
             <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Proving Effectiveness</h3>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight hero-elem">
+            <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
                 Measuring Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Impact.</span>
             </h1>
             <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
@@ -258,10 +304,10 @@
         <div class="glow-blob bg-brand-secondary/30 bottom-[-10%] right-[-10%] scale-150"></div>
         
         <div class="max-w-7xl mx-auto relative z-10">
-            <div class="text-center mb-16 reveal">
-                <h3 class="text-white/80 font-bold tracking-wider uppercase text-sm mb-2">The Data</h3>
-                <h2 class="text-3xl md:text-4xl font-bold text-white">Our Reach by the Numbers</h2>
-                <p class="mt-4 text-slate-300 max-w-2xl mx-auto text-lg">Metrics tracked and verified through our continuous community monitoring and evaluation protocols.</p>
+            <div class="text-center mb-16">
+                <h3 class="reveal text-white/80 font-bold tracking-wider uppercase text-sm mb-2">The Data</h3>
+                <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-white">Our Reach by the Numbers</h2>
+                <p class="reveal mt-4 text-slate-300 max-w-2xl mx-auto text-lg" style="transition-delay: 100ms;">Metrics tracked and verified through our continuous community monitoring and evaluation protocols.</p>
             </div>
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
@@ -316,19 +362,19 @@
     <section id="stories" class="py-24 px-4 bg-brand-bg relative border-b border-slate-200 scroll-mt-40 overflow-hidden">
         <div class="glow-blob bg-brand-primary opacity-[0.03] top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2"></div>
         <div class="max-w-7xl mx-auto relative z-10">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12 reveal">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
                 <div>
-                    <h3 class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-2">Human Impact</h3>
-                    <h2 class="text-3xl md:text-4xl font-bold text-gradient-primary">Success Stories</h2>
+                    <h3 class="reveal text-brand-accent font-bold tracking-wider uppercase text-sm mb-2">Human Impact</h3>
+                    <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-gradient-primary">Success Stories</h2>
                 </div>
-                <div class="mt-4 md:mt-0">
+                <div class="mt-4 md:mt-0 reveal" style="transition-delay: 100ms;">
                     <p class="text-slate-500 max-w-md text-sm md:text-right">Data tells part of the story; individual lives tell the rest. Read how our interventions have catalyzed change at the grassroots level.</p>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <!-- Story 1 -->
-                <div class="glass-card rounded-3xl overflow-hidden group reveal hover:shadow-xl hover:border-brand-accent/40 transition-all duration-300 flex flex-col">
+                <div class="glass-card rounded-3xl overflow-hidden group reveal flex flex-col hover:border-brand-accent/40 cursor-pointer">
                     <div class="h-64 relative overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?q=80&w=2069&auto=format&fit=crop" alt="Digital Literacy Success" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/50 to-transparent"></div>
@@ -341,13 +387,13 @@
                         <p class="text-slate-600 leading-relaxed mb-6 flex-grow">"Before the NBS digital literacy bootcamp, I had never touched a computer, and I relied entirely on my husband for banking," says Sita, a 34-year-old entrepreneur from Makwanpur. Through our 6-week foundational training, Sita not only learned to navigate digital devices but successfully opened her own digital bank account. Today, she manages her small tailoring business's finances entirely online, bypassing exploitative middlemen.</p>
                         <div class="pt-6 border-t border-slate-100 flex justify-between items-center mt-auto">
                             <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Women's Digital Literacy</span>
-                            <a href="#" class="text-brand-accent font-bold text-sm hover:text-brand-primary transition-colors flex items-center gap-1">Read Full Story <i class="fa-solid fa-arrow-right"></i></a>
+                            <span class="text-brand-accent font-bold text-sm hover:text-brand-primary transition-colors flex items-center gap-1">Read Full Story <i class="fa-solid fa-arrow-right"></i></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- Story 2 -->
-                <div class="glass-card rounded-3xl overflow-hidden group reveal hover:shadow-xl hover:border-brand-secondary/40 transition-all duration-300 flex flex-col" style="transition-delay: 100ms;">
+                <div class="glass-card rounded-3xl overflow-hidden group reveal flex flex-col hover:border-brand-secondary/40 cursor-pointer" style="transition-delay: 100ms;">
                     <div class="h-64 relative overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop" alt="Environment Success" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/50 to-transparent"></div>
@@ -360,7 +406,7 @@
                         <p class="text-slate-600 leading-relaxed mb-6 flex-grow">For years, unregulated extraction was driving the 'Jatamansi' herb toward local extinction. By partnering with the local forest user group, our scientific researchers introduced a sustainable harvesting protocol. "NBS taught us that conservation isn't about stopping our work; it's about farming smarter," says local leader Ramesh. Yields have stabilized, and the forest's biodiversity index has improved by 18% in just two years.</p>
                         <div class="pt-6 border-t border-slate-100 flex justify-between items-center mt-auto">
                             <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Biodiversity Study</span>
-                            <a href="#" class="text-brand-secondary font-bold text-sm hover:text-brand-primary transition-colors flex items-center gap-1">Read Full Story <i class="fa-solid fa-arrow-right"></i></a>
+                            <span class="text-brand-secondary font-bold text-sm hover:text-brand-primary transition-colors flex items-center gap-1">Read Full Story <i class="fa-solid fa-arrow-right"></i></span>
                         </div>
                     </div>
                 </div>
@@ -372,15 +418,15 @@
     <section id="before-after" class="py-24 px-4 bg-white relative scroll-mt-40 overflow-hidden">
         <div class="glow-blob bg-brand-highlight opacity-[0.05] top-1/2 right-0 translate-x-1/2 -translate-y-1/2"></div>
         <div class="max-w-7xl mx-auto relative z-10">
-            <div class="text-center mb-16 reveal">
-                <h3 class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-2">Measurable Change</h3>
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-primary mb-4">Before & After Initiatives</h2>
-                <div class="w-24 h-1 bg-gradient-to-r from-brand-accent to-brand-secondary mx-auto rounded-full"></div>
+            <div class="text-center mb-16">
+                <h3 class="reveal text-brand-accent font-bold tracking-wider uppercase text-sm mb-2">Measurable Change</h3>
+                <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-brand-primary mb-4">Before & After Initiatives</h2>
+                <div class="reveal w-24 h-1 bg-gradient-to-r from-brand-accent to-brand-secondary mx-auto rounded-full" style="transition-delay: 100ms;"></div>
             </div>
 
             <div class="space-y-12">
                 <!-- Case 1: STEM -->
-                <div class="split-card bg-white shadow-xl reveal rounded-3xl border-0 overflow-hidden hover:shadow-2xl transition-shadow">
+                <div class="split-card bg-white shadow-xl reveal rounded-3xl border border-slate-200 overflow-hidden hover:shadow-2xl hover:border-brand-primary/30 transition-all cursor-default">
                     <!-- Before -->
                     <div class="bg-slate-50 p-8 lg:p-12 border-b md:border-b-0 md:border-r border-slate-200">
                         <div class="inline-block px-4 py-1.5 bg-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider rounded-md mb-6">The Challenge (Before)</div>
@@ -407,7 +453,7 @@
                 </div>
 
                 <!-- Case 2: Health -->
-                <div class="split-card bg-white shadow-xl reveal rounded-3xl border-0 overflow-hidden hover:shadow-2xl transition-shadow" style="transition-delay: 100ms;">
+                <div class="split-card bg-white shadow-xl reveal rounded-3xl border border-slate-200 overflow-hidden hover:shadow-2xl hover:border-brand-secondary/30 transition-all cursor-default" style="transition-delay: 100ms;">
                     <!-- Before -->
                     <div class="bg-slate-50 p-8 lg:p-12 border-b md:border-b-0 md:border-r border-slate-200">
                         <div class="inline-block px-4 py-1.5 bg-slate-200 text-slate-600 text-xs font-bold uppercase tracking-wider rounded-md mb-6">The Challenge (Before)</div>
@@ -440,15 +486,15 @@
     <section id="testimonials" class="py-24 px-4 bg-brand-bg relative border-t border-slate-200 scroll-mt-40 overflow-hidden">
         <div class="absolute inset-0 research-grid opacity-30 z-0"></div>
         <div class="max-w-7xl mx-auto relative z-10">
-            <div class="text-center mb-16 reveal">
-                <i class="fa-solid fa-quote-right text-4xl text-brand-accent/20 mb-4"></i>
-                <h2 class="text-3xl md:text-4xl font-bold text-brand-dark">Voices of the Community</h2>
-                <p class="text-slate-500 mt-4 max-w-2xl mx-auto text-lg">Feedback from our beneficiaries, local partners, and government officials.</p>
+            <div class="text-center mb-16">
+                <i class="reveal fa-solid fa-quote-right text-4xl text-brand-accent/20 mb-4"></i>
+                <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-brand-dark">Voices of the Community</h2>
+                <p class="reveal text-slate-500 mt-4 max-w-2xl mx-auto text-lg" style="transition-delay: 100ms;">Feedback from our beneficiaries, local partners, and government officials.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Testimonial 1 -->
-                <div class="glass-card p-8 rounded-3xl relative reveal shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all">
+                <div class="glass-card p-8 rounded-3xl relative reveal">
                     <div class="absolute -top-6 left-8 w-12 h-12 bg-gradient-to-br from-brand-primary to-blue-600 text-white rounded-full flex items-center justify-center text-lg shadow-lg">
                         <i class="fa-solid fa-quote-left"></i>
                     </div>
@@ -470,7 +516,7 @@
                 </div>
 
                 <!-- Testimonial 2 -->
-                <div class="glass-card p-8 rounded-3xl relative reveal shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all" style="transition-delay: 100ms;">
+                <div class="glass-card p-8 rounded-3xl relative reveal" style="transition-delay: 100ms;">
                     <div class="absolute -top-6 left-8 w-12 h-12 bg-gradient-to-br from-brand-secondary to-emerald-600 text-white rounded-full flex items-center justify-center text-lg shadow-lg">
                         <i class="fa-solid fa-quote-left"></i>
                     </div>
@@ -492,7 +538,7 @@
                 </div>
 
                 <!-- Testimonial 3 -->
-                <div class="glass-card p-8 rounded-3xl relative reveal shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all" style="transition-delay: 200ms;">
+                <div class="glass-card p-8 rounded-3xl relative reveal" style="transition-delay: 200ms;">
                     <div class="absolute -top-6 left-8 w-12 h-12 bg-gradient-to-br from-brand-accent to-indigo-600 text-white rounded-full flex items-center justify-center text-lg shadow-lg">
                         <i class="fa-solid fa-quote-left"></i>
                     </div>
@@ -516,28 +562,8 @@
         </div>
     </section>
 
-    <!-- Call to Action Banner -->
-    <section class="py-24 bg-brand-primary text-center px-4 relative overflow-hidden">
-        <div class="glow-blob bg-brand-accent top-0 left-[-10%] scale-150 opacity-20"></div>
-        <div class="glow-blob bg-brand-secondary bottom-0 right-[-10%] scale-150 opacity-20"></div>
-        <div class="absolute inset-0 research-grid opacity-10" style="background-image: radial-gradient(#FFFFFF 1px, transparent 1px);"></div>
-        
-        <div class="max-w-3xl mx-auto relative z-10 reveal">
-            <h2 class="text-4xl md:text-5xl font-black text-white mb-6">Amplify Our Impact</h2>
-            <p class="text-white/80 mb-10 text-lg">Your support translates directly into measurable change. Join us in scaling these successful models across Nepal.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-6">
-                <a href="donate.html" class="bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold py-4 px-10 rounded-full shadow-2xl transition-transform hover:-translate-y-1">
-                    Donate Now
-                </a>
-                <a href="research.html" class="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-bold py-4 px-10 rounded-full backdrop-blur-md transition-transform hover:-translate-y-1">
-                    Read Our Reports
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Master Footer with Tight Spacing & Icons -->
-    <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
+    <!-- Corporate Footer -->
+    <footer class="bg-gray-900 text-slate-400 py-12 border-t border-slate-800 text-left">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1">
                 <div class="flex items-center gap-2 mb-3">
@@ -546,7 +572,7 @@
                     </div>
                     <span class="font-bold text-xl text-white">Nitya Bimba Sewa</span>
                 </div>
-                <p class="text-sm mb-4 leading-relaxed">Where scientific knowledge meets compassion. Registered SWC-affiliated NGO in Nepal.</p>
+                <p class="text-sm mb-4 leading-relaxed">A registered scientific consultancy and technological solutions enterprise based in Nepal.</p>
                 <div class="flex gap-3">
                     <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
                     <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-all shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
@@ -557,87 +583,230 @@
                 </div>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Navigation</h4>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Company</h4>
                 <ul class="space-y-2 text-sm font-medium text-left">
-                    <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
-                    <li><a href="team.html" class="hover:text-white transition-colors">Our Team</a></li>
-                    <li><a href="our-work.html" class="hover:text-white transition-colors">Core Pillars</a></li>
-                    <li><a href="projects.html" class="hover:text-white transition-colors">Initiatives</a></li>
-                    <li><a href="impact.html" class="text-white transition-colors">Our Impact</a></li>
+                    <li><a href="about.html" class="hover:text-white transition-colors">Who We Are</a></li>
+                    <li><a href="team.html" class="hover:text-white transition-colors">Leadership</a></li>
+                    <li><a href="our-work.html" class="hover:text-white transition-colors">Our Services</a></li>
+                    <li><a href="projects.html" class="hover:text-white transition-colors">Client Portfolio</a></li>
+                    <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Insights & Legal</h4>
                 <ul class="space-y-2 text-sm font-medium text-left">
-                    <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
-                    <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
-                    <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
-                    <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Legal & Connect</h4>
-                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li><a href="research.html" class="hover:text-white transition-colors">Whitepapers</a></li>
+                    <li><a href="news.html" class="hover:text-white transition-colors">Newsroom</a></li>
+                    <li><a href="transparency.html" class="hover:text-white transition-colors">Corporate Governance</a></li>
                     <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
                     <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
-                    <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
                 </ul>
-                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-all">Donate to a Project</a>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Contact Us</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
+                    <li class="flex items-start gap-2"><i class="fa-solid fa-location-dot mt-1 text-brand-accent"></i> Kathmandu, Nepal</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-envelope text-brand-accent"></i> corporate@nityabimbasewa.com</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-brand-accent"></i> +977-XXXXXXXXXX</li>
+                </ul>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
     </footer>
 
     <!-- GSAP Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.3/umd/index.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+
     <script>
+        // Global scope function for inline onclick handlers
+        function toggleSearch() {
+            const overlay = document.getElementById("search-overlay");
+            const searchInput = document.getElementById("global-search");
+
+            if (overlay.classList.contains("active")) {
+                overlay.classList.remove("active");
+                document.body.style.overflow = "auto"; // Restore page scrolling
+            } else {
+                overlay.classList.add("active");
+                document.body.style.overflow = "hidden"; // Lock page scrolling
+                if (searchInput) {
+                    searchInput.value = "";
+                    setTimeout(() => searchInput.focus(), 100);
+                }
+            }
+        }
+
+        // Close overlay if user presses Escape key
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                const overlay = document.getElementById("search-overlay");
+                if (overlay && overlay.classList.contains("active")) toggleSearch();
+            }
+        });
+
         document.addEventListener("DOMContentLoaded", (event) => {
             gsap.registerPlugin(ScrollTrigger);
 
-            // 1. Hero Entrance
-            gsap.set(".hero-elem", { visibility: "visible" });
-            gsap.fromTo('.hero-elem', 
-                { y: 40, opacity: 0 }, 
-                { y: 0, opacity: 1, duration: 1.2, stagger: 0.2, ease: "power4.out", delay: 0.3 }
+            // --- INITIALIZE LENIS (SUPER SILKY CONFIG) ---
+            const lenis = new Lenis({
+                lerp: 0.05, 
+                wheelMultiplier: 0.8, 
+                smoothWheel: true, 
+                normalizeWheel: true, 
+                smoothTouch: false, 
+            });
+
+            // Sync Lenis with GSAP ScrollTrigger
+            lenis.on('scroll', ScrollTrigger.update);
+
+            gsap.ticker.add((time)=>{
+                lenis.raf(time * 1000);
+            });
+            
+            gsap.ticker.lagSmoothing(0);
+
+            // Listen for "Enter" key on the overlay input to redirect to search.html
+            const globalSearchInput = document.getElementById("global-search");
+            if (globalSearchInput) {
+                globalSearchInput.addEventListener("keypress", function (e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        const query = this.value.trim();
+                        if (query.length > 0) {
+                            window.location.href = "search.html?q=" + encodeURIComponent(query);
+                        }
+                    }
+                });
+            }
+
+            // 1. Initial Hero Animation
+            const heroElements = document.querySelectorAll(".hero-elem");
+            gsap.set(heroElements, { visibility: "visible" });
+            gsap.fromTo(
+              heroElements,
+              { y: 30, opacity: 0 },
+              {
+                y: 0,
+                opacity: 1,
+                duration: 1,
+                stagger: 0.15,
+                ease: "power3.out",
+                delay: 0.2,
+                onStart: function() {
+                  heroElements.forEach(el => el.style.transitionProperty = 'none');
+                },
+                onComplete: function() {
+                  heroElements.forEach(el => {
+                    el.style.transitionProperty = '';
+                    gsap.set(el, { clearProps: "transform" });
+                  });
+                }
+              }
             );
 
             // 2. Scroll Reveal Animations
             gsap.set(".reveal", { visibility: "visible" });
             const revealElements = document.querySelectorAll(".reveal");
             revealElements.forEach((elem) => {
-                gsap.fromTo(elem,
-                    { y: 50, opacity: 0 },
-                    {
-                        y: 0,
-                        opacity: 1,
-                        duration: 0.8,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: elem,
-                            start: "top 85%", 
-                            toggleActions: "play none none reverse"
-                        }
-                    }
-                );
+              let delayTime = 0;
+              if (elem.style.transitionDelay) {
+                delayTime = parseFloat(elem.style.transitionDelay) / 1000;
+                elem.style.transitionDelay = ''; 
+              }
+
+              gsap.fromTo(
+                elem,
+                { y: 40, opacity: 0 },
+                {
+                  y: 0,
+                  opacity: 1,
+                  duration: 0.8,
+                  delay: delayTime,
+                  ease: "power2.out",
+                  scrollTrigger: {
+                    trigger: elem,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse",
+                  },
+                  onStart: () => {
+                    elem.style.transitionProperty = 'none';
+                  },
+                  onComplete: () => {
+                    elem.style.transitionProperty = '';
+                    gsap.set(elem, { clearProps: "transform" });
+                  }
+                }
+              );
             });
 
-            // 3. Number Counter Animation
+            // 3. Kinetic Typography (Bulletproof Split Text)
+            const kineticTexts = document.querySelectorAll(".kinetic-text");
+            
+            // Force the parent wrapper to be visible so we never have a blank screen
+            gsap.set(kineticTexts, { visibility: "visible", opacity: 1 });
+            
+            if (typeof SplitType !== 'undefined') {
+                kineticTexts.forEach((text) => {
+                    const splitText = new SplitType(text, { types: 'words' });
+                    
+                    gsap.fromTo(
+                        splitText.words,
+                        { y: 30, opacity: 0 },
+                        {
+                            y: 0,
+                            opacity: 1,
+                            duration: 0.8,
+                            stagger: 0.05,
+                            ease: "power3.out",
+                            scrollTrigger: {
+                                trigger: text,
+                                start: "top 85%",
+                                toggleActions: "play none none reverse"
+                            }
+                        }
+                    );
+                });
+            } else {
+                // FALLBACK: If an adblocker blocks SplitType, gracefully fade in the entire text block natively
+                kineticTexts.forEach((text) => {
+                    gsap.fromTo(
+                        text,
+                        { y: 30, opacity: 0 },
+                        {
+                            y: 0,
+                            opacity: 1,
+                            duration: 1,
+                            ease: "power3.out",
+                            scrollTrigger: {
+                                trigger: text,
+                                start: "top 85%",
+                                toggleActions: "play none none reverse"
+                            }
+                        }
+                    );
+                });
+            }
+
+            // 4. Number Counter Animation (Using proxy object fix)
             const numbers = document.querySelectorAll(".stat-number");
             numbers.forEach((num) => {
                 const target = parseInt(num.getAttribute("data-target"));
+                let counter = { val: 0 };
                 ScrollTrigger.create({
                     trigger: "#statistics",
                     start: "top 75%",
                     onEnter: () => {
-                        gsap.to(num, {
-                            innerHTML: target,
+                        gsap.to(counter, {
+                            val: target,
                             duration: 2.5,
                             ease: "power1.out",
-                            snap: { innerHTML: 1 },
                             onUpdate: function() {
-                                num.innerHTML = Math.round(num.innerHTML).toLocaleString();
+                                num.innerHTML = Math.round(counter.val).toLocaleString();
                             }
                         });
                     },
@@ -645,76 +814,105 @@
                 });
             });
 
-            // Mobile Menu Toggle
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            if(mobileBtn && mobileMenu) {
-                mobileBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
+            // Mobile Menu Toggle with Animation & Scroll Lock
+            const mobileBtn = document.getElementById("mobile-menu-btn");
+            const mobileMenu = document.getElementById("mobile-menu");
+
+            if (mobileBtn && mobileMenu) {
+              const mobileIcon = mobileBtn.querySelector("i");
+              let isMenuOpen = false;
+
+              function toggleMobileMenu() {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                  mobileMenu.classList.remove("opacity-0", "invisible", "-translate-y-4");
+                  document.body.style.overflow = "hidden";
+                  if (mobileIcon) {
+                    mobileIcon.classList.remove("fa-bars");
+                    mobileIcon.classList.add("fa-xmark");
+                  }
+                } else {
+                  mobileMenu.classList.add("opacity-0", "invisible", "-translate-y-4");
+                  document.body.style.overflow = ""; 
+                  if (mobileIcon) {
+                    mobileIcon.classList.remove("fa-xmark");
+                    mobileIcon.classList.add("fa-bars");
+                  }
+                }
+              }
+
+              mobileBtn.addEventListener("click", toggleMobileMenu);
+
+              const mobileLinks = mobileMenu.querySelectorAll("a");
+              mobileLinks.forEach((link) => {
+                link.addEventListener("click", () => {
+                  if (isMenuOpen) toggleMobileMenu();
                 });
+              });
             }
 
             // Navbar background effect on scroll
-            const navbar = document.getElementById('navbar');
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 50) {
-                    navbar.classList.add('shadow-xl', 'border-brand-primary/5');
-                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-                } else {
-                    navbar.classList.remove('shadow-xl', 'border-brand-primary/5');
-                    navbar.style.background = 'rgba(249, 250, 251, 0.85)';
-                }
+            const navbar = document.getElementById("navbar");
+            window.addEventListener("scroll", () => {
+              if (window.scrollY > 50) {
+                navbar.classList.add("shadow-sm");
+                navbar.style.background = "rgba(255, 255, 255, 0.98)";
+              } else {
+                navbar.classList.remove("shadow-sm");
+                navbar.style.background = "rgba(249, 250, 251, 0.85)";
+              }
             });
 
             // --- CATEGORY NAV LOGIC (SCROLLSPY & CLICK) ---
             const sections = document.querySelectorAll("section[id]");
             const navLinks = document.querySelectorAll(".category-nav-link");
 
-            // 1. Smooth Click Interception
-            navLinks.forEach(link => {
-                link.addEventListener("click", function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute("href");
-                    const targetSection = document.querySelector(targetId);
-                    
-                    if (targetSection) {
-                        // Immediately update active styling
-                        navLinks.forEach(l => {
-                            l.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
-                            l.classList.add("text-slate-500");
-                        });
-                        this.classList.remove("text-slate-500");
-                        this.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+            if(navLinks.length > 0 && sections.length > 0) {
+                // 1. Smooth Click Interception
+                navLinks.forEach(link => {
+                    link.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        const targetId = this.getAttribute("href");
+                        const targetSection = document.querySelector(targetId);
+                        
+                        if (targetSection) {
+                            // Immediately update active styling
+                            navLinks.forEach(l => {
+                                l.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                                l.classList.add("text-slate-500");
+                            });
+                            this.classList.remove("text-slate-500");
+                            this.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
 
-                        // Smooth scroll to the section
-                        targetSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
-
-            // 2. ScrollSpy (Updates nav when naturally scrolling)
-            window.addEventListener("scroll", () => {
-                let current = "";
-                sections.forEach((section) => {
-                    const sectionTop = section.offsetTop;
-                    // Offset buffer to trigger nav change just before hitting the exact top
-                    if (window.scrollY >= (sectionTop - 250)) {
-                        current = section.getAttribute("id");
-                    }
-                });
-
-                if (current) {
-                    navLinks.forEach((link) => {
-                        link.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
-                        link.classList.add("text-slate-500");
-                        if (link.getAttribute("href").includes(current)) {
-                            link.classList.remove("text-slate-500");
-                            link.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            // Smooth scroll to the section using Lenis
+                            lenis.scrollTo(targetSection, { offset: -160, duration: 1.5 });
                         }
                     });
-                }
-            });
+                });
+
+                // 2. ScrollSpy (Updates nav when naturally scrolling)
+                window.addEventListener("scroll", () => {
+                    let current = "";
+                    sections.forEach((section) => {
+                        const sectionTop = section.offsetTop;
+                        // Offset buffer to trigger nav change just before hitting the exact top
+                        if (window.scrollY >= (sectionTop - 250)) {
+                            current = section.getAttribute("id");
+                        }
+                    });
+
+                    if (current) {
+                        navLinks.forEach((link) => {
+                            link.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            link.classList.add("text-slate-500");
+                            if (link.getAttribute("href").includes(current)) {
+                                link.classList.remove("text-slate-500");
+                                link.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
+                            }
+                        });
+                    }
+                });
+            }
         });
     </script>
 </body>

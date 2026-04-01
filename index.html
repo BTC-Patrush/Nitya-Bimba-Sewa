@@ -16,7 +16,7 @@
     <!-- FontAwesome for Icons -->
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
 
     <!-- Tailwind CSS -->
@@ -64,20 +64,30 @@
         backdrop-filter: blur(8px);
         border: 1px solid rgba(226, 232, 240, 1);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        /* Super silky 0.6s easing for the smooth hover enforced globally */
+        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
       }
 
       .glass-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(99, 102, 241, 0.4);
-        box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08);
+        transform: translateY(-8px);
+        border-color: rgba(99, 102, 241, 0.4) !important;
+        box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15) !important;
       }
 
-      .hero-bg {
+      /* Parallax Background Layer */
+      .hero-bg-layer {
+        position: absolute;
+        /* Oversize the background so it has room to move during parallax */
+        top: -15%;
+        bottom: -15%;
+        left: -5%;
+        right: -5%;
         background:
           linear-gradient(rgba(15, 23, 42, 0.8), rgba(30, 58, 138, 0.7)),
           url("https://images.unsplash.com/photo-1532094349884-543bc11b234d?q=80&w=2070&auto=format&fit=crop")
-            center/cover fixed;
+            center/cover;
+        z-index: 0;
+        will-change: transform;
       }
 
       /* Subtle dot grid for the research feel */
@@ -448,13 +458,17 @@
 
     <!-- Hero Section -->
     <section
-      class="relative min-h-screen flex items-center justify-center hero-bg text-center px-4 pt-20 overflow-hidden"
+      id="hero-section"
+      class="relative min-h-screen flex items-center justify-center text-center px-4 pt-20 overflow-hidden"
     >
-      <!-- Abstract Glow Blobs -->
-      <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
-      <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
+      <!-- Parallax Background Layer -->
+      <div class="hero-bg-layer" id="hero-bg-layer"></div>
 
-      <div class="max-w-4xl mx-auto z-10">
+      <!-- Abstract Glow Blobs -->
+      <div class="glow-blob bg-brand-accent top-[10%] left-[5%] z-0"></div>
+      <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%] z-0"></div>
+
+      <div class="max-w-4xl mx-auto z-10 relative">
         <div
           class="hero-elem inline-block px-4 py-1.5 rounded-full border border-white/30 bg-white/10 text-white font-medium text-sm mb-6 backdrop-blur-sm"
         >
@@ -472,7 +486,7 @@
           class="hero-elem text-lg md:text-xl text-slate-200 mb-10 max-w-2xl mx-auto font-light leading-relaxed"
         >
           Advancing evidence-based solutions for Nepal’s communities. Empowering
-          youth, women, and vulnerable populations through data-driven welfare
+          	individual and communities through scientific 
           and holistic education.
         </p>
         <div class="hero-elem flex flex-col sm:flex-row justify-center gap-4">
@@ -493,7 +507,7 @@
 
       <!-- Scroll indicator -->
       <div
-        class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hero-elem text-white/70 text-2xl"
+        class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce hero-elem text-white/70 text-2xl z-10"
       >
         <i class="fa-solid fa-arrow-down"></i>
       </div>
@@ -520,7 +534,7 @@
           <span class="text-gradient-primary font-bold">rational scientific research</span> 
           and 
           <span class="text-brand-secondary font-bold">grassroots social service</span>. 
-          We believe that progress is only sustainable when guided by data and fueled by empathy.
+          We believe that progress is only sustainable when guided by scientific knowledge and fueled by empathy.
         </h2>
       </div>
     </section>
@@ -569,8 +583,7 @@
               STEM & Education
             </h3>
             <p class="text-slate-600 text-sm leading-relaxed">
-              Demystifying science for the next generation through hands-on
-              community labs and interactive academic workshops.
+              	Promoting science through scientific work and interactive academic workshops.
             </p>
           </a>
 
@@ -592,7 +605,7 @@
               Environmental Resilience
             </h3>
             <p class="text-slate-600 text-sm leading-relaxed">
-              Research-led biodiversity conservation, sustainable forestry, and
+              Promote biodiversity conservation, sustainable forestry, and
               empowering farmers with eco-friendly agriculture tech.
             </p>
           </a>
@@ -615,8 +628,7 @@
               Community Wellbeing
             </h3>
             <p class="text-slate-600 text-sm leading-relaxed">
-              Holistic health interventions, free medical camps, and dedicated
-              trauma-informed mental health counseling.
+              Emergency support team, advocate for quality health, biodegradable products and waste management.
             </p>
           </a>
 
@@ -638,8 +650,7 @@
               Leadership & Justice
             </h3>
             <p class="text-slate-600 text-sm leading-relaxed">
-              Empowering women and youth through digital literacy campaigns,
-              vocational training, and leadership development.
+              Empowering society through digital platform, vocational training, and communication hub.
             </p>
           </a>
         </div>
@@ -734,7 +745,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <!-- Publication 1 -->
           <div
-            class="glass-card border border-slate-200 p-6 rounded-2xl shadow-sm hover:border-brand-accent/50 transition-all flex flex-col group reveal"
+            class="glass-card border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col group reveal"
           >
             <div class="flex items-start justify-between mb-4">
               <div
@@ -764,7 +775,7 @@
           </div>
           <!-- Publication 2 -->
           <div
-            class="glass-card border border-slate-200 p-6 rounded-2xl shadow-sm hover:border-brand-secondary/50 transition-all flex flex-col group reveal"
+            class="glass-card border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col group reveal"
             style="transition-delay: 150ms;"
           >
             <div class="flex items-start justify-between mb-4">
@@ -795,7 +806,7 @@
           </div>
           <!-- Publication 3 -->
           <div
-            class="glass-card border border-slate-200 p-6 rounded-2xl shadow-sm hover:border-brand-accent/50 transition-all flex flex-col group reveal"
+            class="glass-card border border-slate-200 p-6 rounded-2xl shadow-sm flex flex-col group reveal"
             style="transition-delay: 300ms;"
           >
             <div class="flex items-start justify-between mb-4">
@@ -859,7 +870,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
           <!-- Project Card 1 -->
           <div
-            class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 reveal cursor-pointer flex flex-col h-full group"
+            class="glass-card rounded-2xl overflow-hidden shadow-sm reveal cursor-pointer flex flex-col h-full group"
           >
             <div class="relative h-56 overflow-hidden">
               <div
@@ -904,7 +915,7 @@
 
           <!-- Project Card 2 -->
           <div
-            class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 reveal cursor-pointer flex flex-col h-full group"
+            class="glass-card rounded-2xl overflow-hidden shadow-sm reveal cursor-pointer flex flex-col h-full group"
             style="transition-delay: 100ms"
           >
             <div class="relative h-56 overflow-hidden">
@@ -951,7 +962,7 @@
 
           <!-- Project Card 3 -->
           <div
-            class="glass-card rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 reveal cursor-pointer flex flex-col h-full group"
+            class="glass-card rounded-2xl overflow-hidden shadow-sm reveal cursor-pointer flex flex-col h-full group"
             style="transition-delay: 200ms"
           >
             <div class="relative h-56 overflow-hidden">
@@ -1409,6 +1420,18 @@
             }
           }
         );
+
+        // Hero Parallax Effect
+        gsap.to("#hero-bg-layer", {
+            yPercent: 30,
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#hero-section",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
 
         // 2. Scroll Reveal Animations (Standard fades)
         gsap.set(".reveal", { visibility: "visible" });

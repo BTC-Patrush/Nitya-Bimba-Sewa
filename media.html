@@ -64,9 +64,18 @@
             box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15); 
         }
 
-        .hero-inner-bg {
+        /* Fixed GSAP parallax implementation for better performance and mobile support */
+        .hero-bg-layer {
+            position: absolute;
+            top: -20%;
+            left: -5%;
+            width: 110%;
+            height: 140%;
             background: linear-gradient(rgba(30, 58, 138, 0.95), rgba(30, 58, 138, 0.85)), 
-                        url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop') center/cover fixed;
+                        url('https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=2074&auto=format&fit=crop') center/cover no-repeat;
+            z-index: 0;
+            pointer-events: none;
+            will-change: transform;
         }
 
         .research-grid {
@@ -254,7 +263,7 @@
                         </div>
                     </div>
 
-                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact Us</a>
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact</a>
                     
                     <!-- Desktop Search Button -->
                     <button onclick="toggleSearch()" class="px-5 py-2 rounded-full border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all flex items-center gap-2 font-bold text-sm shadow-sm hover:shadow-md group">
@@ -264,7 +273,7 @@
 
                 <!-- Mobile menu button & Search -->
                 <div class="lg:hidden flex items-center gap-3">
-                    <button onclick="toggleSearch()" class="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-all shadow-sm">
+                    <button onclick="toggleSearch()" class="w-10 h-10 rounded-full bg-brand-primary border border-brand-primary text-white flex items-center justify-center shadow-md">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </button>
                     <button id="mobile-menu-btn" class="text-brand-primary hover:text-brand-accent focus:outline-none p-2 w-10 h-10 flex items-center justify-center">
@@ -281,9 +290,9 @@
                 
                 <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">About</span>
                     <div class="flex flex-col space-y-3 pl-2">
-                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">Who We Are</a>
-                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Leadership Team</a>
-                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Corporate Governance</a>
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Transparency</a>
                         <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
                     </div>
                 </div>
@@ -332,13 +341,14 @@
         </div>
     </div>
 
-    <!-- Inner Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
-        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
-        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
-        <div class="absolute inset-0 research-grid opacity-20"></div>
+    <!-- Inner Hero Section with Parallax -->
+    <section id="hero-section" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center text-center px-4 overflow-hidden">
+        <div class="hero-bg-layer"></div>
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%] parallax-blob"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%] parallax-blob"></div>
+        <div class="absolute inset-0 research-grid opacity-20 z-0"></div>
         
-        <div class="max-w-5xl mx-auto z-10 reveal">
+        <div class="max-w-5xl mx-auto z-10 relative reveal">
             <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Visualizing Change</h3>
             <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-4 tracking-tight">
                 Media & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Gallery.</span>
@@ -846,6 +856,33 @@
                     );
                 });
             }
+
+            // --- GSAP Parallax Effects (Smooth background & blobs) ---
+            gsap.to(".hero-bg-layer", {
+                yPercent: 20,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            const parallaxBlobs = document.querySelectorAll(".parallax-blob");
+            parallaxBlobs.forEach((blob, index) => {
+                const direction = index % 2 === 0 ? 1 : -1;
+                gsap.to(blob, {
+                    y: 120 * direction,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: blob.parentElement,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            });
 
             // Mobile Menu Toggle
             const mobileBtn = document.getElementById("mobile-menu-btn");

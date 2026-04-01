@@ -71,9 +71,18 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3) !important; 
         }
 
-        .hero-inner-bg {
+        /* Parallax Background Layer */
+        .hero-bg-layer {
+            position: absolute;
+            /* Oversize the background so it has room to move during parallax */
+            top: -15%;
+            bottom: -15%;
+            left: -5%;
+            right: -5%;
             background: linear-gradient(rgba(30, 58, 138, 0.95), rgba(30, 58, 138, 0.85)), 
-                        url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+                        url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2070&auto=format&fit=crop') center/cover;
+            z-index: 0;
+            will-change: transform;
         }
 
         .research-grid {
@@ -212,16 +221,16 @@
             <div class="flex flex-col px-6 py-6 space-y-4 divide-y divide-slate-100">
                 <a href="index.html" class="text-brand-primary font-bold pt-2">Home</a>
                 
-                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">About</span>
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Organization</span>
                     <div class="flex flex-col space-y-3 pl-2">
-                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">Who We Are</a>
-                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Leadership Team</a>
-                        <a href="transparency.html" class="text-brand-accent text-sm font-bold">Corporate Governance</a>
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
+                        <a href="transparency.html" class="text-brand-accent text-sm font-bold">Transparency</a>
                         <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
                     </div>
                 </div>
 
-                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Our Work</span>
+                <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">Work</span>
                     <div class="flex flex-col space-y-3 pl-2">
                         <a href="our-work.html" class="text-slate-600 hover:text-brand-accent text-sm">Core Pillars</a>
                         <a href="projects.html" class="text-slate-600 hover:text-brand-accent text-sm">Projects</a>
@@ -244,7 +253,11 @@
                     </div>
                 </div>
 
-                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4 pb-4">Contact Us</a>
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4">Contact</a>
+                
+                <div class="pt-6 pb-2">
+                    <a href="donate.html" class="bg-brand-highlight flex justify-center text-white px-5 py-3 rounded-full hover:bg-orange-600 shadow-md font-bold">Donate Now</a>
+                </div>
             </div>
         </div>
     </nav>
@@ -256,22 +269,26 @@
         </button>
         <div class="w-full max-w-3xl relative">
             <i class="fa-solid fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-2xl text-slate-400"></i>
-            <input type="text" id="global-search" placeholder="Search services, research, or news..." class="w-full bg-transparent border-b-2 border-slate-600 focus:border-brand-accent text-white text-3xl md:text-5xl py-6 pl-16 pr-4 focus:outline-none transition-colors placeholder-slate-600">
+            <input type="text" id="global-search" placeholder="Search projects, research, or news..." class="w-full bg-transparent border-b-2 border-slate-600 focus:border-brand-accent text-white text-3xl md:text-5xl py-6 pl-16 pr-4 focus:outline-none transition-colors placeholder-slate-600">
         </div>
         <div class="w-full max-w-3xl mt-8 flex flex-wrap gap-3">
             <span class="text-slate-400 text-sm mr-2 mt-1">Popular:</span>
             <a href="search.html?q=Environment" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">Environmental Conservation</a>
             <a href="search.html?q=STEM" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">STEM Labs</a>
+            <a href="search.html?q=2026 Reports" class="px-4 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-white text-sm transition-colors border border-white/10">2026 Reports</a>
         </div>
     </div>
 
     <!-- Inner Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
-        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
-        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
-        <div class="absolute inset-0 research-grid opacity-20"></div>
+    <section id="hero-section" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center text-center px-4 overflow-hidden">
+        <!-- Parallax Background Layer -->
+        <div class="hero-bg-layer" id="hero-bg-layer"></div>
+
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%] z-0"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%] z-0"></div>
+        <div class="absolute inset-0 research-grid opacity-20 z-0"></div>
         
-        <div class="max-w-5xl mx-auto z-10 reveal">
+        <div class="max-w-5xl mx-auto z-10 relative">
             <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Trust & Accountability</h3>
             <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
                 Institutional <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Transparency.</span>
@@ -357,7 +374,7 @@
                     <h4 class="text-xl font-bold text-brand-dark mb-4">Official Financial Statements</h4>
                     <p class="text-slate-600 mb-6">Download our complete, independently audited financial statements and tax filings for full transparency.</p>
                     
-                    <a href="#" class="glass-card flex items-center justify-between p-5 rounded-xl hover:border-brand-primary group">
+                    <a href="#" class="glass-card flex items-center justify-between p-5 rounded-xl hover:border-brand-primary transition-colors group">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10 rounded-lg bg-blue-50 text-brand-primary flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-file-invoice-dollar"></i>
@@ -370,7 +387,7 @@
                         <i class="fa-solid fa-download text-slate-300 group-hover:text-brand-primary transition-colors"></i>
                     </a>
                     
-                    <a href="#" class="glass-card flex items-center justify-between p-5 rounded-xl hover:border-brand-primary group">
+                    <a href="#" class="glass-card flex items-center justify-between p-5 rounded-xl hover:border-brand-primary transition-colors group">
                         <div class="flex items-center gap-4">
                             <div class="w-10 h-10 rounded-lg bg-blue-50 text-brand-primary flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
                                 <i class="fa-solid fa-file-invoice-dollar"></i>
@@ -468,7 +485,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Policy Card -->
-                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md reveal">
+                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md transition-colors reveal">
                     <div class="w-12 h-12 rounded-full bg-indigo-100 text-brand-accent flex items-center justify-center text-xl flex-shrink-0">
                         <i class="fa-solid fa-child-reaching"></i>
                     </div>
@@ -480,7 +497,7 @@
                 </div>
 
                 <!-- Policy Card -->
-                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md reveal" style="transition-delay: 100ms;">
+                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md transition-colors reveal" style="transition-delay: 100ms;">
                     <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xl flex-shrink-0">
                         <i class="fa-solid fa-ban"></i>
                     </div>
@@ -492,7 +509,7 @@
                 </div>
 
                 <!-- Policy Card -->
-                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md reveal">
+                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md transition-colors reveal">
                     <div class="w-12 h-12 rounded-full bg-emerald-100 text-brand-secondary flex items-center justify-center text-xl flex-shrink-0">
                         <i class="fa-solid fa-leaf"></i>
                     </div>
@@ -504,7 +521,7 @@
                 </div>
 
                 <!-- Policy Card -->
-                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md reveal" style="transition-delay: 100ms;">
+                <div class="flex items-start gap-4 glass-card p-6 rounded-2xl border border-slate-200 hover:border-brand-accent/50 hover:shadow-md transition-colors reveal" style="transition-delay: 100ms;">
                     <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center text-xl flex-shrink-0">
                         <i class="fa-solid fa-scale-balanced"></i>
                     </div>
@@ -687,15 +704,8 @@
               heroElements,
               { y: 30, opacity: 0 },
               {
-                y: 0,
-                opacity: 1,
-                duration: 1.2,
-                stagger: 0.15,
-                ease: "power3.out",
-                delay: 0.2,
-                onStart: function() {
-                  heroElements.forEach(el => el.style.transitionProperty = 'none');
-                },
+                y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2,
+                onStart: function() { heroElements.forEach(el => el.style.transitionProperty = 'none'); },
                 onComplete: function() {
                   heroElements.forEach(el => {
                     el.style.transitionProperty = '';
@@ -705,7 +715,19 @@
               }
             );
 
-            // 2. Scroll Reveal Animations (Standard fades)
+            // Hero Parallax Effect
+            gsap.to("#hero-bg-layer", {
+                yPercent: 30,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // 2. Scroll Reveal Animations
             gsap.set(".reveal", { visibility: "visible" });
             const revealElements = document.querySelectorAll(".reveal");
             revealElements.forEach((elem) => {

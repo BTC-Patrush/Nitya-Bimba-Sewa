@@ -62,9 +62,18 @@
             box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15); 
         }
 
-        .hero-inner-bg {
+        /* Fixed GSAP parallax implementation for better performance and mobile support */
+        .hero-bg-layer {
+            position: absolute;
+            top: -20%;
+            left: -5%;
+            width: 110%;
+            height: 140%;
             background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.85)), 
-                        url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop') center/cover fixed;
+                        url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=2084&auto=format&fit=crop') center/cover no-repeat;
+            z-index: 0;
+            pointer-events: none;
+            will-change: transform;
         }
 
         .research-grid {
@@ -270,18 +279,19 @@
         </div>
     </div>
 
-    <!-- Inner Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
-        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
-        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
-        <div class="absolute inset-0 research-grid opacity-20"></div>
+    <!-- Inner Hero Section with Parallax -->
+    <section id="hero-section" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center text-center px-4 overflow-hidden">
+        <div class="hero-bg-layer"></div>
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%] parallax-blob"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%] parallax-blob"></div>
+        <div class="absolute inset-0 research-grid opacity-20 z-0"></div>
         
-        <div class="max-w-5xl mx-auto z-10 reveal">
-            <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Proving Effectiveness</h3>
+        <div class="max-w-5xl mx-auto z-10 relative">
+            <h3 class="reveal text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Proving Effectiveness</h3>
             <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
                 Measuring Our <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Impact.</span>
             </h1>
-            <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
+            <p class="reveal text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem" style="transition-delay: 100ms;">
                 We believe that good intentions are not enough. Explore the measurable results, human stories, and transformative changes driven by our evidence-based programs.
             </p>
         </div>
@@ -792,7 +802,34 @@
                 });
             }
 
-            // 4. Number Counter Animation (Using proxy object fix)
+            // 4. GSAP Parallax Effects (Smooth background & blobs)
+            gsap.to(".hero-bg-layer", {
+                yPercent: 20,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            const parallaxBlobs = document.querySelectorAll(".parallax-blob");
+            parallaxBlobs.forEach((blob, index) => {
+                const direction = index % 2 === 0 ? 1 : -1;
+                gsap.to(blob, {
+                    y: 120 * direction,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: blob.parentElement,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            });
+
+            // 5. Number Counter Animation (Using proxy object fix)
             const numbers = document.querySelectorAll(".stat-number");
             numbers.forEach((num) => {
                 const target = parseInt(num.getAttribute("data-target"));

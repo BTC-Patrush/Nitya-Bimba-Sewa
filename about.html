@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nitya Bimba Sewa | Science & Social Welfare</title>
+    <title>About Us | Nitya Bimba Sewa</title>
 
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -64,18 +64,28 @@
         backdrop-filter: blur(8px);
         border: 1px solid rgba(226, 232, 240, 1);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        /* Super silky 0.6s easing for the smooth hover enforced globally */
+        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
       }
 
       .glass-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(99, 102, 241, 0.4);
-        box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08);
+        transform: translateY(-8px);
+        border-color: rgba(99, 102, 241, 0.4) !important;
+        box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15) !important;
       }
 
-      .hero-inner-bg {
+      /* Parallax Background Layer */
+      .hero-bg-layer {
+        position: absolute;
+        /* Oversize the background so it has room to move during parallax */
+        top: -15%;
+        bottom: -15%;
+        left: -5%;
+        right: -5%;
         background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.8)), 
-                    url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+                    url('https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?q=80&w=2070&auto=format&fit=crop') center/cover;
+        z-index: 0;
+        will-change: transform;
       }
 
       /* Subtle dot grid for the research feel */
@@ -444,11 +454,15 @@
     </div>
 
     <!-- Inner Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
-        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
-        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
-        <div class="absolute inset-0 research-grid opacity-20"></div>
-        <div class="max-w-4xl mx-auto z-10">
+    <section id="hero-section" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center text-center px-4 overflow-hidden">
+        <!-- Parallax Background Layer -->
+        <div class="hero-bg-layer" id="hero-bg-layer"></div>
+
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%] z-0"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%] z-0"></div>
+        <div class="absolute inset-0 research-grid opacity-20 z-0"></div>
+        
+        <div class="max-w-5xl mx-auto z-10 relative">
             <!-- Kinetic Text Heading -->
             <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
                 Our Identity & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Purpose.</span>
@@ -470,16 +484,16 @@
                     <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-gradient-primary mb-6">Why We Were Founded</h2>
                     <div class="space-y-4 text-slate-600 leading-relaxed">
                         <p>Nitya Bimba Sewa (Eternal Reflection of Service) was born from a critical observation: while scientific advancement moves rapidly, its benefits often fail to reach grassroots communities. Similarly, traditional social welfare programs frequently operate without the benefit of rigorous data and sustainable, evidence-based methodologies.</p>
-                        <p>Founded by a passionate group of scientists, social workers, and community leaders, our organization was established to serve as a vital bridge. We exist to translate complex research into actionable community empowerment, ensuring that marginalized youth, women, and children are equipped to thrive in a rapidly changing world.</p>
+                        <p>Founded by a passionate group of scientists, social workers, and community leaders, our organization was established to serve as a vital bridge. We exist to translate complex research into actionable community empowerment, ensuring that individual and communities are equipped to thrive in a rapidly changing world.</p>
                         <p class="font-bold text-brand-dark border-l-4 border-brand-accent pl-4 mt-6 py-2 bg-slate-50">"We believe that true progress happens when the precision of science meets the empathy of social service."</p>
                     </div>
                 </div>
-                <div class="relative reveal">
+                <div class="relative reveal" style="transition-delay: 200ms;">
                     <div class="absolute -inset-4 bg-gradient-to-br from-brand-primary/20 to-brand-accent/20 rounded-3xl transform rotate-3 -z-10"></div>
                     <img src="https://images.unsplash.com/photo-1531206715517-5c0ba140bef2?q=80&w=2070&auto=format&fit=crop" alt="Community and Science" class="rounded-2xl shadow-xl w-full object-cover h-[400px]">
                     <div class="absolute -bottom-6 -left-6 glass-card p-6 rounded-2xl shadow-lg max-w-xs border-l-4 border-brand-secondary hidden md:block">
                         <div class="text-3xl text-brand-secondary mb-2"><i class="fa-solid fa-hands-holding-circle"></i></div>
-                        <h4 class="font-bold text-brand-dark">Data-Driven Compassion</h4>
+                        <h4 class="font-bold text-brand-dark">Knowledge-Driven Compassion</h4>
                         <p class="text-xs text-slate-500 mt-1">Merging statistical rigor with human-centric care.</p>
                     </div>
                 </div>
@@ -513,7 +527,7 @@
                     </div>
                     <h3 class="text-2xl font-bold text-brand-dark mb-4">Our Mission</h3>
                     <p class="text-lg text-slate-700 font-medium leading-relaxed">
-                        "To empower youth, women, and children by enhancing their capacity and leadership through science, education, health, and environment for positive community transformation."
+                        "To empower individual and communities by enhancing their capacity and leadership through science, education, health, and environment for positive community transformation."
                     </p>
                 </div>
             </div>
@@ -535,7 +549,7 @@
                     <div class="mt-1 flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-brand-primary to-blue-500 text-white flex items-center justify-center font-bold text-xl shadow-sm">1</div>
                     <div>
                         <h4 class="font-bold text-brand-dark text-lg mb-2">Awareness & Capacity Building</h4>
-                        <p class="text-slate-600 text-sm leading-relaxed">To promote awareness in science, education, health, and environment within the community; and to conduct capacity-building and leadership development programs targeting youth, women, and children.</p>
+                        <p class="text-slate-600 text-sm leading-relaxed">To promote awareness in science, education, health, and environment within the community; and to conduct capacity-building and leadership development programs targeting individual and communities.</p>
                     </div>
                 </div>
                 <!-- Obj 2 -->
@@ -647,7 +661,7 @@
             </div>
 
             <!-- Legal Status -->
-            <div class="glass-card p-10 rounded-3xl reveal bg-gradient-to-br from-white to-slate-50">
+            <div class="glass-card p-10 rounded-3xl reveal bg-gradient-to-br from-white to-slate-50" style="transition-delay: 100ms;">
                 <h3 class="text-2xl font-bold text-brand-primary mb-6 flex items-center gap-3">
                     <i class="fa-solid fa-file-shield text-brand-secondary"></i> Legal Status & Registration
                 </h3>
@@ -691,40 +705,43 @@
                     </div>
                     <span class="font-bold text-xl text-white">Nitya Bimba Sewa</span>
                 </div>
-                <p class="text-sm mb-4 leading-relaxed">A registered scientific consultancy and technological solutions enterprise based in Nepal.</p>
+                <p class="text-sm mb-4 leading-relaxed">Where scientific knowledge meets compassion. Registered SWC-affiliated NGO in Nepal.</p>
                 <div class="flex gap-3">
-                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-all shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-secondary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-highlight hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-tiktok text-xs"></i></a>
                 </div>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Company</h4>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Navigation</h4>
                 <ul class="space-y-2 text-sm font-medium text-left">
-                    <li><a href="about.html" class="text-white transition-colors">Who We Are</a></li>
-                    <li><a href="team.html" class="hover:text-white transition-colors">Leadership</a></li>
-                    <li><a href="our-work.html" class="hover:text-white transition-colors">Our Services</a></li>
-                    <li><a href="projects.html" class="hover:text-white transition-colors">Client Portfolio</a></li>
-                    <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                    <li><a href="about.html" class="text-white transition-colors">About Us</a></li>
+                    <li><a href="team.html" class="hover:text-white transition-colors">Our Team</a></li>
+                    <li><a href="our-work.html" class="hover:text-white transition-colors">Core Pillars</a></li>
+                    <li><a href="projects.html" class="hover:text-white transition-colors">Initiatives</a></li>
+                    <li><a href="impact.html" class="hover:text-white transition-colors">Our Impact</a></li>
                 </ul>
             </div>
             <div>
-                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Insights & Legal</h4>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
                 <ul class="space-y-2 text-sm font-medium text-left">
-                    <li><a href="research.html" class="hover:text-white transition-colors">Whitepapers</a></li>
-                    <li><a href="news.html" class="hover:text-white transition-colors">Newsroom</a></li>
-                    <li><a href="transparency.html" class="hover:text-white transition-colors">Corporate Governance</a></li>
+                    <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
+                    <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
+                    <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
+                    <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Legal & Connect</h4>
+                <ul class="space-y-2 text-sm font-medium text-left">
                     <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
                     <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    <li><a href="contact.html" class="hover:text-white transition-colors">Contact Us</a></li>
                 </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Contact Us</h4>
-                <ul class="space-y-2 text-sm font-medium text-left">
-                    <li class="flex items-start gap-2"><i class="fa-solid fa-location-dot mt-1 text-brand-accent"></i> Kathmandu, Nepal</li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-envelope text-brand-accent"></i> corporate@nityabimbasewa.com</li>
-                    <li class="flex items-center gap-2"><i class="fa-solid fa-phone text-brand-accent"></i> +977-XXXXXXXXXX</li>
-                </ul>
+                <a href="donate.html" class="mt-4 inline-block bg-gradient-to-r from-brand-highlight to-orange-600 text-white font-bold px-6 py-2 rounded-full text-xs shadow-lg hover:shadow-2xl transition-transform hover:-translate-y-1">Donate to a Project</a>
             </div>
         </div>
         <div class="max-w-7xl mx-auto px-4 mt-8 pt-6 border-t border-slate-800 text-center text-[10px] text-slate-500 uppercase tracking-[0.4em]">&copy; 2026 Nitya Bimba Sewa. Nepal. All Rights Reserved.</div>
@@ -811,7 +828,7 @@
               {
                 y: 0,
                 opacity: 1,
-                duration: 1,
+                duration: 1.2,
                 stagger: 0.15,
                 ease: "power3.out",
                 delay: 0.2,
@@ -827,7 +844,19 @@
               }
             );
 
-            // 2. Scroll Reveal Animations
+            // Hero Parallax Effect
+            gsap.to("#hero-bg-layer", {
+                yPercent: 30,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            // 2. Scroll Reveal Animations (Standard fades)
             gsap.set(".reveal", { visibility: "visible" });
             const revealElements = document.querySelectorAll(".reveal");
             revealElements.forEach((elem) => {
@@ -910,7 +939,7 @@
                 });
             }
 
-            // Mobile Menu Toggle
+            // Mobile Menu Toggle with Animation & Scroll Lock
             const mobileBtn = document.getElementById("mobile-menu-btn");
             const mobileMenu = document.getElementById("mobile-menu");
 
@@ -923,18 +952,23 @@
                 if (isMenuOpen) {
                   mobileMenu.classList.remove("opacity-0", "invisible", "-translate-y-4");
                   document.body.style.overflow = "hidden";
-                  mobileIcon.classList.remove("fa-bars");
-                  mobileIcon.classList.add("fa-xmark");
+                  if (mobileIcon) {
+                    mobileIcon.classList.remove("fa-bars");
+                    mobileIcon.classList.add("fa-xmark");
+                  }
                 } else {
                   mobileMenu.classList.add("opacity-0", "invisible", "-translate-y-4");
                   document.body.style.overflow = ""; 
-                  mobileIcon.classList.remove("fa-xmark");
-                  mobileIcon.classList.add("fa-bars");
+                  if (mobileIcon) {
+                    mobileIcon.classList.remove("fa-xmark");
+                    mobileIcon.classList.add("fa-bars");
+                  }
                 }
               }
 
               mobileBtn.addEventListener("click", toggleMobileMenu);
 
+              // Close mobile menu when a link is clicked
               const mobileLinks = mobileMenu.querySelectorAll("a");
               mobileLinks.forEach((link) => {
                 link.addEventListener("click", () => {

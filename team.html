@@ -64,18 +64,28 @@
         backdrop-filter: blur(8px);
         border: 1px solid rgba(226, 232, 240, 1);
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        /* Super silky 0.6s easing for the smooth hover enforced globally */
+        transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
       }
 
       .glass-card:hover {
-        transform: translateY(-5px);
-        border-color: rgba(99, 102, 241, 0.4);
-        box-shadow: 0 10px 40px rgba(30, 58, 138, 0.08);
+        transform: translateY(-8px);
+        border-color: rgba(99, 102, 241, 0.4) !important;
+        box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15) !important;
       }
 
-      .hero-inner-bg {
+      /* Parallax Background Layer */
+      .hero-bg-layer {
+        position: absolute;
+        /* Oversize the background so it has room to move during parallax */
+        top: -15%;
+        bottom: -15%;
+        left: -5%;
+        right: -5%;
         background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.85)), 
-                    url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+                    url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop') center/cover;
+        z-index: 0;
+        will-change: transform;
       }
 
       /* Subtle dot grid for the research feel */
@@ -219,12 +229,12 @@
               >
                 <a
                   href="about.html"
-                  class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300"
+                  class="px-5 py-2.5 text-sm font-medium text-brand-primary bg-brand-primary/5 pl-7 transition-all duration-300"
                   >About Us</a
                 >
                 <a
                   href="team.html"
-                  class="px-5 py-2.5 text-sm font-medium text-brand-primary bg-brand-primary/5 pl-7 transition-all duration-300"
+                  class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300"
                   >Our Team</a
                 >
                 <a
@@ -484,13 +494,16 @@
     </div>
 
     <!-- Inner Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
-        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
-        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
-        <div class="absolute inset-0 research-grid opacity-20"></div>
+    <section id="hero-section" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center text-center px-4 overflow-hidden">
+        <!-- Parallax Background Layer -->
+        <div class="hero-bg-layer" id="hero-bg-layer"></div>
+
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%] z-0"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%] z-0"></div>
+        <div class="absolute inset-0 research-grid opacity-20 z-0"></div>
         
-        <div class="max-w-5xl mx-auto z-10">
-            <h3 class="reveal text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20">The People Behind the Mission</h3>
+        <div class="max-w-5xl mx-auto z-10 relative">
+            <h3 class="reveal text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">The People Behind the Mission</h3>
             
             <!-- Kinetic Text Heading -->
             <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
@@ -832,7 +845,7 @@
     
     <!-- Lenis Smooth Scroll -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
-    
+
     <script>
         // Global scope function for inline onclick handlers
         function toggleSearch() {
@@ -904,7 +917,7 @@
               {
                 y: 0,
                 opacity: 1,
-                duration: 1,
+                duration: 1.2,
                 stagger: 0.15,
                 ease: "power3.out",
                 delay: 0.2,
@@ -920,6 +933,18 @@
               }
             );
 
+            // Hero Parallax Effect
+            gsap.to("#hero-bg-layer", {
+                yPercent: 30,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
             // 2. Scroll Reveal Animations
             gsap.set(".reveal", { visibility: "visible" });
             const revealElements = document.querySelectorAll(".reveal");
@@ -929,81 +954,47 @@
                 delayTime = parseFloat(elem.style.transitionDelay) / 1000;
                 elem.style.transitionDelay = ''; 
               }
-
               gsap.fromTo(
                 elem,
                 { y: 40, opacity: 0 },
                 {
-                  y: 0,
-                  opacity: 1,
-                  duration: 0.8,
-                  delay: delayTime,
-                  ease: "power2.out",
-                  scrollTrigger: {
-                    trigger: elem,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse",
-                  },
-                  onStart: () => {
-                    elem.style.transitionProperty = 'none';
-                  },
-                  onComplete: () => {
-                    elem.style.transitionProperty = '';
-                    gsap.set(elem, { clearProps: "transform" });
-                  }
+                  y: 0, opacity: 1, duration: 0.8, delay: delayTime, ease: "power2.out",
+                  scrollTrigger: { trigger: elem, start: "top 85%", toggleActions: "play none none reverse" },
+                  onStart: () => { elem.style.transitionProperty = 'none'; },
+                  onComplete: () => { elem.style.transitionProperty = ''; gsap.set(elem, { clearProps: "transform" }); }
                 }
               );
             });
 
             // 3. Kinetic Typography (Bulletproof Split Text)
             const kineticTexts = document.querySelectorAll(".kinetic-text");
-            
-            // Force the parent wrapper to be visible so we never have a blank screen
             gsap.set(kineticTexts, { visibility: "visible", opacity: 1 });
-            
             if (typeof SplitType !== 'undefined') {
                 kineticTexts.forEach((text) => {
                     const splitText = new SplitType(text, { types: 'words' });
-                    
                     gsap.fromTo(
                         splitText.words,
                         { y: 30, opacity: 0 },
                         {
-                            y: 0,
-                            opacity: 1,
-                            duration: 0.8,
-                            stagger: 0.05,
-                            ease: "power3.out",
-                            scrollTrigger: {
-                                trigger: text,
-                                start: "top 85%",
-                                toggleActions: "play none none reverse"
-                            }
+                            y: 0, opacity: 1, duration: 0.8, stagger: 0.05, ease: "power3.out",
+                            scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" }
                         }
                     );
                 });
             } else {
-                // FALLBACK: If an adblocker blocks SplitType, gracefully fade in the entire text block natively
                 kineticTexts.forEach((text) => {
                     gsap.fromTo(
                         text,
                         { y: 30, opacity: 0 },
                         {
-                            y: 0,
-                            opacity: 1,
-                            duration: 1,
-                            ease: "power3.out",
-                            scrollTrigger: {
-                                trigger: text,
-                                start: "top 85%",
-                                toggleActions: "play none none reverse"
-                            }
+                            y: 0, opacity: 1, duration: 1, ease: "power3.out",
+                            scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" }
                         }
                     );
                 });
             }
 
-            // Mobile Menu Toggle with Animation & Scroll Lock
+            // Mobile Menu Toggle
             const mobileBtn = document.getElementById("mobile-menu-btn");
             const mobileMenu = document.getElementById("mobile-menu");
 
@@ -1032,7 +1023,6 @@
 
               mobileBtn.addEventListener("click", toggleMobileMenu);
 
-              // Close mobile menu when a link is clicked
               const mobileLinks = mobileMenu.querySelectorAll("a");
               mobileLinks.forEach((link) => {
                 link.addEventListener("click", () => {
@@ -1074,7 +1064,7 @@
                             this.classList.remove("text-slate-500");
                             this.classList.add("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
 
-                            // Smooth scroll to the section using Lenis (Offset accounts for sticky navbars)
+                            // Smooth scroll to the section using Lenis
                             lenis.scrollTo(targetSection, { offset: -160, duration: 1.5 });
                         }
                     });

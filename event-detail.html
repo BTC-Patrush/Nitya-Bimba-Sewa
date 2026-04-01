@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us | Nitya Bimba Sewa</title>
+    <title>Event Details | Nitya Bimba Sewa</title>
     
     <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,7 +52,6 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(226, 232, 240, 1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            /* Super silky 0.6s easing for the smooth hover */
             transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
@@ -62,15 +61,16 @@
             box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15); 
         }
 
-        /* Fixed GSAP parallax implementation for better performance and mobile support */
+        /* Fixed GSAP parallax implementation */
         .hero-bg-layer {
             position: absolute;
             top: -20%;
             left: -5%;
             width: 110%;
             height: 140%;
-            background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.85)), 
-                        url('https://images.unsplash.com/photo-1516387938699-a93567ec168e?q=80&w=2071&auto=format&fit=crop') center/cover no-repeat;
+            /* Specific image for this event */
+            background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(31, 41, 55, 0.95)), 
+                        url('https://images.unsplash.com/photo-1515187029135-18ee286d815b?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
             z-index: 0;
             pointer-events: none;
             will-change: transform;
@@ -101,12 +101,74 @@
 
         .reveal, .hero-elem, .kinetic-text { opacity: 0; visibility: hidden; }
         
-        /* Map container styling */
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            min-height: 400px;
-            border: 0;
+        /* Category Badge */
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.875rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Article Styling */
+        .article-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #475569;
+        }
+        .article-content h2 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+        .article-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1F2937;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .article-content ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 1.5rem;
+        }
+        .article-content ul li {
+            position: relative;
+            padding-left: 1.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.125rem;
+            color: #475569;
+        }
+        .article-content ul li::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+            color: #6366F1;
+            font-size: 0.875rem;
+        }
+        .article-content blockquote {
+            border-left: 4px solid #6366F1;
+            background-color: #F8FAFC;
+            padding: 1.5rem 2rem;
+            margin: 2.5rem 0;
+            border-top-right-radius: 0.75rem;
+            border-bottom-right-radius: 0.75rem;
+            font-style: italic;
+            font-size: 1.25rem;
+            color: #334155;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
         
         /* Search Overlay Styles */
@@ -120,7 +182,7 @@
             opacity: 1;
         }
 
-        /* Fix for SplitType breaking Tailwind background gradients */
+        /* Fix for SplitType */
         .bg-clip-text .word,
         .text-gradient-primary .word {
             background: inherit;
@@ -183,20 +245,19 @@
                         </div>
                     </div>
                     
-                    <!-- Engage Dropdown -->
+                    <!-- Engage Dropdown (Active Marker) -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                        <button class="flex items-center gap-1 text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">
                             Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
                         </button>
                         <div class="absolute top-16 right-0 lg:left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
                             <a href="get-involved.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Get Involved</a>
                             <a href="partners.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Partners</a>
-                            <a href="news.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">News & Insights</a>
+                            <a href="news.html" class="px-5 py-2.5 text-sm font-medium text-brand-primary bg-brand-primary/5 pl-7 transition-all duration-300">News & Insights</a>
                         </div>
                     </div>
 
-                    <!-- Contact (Active) -->
-                    <a href="contact.html" class="text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">Contact</a>
+                    <a href="contact.html" class="hover:text-brand-accent transition-colors">Contact Us</a>
                     
                     <!-- Desktop Search Button -->
                     <button onclick="toggleSearch()" class="px-5 py-2 rounded-full border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white transition-all flex items-center gap-2 font-bold text-sm shadow-sm hover:shadow-md group">
@@ -249,11 +310,11 @@
                     <div class="flex flex-col space-y-3 pl-2">
                         <a href="get-involved.html" class="text-slate-600 hover:text-brand-accent text-sm">Get Involved</a>
                         <a href="partners.html" class="text-slate-600 hover:text-brand-accent text-sm">Partners</a>
-                        <a href="news.html" class="text-slate-600 hover:text-brand-accent text-sm">News & Insights</a>
+                        <a href="news.html" class="text-brand-accent text-sm font-bold">News & Insights</a>
                     </div>
                 </div>
 
-                <a href="contact.html" class="text-brand-accent text-sm font-bold pt-4 pb-4">Contact Us</a>
+                <a href="contact.html" class="text-brand-dark hover:text-brand-accent font-medium pt-4 pb-4">Contact Us</a>
             </div>
         </div>
     </nav>
@@ -275,170 +336,150 @@
     </div>
 
     <!-- Inner Hero Section with Parallax -->
-    <section id="hero-section" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center text-center px-4 overflow-hidden">
+    <section id="hero-section" class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 flex items-center justify-center text-center px-4 overflow-hidden">
         <div class="hero-bg-layer"></div>
         <div class="glow-blob bg-brand-accent top-[10%] left-[5%] parallax-blob"></div>
         <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%] parallax-blob"></div>
-        <div class="absolute inset-0 research-grid opacity-20"></div>
+        <div class="absolute inset-0 research-grid opacity-20 z-0"></div>
         
-        <div class="max-w-5xl mx-auto z-10 reveal relative">
-            <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Communication Hub</h3>
-            <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
-                Reach Out & <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Connect.</span>
+        <div class="max-w-4xl mx-auto z-10 reveal relative">
+            <span class="category-badge bg-brand-accent text-white shadow-md mb-6 hero-elem"><i class="fa-regular fa-calendar-check mr-2"></i>Event Updates</span>
+            <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-8 tracking-tight">
+                Highlights from the Kathmandu <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">STEM Expo.</span>
             </h1>
-            <p class="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light leading-relaxed hero-elem">
-                Whether you want to propose a research partnership, volunteer in the field, or simply learn more about our mission, our team is ready to assist you.
-            </p>
-        </div>
-    </section>
-
-    <!-- Main Contact Section -->
-    <section class="py-24 px-4 bg-white relative overflow-hidden border-b border-slate-100">
-        <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-accent/5 rounded-full blur-[100px] pointer-events-none"></div>
-        <div class="glow-blob bg-brand-primary opacity-[0.03] top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2"></div>
-        
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
-                
-                <!-- Contact Information -->
-                <div class="reveal space-y-12">
-                    <div>
-                        <h3 class="text-brand-accent font-bold tracking-wider uppercase text-sm mb-2">Get in Touch</h3>
-                        <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-brand-dark mb-4">Let's start a conversation.</h2>
-                        <p class="text-slate-600 leading-relaxed text-lg">We actively monitor our communication channels and aim to respond to all institutional and community inquiries within 24-48 business hours.</p>
-                    </div>
-
-                    <div class="space-y-8">
-                        <!-- Address -->
-                        <div class="flex items-start gap-6 group">
-                            <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 text-brand-primary flex items-center justify-center text-2xl flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-sm">
-                                <i class="fa-solid fa-location-dot"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-brand-dark text-xl mb-1 group-hover:text-brand-primary transition-colors">Headquarters</h4>
-                                <p class="text-slate-600 leading-relaxed">Kathmandu, Bagmati Province<br>Nepal</p>
-                            </div>
-                        </div>
-
-                        <!-- Phone -->
-                        <div class="flex items-start gap-6 group">
-                            <div class="w-14 h-14 rounded-2xl bg-brand-secondary/10 text-brand-secondary flex items-center justify-center text-2xl flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-sm">
-                                <i class="fa-solid fa-phone"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-brand-dark text-xl mb-1 group-hover:text-brand-secondary transition-colors">Direct Line</h4>
-                                <p class="text-slate-600 leading-relaxed">+977 986-XXXXXXX</p>
-                                <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-bold">Mon-Fri, 9am - 5pm NPT</p>
-                            </div>
-                        </div>
-
-                        <!-- Email -->
-                        <div class="flex items-start gap-6 group">
-                            <div class="w-14 h-14 rounded-2xl bg-brand-accent/10 text-brand-accent flex items-center justify-center text-2xl flex-shrink-0 transition-transform duration-300 group-hover:scale-110 shadow-sm">
-                                <i class="fa-solid fa-envelope"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-brand-dark text-xl mb-1 group-hover:text-brand-accent transition-colors">Email Us</h4>
-                                <a href="mailto:info@nityabimbasewa.org" class="text-slate-600 hover:text-brand-accent font-medium transition-colors">info@nityabimbasewa.org</a>
-                                <p class="text-xs text-slate-400 mt-1 uppercase tracking-wider font-bold">General & Partnership Inquiries</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Social Media -->
-                    <div class="pt-8 border-t border-slate-100">
-                        <h4 class="font-bold text-brand-dark mb-4 uppercase tracking-wider text-sm">Follow Our Fieldwork</h4>
-                        <div class="flex gap-4">
-                            <a href="#" class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-brand-primary hover:bg-brand-primary hover:text-white transition-all duration-300 shadow-sm border border-slate-200">
-                                <i class="fa-brands fa-facebook-f text-xl"></i>
-                            </a>
-                            <a href="#" class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-brand-accent hover:bg-brand-accent hover:text-white transition-all duration-300 shadow-sm border border-slate-200">
-                                <i class="fa-brands fa-twitter text-xl"></i>
-                            </a>
-                            <a href="#" class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-brand-secondary hover:bg-brand-secondary hover:text-white transition-all duration-300 shadow-sm border border-slate-200">
-                                <i class="fa-brands fa-linkedin-in text-xl"></i>
-                            </a>
-                            <a href="#" class="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center text-brand-highlight hover:bg-brand-highlight hover:text-white transition-all duration-300 shadow-sm border border-slate-200">
-                                <i class="fa-brands fa-instagram text-xl"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Contact Form -->
-                <div class="reveal" style="transition-delay: 150ms;">
-                    <div class="glass-card p-8 lg:p-12 rounded-[2.5rem] shadow-2xl border-t-8 border-t-brand-primary h-full">
-                        <h3 class="text-2xl font-bold text-brand-dark mb-8">Send a Message</h3>
-                        
-                        <form class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div>
-                                    <label class="block text-sm font-bold text-slate-700 mb-2">First Name</label>
-                                    <input type="text" placeholder="John" class="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 bg-slate-50 text-slate-700 transition-colors">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold text-slate-700 mb-2">Last Name</label>
-                                    <input type="text" placeholder="Doe" class="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 bg-slate-50 text-slate-700 transition-colors">
-                                </div>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Email Address</label>
-                                <input type="email" placeholder="john@example.com" class="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 bg-slate-50 text-slate-700 transition-colors">
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Subject</label>
-                                <select class="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 bg-slate-50 text-slate-600 transition-colors">
-                                    <option value="" disabled selected>Select an inquiry type...</option>
-                                    <option>General Inquiry</option>
-                                    <option>Research Partnership</option>
-                                    <option>Volunteering / Internships</option>
-                                    <option>Donations & Funding</option>
-                                    <option>Media & Press</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Your Message</label>
-                                <textarea rows="5" placeholder="How can we help you?" class="w-full px-5 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 bg-slate-50 text-slate-700 resize-none transition-colors"></textarea>
-                            </div>
-
-                            <button type="button" class="w-full bg-gradient-to-r from-brand-primary to-blue-800 hover:shadow-[0_10px_20px_rgba(30,58,138,0.3)] text-white font-extrabold py-4 rounded-xl transition-transform duration-300 text-lg flex items-center justify-center gap-2 transform hover:-translate-y-1 mt-4">
-                                <i class="fa-regular fa-paper-plane"></i> Send Message
-                            </button>
-                        </form>
-                    </div>
-                </div>
-
+            <div class="flex flex-wrap items-center justify-center gap-4 md:gap-6 text-white/80 text-sm font-medium hero-elem">
+                <span class="flex items-center gap-2"><i class="fa-regular fa-calendar"></i> March 01, 2026</span>
+                <span class="hidden md:inline">•</span>
+                <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot"></i> Kathmandu, Nepal</span>
+                <span class="hidden md:inline">•</span>
+                <span class="flex items-center gap-2"><i class="fa-regular fa-clock"></i> 5 min read</span>
             </div>
         </div>
     </section>
 
-    <!-- Google Map Section -->
-    <section class="py-24 px-4 bg-brand-bg relative overflow-hidden">
-        <div class="glow-blob bg-brand-secondary opacity-[0.05] top-1/2 right-1/4 translate-x-1/2 -translate-y-1/2"></div>
-        <div class="absolute inset-0 research-grid opacity-30 z-0"></div>
-        <div class="max-w-7xl mx-auto relative z-10">
-            <div class="text-center mb-12 reveal">
-                <h3 class="text-brand-secondary font-bold tracking-wider uppercase text-sm mb-2">Find Us</h3>
-                <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-brand-dark">Our Operations Hub</h2>
-            </div>
+    <!-- Main Article Content -->
+    <article class="py-16 px-4 relative bg-white border-b border-slate-100">
+        <div class="glow-blob bg-brand-accent opacity-[0.03] top-1/4 right-0 translate-x-1/2"></div>
+        <div class="glow-blob bg-brand-secondary opacity-[0.03] bottom-1/4 left-0 -translate-x-1/2"></div>
+
+        <div class="max-w-3xl mx-auto relative z-10 reveal article-content">
             
-            <div class="glass-card rounded-3xl overflow-hidden shadow-xl reveal map-container p-2 border-2 border-white">
-                <!-- Using a standard Google Maps Embed for Kathmandu, Nepal -->
-                <iframe class="rounded-2xl"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1m3!1d113032.64621398863!2d85.25065593883018!3d27.708942726588267!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb198a307baabf%3A0xb5137c1bf18db1ea!2sKathmandu%2044600%2C%20Nepal!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
+            <!-- Lead Paragraph -->
+            <p class="text-xl font-medium text-slate-700 leading-relaxed mb-10 first-letter:text-5xl first-letter:font-bold first-letter:text-brand-primary first-letter:mr-1 first-letter:float-left">
+                The recent Kathmandu STEM Expo brought together over 500 students, educators, and scientific innovators to showcase the power of practical, hands-on learning. Hosted in partnership with the local municipal government, the event marked a significant milestone in our ongoing mission to democratize science education across Bagmati Province.
+            </p>
+
+            <h2>Igniting Curiosity in Young Minds</h2>
+            <p>
+                For many students in attendance, this was their first opportunity to interact with professional-grade scientific equipment. Our fleet of mobile micro-labs, typically deployed in rural schools, was brought to the center stage. Students engaged directly with experiments covering fluid dynamics, cellular biology, and basic robotics. 
+            </p>
+            <p>
+                The enthusiasm was palpable. Rather than reading about chemical reactions in aging textbooks, students were able to safely mix compounds, observe the results, and formulate their own hypotheses under the guidance of our Vigya Council volunteers.
+            </p>
+
+            <blockquote class="reveal">
+                "Seeing the spark of realization in a student's eyes when they finally understand a complex physical concept through hands-on interaction is exactly why we do this work. It bridges the gap between theory and reality."
+                <footer class="mt-4 text-sm font-bold text-slate-500 uppercase tracking-widest">— Dr. Ramesh K., Lead STEM Facilitator</footer>
+            </blockquote>
+
+            <h2>Key Highlights from the Expo</h2>
+            <p>
+                The two-day event was packed with workshops, competitions, and collaborative sessions. Some of the most impactful moments included:
+            </p>
+            <ul>
+                <li><strong>The Interactive Biology Station:</strong> Students utilized high-powered digital microscopes to analyze local water samples, directly connecting their textbook knowledge to local environmental issues.</li>
+                <li><strong>Robotics for Rural Solutions:</strong> A showcase where high school students programmed simple robotics designed to automate agricultural tasks, demonstrating incredible problem-solving skills.</li>
+                <li><strong>Teacher Training Workshop:</strong> Over 40 local educators participated in our specialized module on how to integrate micro-lab kits into standard municipal curriculums without disrupting the academic calendar.</li>
+            </ul>
+
+            <!-- Inline Image/Gallery -->
+            <div class="my-12 grid grid-cols-1 md:grid-cols-2 gap-4 reveal">
+                <img src="https://images.unsplash.com/photo-1564069114553-7215e1ff1890?q=80&w=2069&auto=format&fit=crop" alt="Students in Lab" class="rounded-2xl shadow-md w-full h-64 object-cover">
+                <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?q=80&w=2070&auto=format&fit=crop" alt="Science Equipment" class="rounded-2xl shadow-md w-full h-64 object-cover">
+                <div class="col-span-1 md:col-span-2 text-center mt-2">
+                    <p class="text-xs text-slate-400 font-bold uppercase tracking-wider">Students interacting with the NBS mobile micro-labs at the Kathmandu Expo.</p>
+                </div>
             </div>
+
+            <h2>Looking Forward: Scaling the Impact</h2>
+            <p>
+                The success of the Kathmandu STEM Expo has solidified our data-driven hypothesis: when provided with the right tools, the potential of rural youth is limitless. Following the expo, Nitya Bimba Sewa has secured commitments to expand our mobile lab fleet by five additional units by the end of 2026.
+            </p>
+            <p>
+                We extend our deepest gratitude to the volunteers, corporate sponsors, and local authorities who made this event a resounding success. Together, we are not just teaching science; we are building a more capable, innovative future.
+            </p>
+
+            <!-- Tags & Share -->
+            <div class="flex flex-col md:flex-row items-center justify-between mt-16 pt-8 border-t border-slate-200 reveal">
+                <div class="flex gap-2 mb-6 md:mb-0">
+                    <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-md">#STEM</span>
+                    <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-md">#Education</span>
+                    <span class="px-3 py-1 bg-slate-100 text-slate-600 text-xs font-bold rounded-md">#Nepal</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-sm font-bold text-slate-500 uppercase tracking-wider">Share:</span>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-all"><i class="fa-brands fa-twitter"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-all"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="#" class="w-10 h-10 rounded-full bg-slate-100 text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                </div>
+            </div>
+
+        </div>
+    </article>
+
+    <!-- Read More / Next Article -->
+    <section class="py-16 px-4 bg-brand-bg">
+        <div class="max-w-7xl mx-auto reveal">
+            <h3 class="text-2xl font-bold text-brand-dark mb-8 text-center">Continue Reading</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Previous -->
+                <a href="#" class="glass-card p-6 rounded-2xl flex items-center gap-4 group">
+                    <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-brand-primary group-hover:text-white transition-all shrink-0">
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-1 block">Previous Article</span>
+                        <h4 class="font-bold text-brand-dark group-hover:text-brand-primary transition-colors line-clamp-2">The Science of Clean Water: Filtration Explained</h4>
+                    </div>
+                </a>
+                
+                <!-- Next -->
+                <a href="#" class="glass-card p-6 rounded-2xl flex items-center justify-end gap-4 group text-right">
+                    <div>
+                        <span class="text-xs font-bold text-brand-accent uppercase tracking-wider mb-1 block">Next Article</span>
+                        <h4 class="font-bold text-brand-dark group-hover:text-brand-accent transition-colors line-clamp-2">Meet Sunita: Breaking Barriers in Tech</h4>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 group-hover:bg-brand-accent group-hover:text-white transition-all shrink-0">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEWSLETTER SIGNUP -->
+    <section class="py-24 px-4 bg-brand-primary relative overflow-hidden text-center">
+        <div class="absolute inset-0 research-grid opacity-20" style="background-image: radial-gradient(#FFFFFF 1px, transparent 1px);"></div>
+        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[800px] bg-brand-accent/30 rounded-full blur-[120px] pointer-events-none"></div>
+        
+        <div class="max-w-2xl mx-auto relative z-10 reveal">
+            <i class="fa-regular fa-paper-plane text-5xl text-brand-highlight mb-6"></i>
+            <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-white mb-4">Never Miss an Update</h2>
+            <p class="text-slate-300 mb-8 text-lg">Join our community of researchers, volunteers, and change-makers. Get bi-monthly science insights and project updates delivered straight to your inbox.</p>
+            
+            <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                <input type="email" placeholder="Enter your email address" class="flex-grow px-6 py-4 rounded-full border-none focus:outline-none focus:ring-2 focus:ring-brand-highlight bg-white/10 backdrop-blur-sm text-white placeholder-white/50 text-center sm:text-left shadow-inner">
+                <button type="submit" class="bg-gradient-to-r from-brand-highlight to-orange-600 hover:shadow-[0_10px_30px_rgba(245,158,11,0.4)] text-white font-bold py-4 px-8 rounded-full transition-transform hover:-translate-y-1 whitespace-nowrap">
+                    Subscribe
+                </button>
+            </form>
+            <p class="text-xs text-white/50 mt-6 font-medium tracking-wider uppercase">We respect your privacy. No spam, ever. Unsubscribe at any time.</p>
         </div>
     </section>
 
     <!-- Master Footer -->
-    <footer class="bg-gray-900 text-slate-400 py-12 border-t border-slate-800 text-left">
+    <footer class="bg-gray-900 text-slate-400 py-8 border-t border-slate-800 text-left">
         <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
             <div class="col-span-1">
                 <div class="flex items-center gap-2 mb-3">
@@ -449,12 +490,12 @@
                 </div>
                 <p class="text-sm mb-4 leading-relaxed">Where scientific knowledge meets compassion. Registered SWC-affiliated NGO in Nepal.</p>
                 <div class="flex gap-3">
-                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-highlight hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-youtube text-xs"></i></a>
-                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-colors duration-300 shadow-sm"><i class="fa-brands fa-tiktok text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-primary hover:text-white transition-all shadow-sm"><i class="fa-brands fa-facebook-f text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-accent hover:text-white transition-all shadow-sm"><i class="fa-brands fa-twitter text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-brand-highlight hover:text-white transition-all shadow-sm"><i class="fa-brands fa-instagram text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-linkedin-in text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-red-600 hover:text-white transition-all shadow-sm"><i class="fa-brands fa-youtube text-xs"></i></a>
+                    <a href="#" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all shadow-sm"><i class="fa-brands fa-tiktok text-xs"></i></a>
                 </div>
             </div>
             <div>
@@ -497,7 +538,7 @@
     
     <!-- Lenis Smooth Scroll -->
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
-    
+
     <script>
         // Global scope function for inline onclick handlers
         function toggleSearch() {
@@ -539,11 +580,7 @@
 
             // Sync Lenis with GSAP ScrollTrigger
             lenis.on('scroll', ScrollTrigger.update);
-
-            gsap.ticker.add((time)=>{
-                lenis.raf(time * 1000);
-            });
-            
+            gsap.ticker.add((time)=>{ lenis.raf(time * 1000); });
             gsap.ticker.lagSmoothing(0);
 
             // Listen for "Enter" key on the overlay input to redirect to search.html
@@ -567,15 +604,8 @@
               heroElements,
               { y: 30, opacity: 0 },
               {
-                y: 0,
-                opacity: 1,
-                duration: 1.2,
-                stagger: 0.15,
-                ease: "power3.out",
-                delay: 0.2,
-                onStart: function() {
-                  heroElements.forEach(el => el.style.transitionProperty = 'none');
-                },
+                y: 0, opacity: 1, duration: 1.2, stagger: 0.15, ease: "power3.out", delay: 0.2,
+                onStart: function() { heroElements.forEach(el => el.style.transitionProperty = 'none'); },
                 onComplete: function() {
                   heroElements.forEach(el => {
                     el.style.transitionProperty = '';
@@ -585,7 +615,7 @@
               }
             );
 
-            // 2. Scroll Reveal Animations (Standard fades)
+            // 2. Scroll Reveal Animations
             gsap.set(".reveal", { visibility: "visible" });
             const revealElements = document.querySelectorAll(".reveal");
             revealElements.forEach((elem) => {
@@ -599,70 +629,37 @@
                 elem,
                 { y: 40, opacity: 0 },
                 {
-                  y: 0,
-                  opacity: 1,
-                  duration: 0.8,
-                  delay: delayTime,
-                  ease: "power2.out",
-                  scrollTrigger: {
-                    trigger: elem,
-                    start: "top 85%",
-                    toggleActions: "play none none reverse",
-                  },
-                  onStart: () => {
-                    elem.style.transitionProperty = 'none';
-                  },
-                  onComplete: () => {
-                    elem.style.transitionProperty = '';
-                    gsap.set(elem, { clearProps: "transform" });
-                  }
+                  y: 0, opacity: 1, duration: 0.8, delay: delayTime, ease: "power2.out",
+                  scrollTrigger: { trigger: elem, start: "top 85%", toggleActions: "play none none reverse" },
+                  onStart: () => { elem.style.transitionProperty = 'none'; },
+                  onComplete: () => { elem.style.transitionProperty = ''; gsap.set(elem, { clearProps: "transform" }); }
                 }
               );
             });
 
             // 3. Kinetic Typography (Bulletproof Split Text)
             const kineticTexts = document.querySelectorAll(".kinetic-text");
-            
-            // Force the parent wrapper to be visible so we never have a blank screen
             gsap.set(kineticTexts, { visibility: "visible", opacity: 1 });
-            
             if (typeof SplitType !== 'undefined') {
                 kineticTexts.forEach((text) => {
                     const splitText = new SplitType(text, { types: 'words' });
-                    
                     gsap.fromTo(
                         splitText.words,
                         { y: 30, opacity: 0 },
                         {
-                            y: 0,
-                            opacity: 1,
-                            duration: 0.8,
-                            stagger: 0.05,
-                            ease: "power3.out",
-                            scrollTrigger: {
-                                trigger: text,
-                                start: "top 85%",
-                                toggleActions: "play none none reverse"
-                            }
+                            y: 0, opacity: 1, duration: 0.8, stagger: 0.05, ease: "power3.out",
+                            scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" }
                         }
                     );
                 });
             } else {
-                // FALLBACK: If an adblocker blocks SplitType, gracefully fade in the entire text block natively
                 kineticTexts.forEach((text) => {
                     gsap.fromTo(
                         text,
                         { y: 30, opacity: 0 },
                         {
-                            y: 0,
-                            opacity: 1,
-                            duration: 1,
-                            ease: "power3.out",
-                            scrollTrigger: {
-                                trigger: text,
-                                start: "top 85%",
-                                toggleActions: "play none none reverse"
-                            }
+                            y: 0, opacity: 1, duration: 1, ease: "power3.out",
+                            scrollTrigger: { trigger: text, start: "top 85%", toggleActions: "play none none reverse" }
                         }
                     );
                 });
@@ -734,15 +731,15 @@
             }
 
             // Navbar background effect on scroll
-            const navbar = document.getElementById("navbar");
-            window.addEventListener("scroll", () => {
-              if (window.scrollY > 50) {
-                navbar.classList.add("shadow-sm");
-                navbar.style.background = "rgba(255, 255, 255, 0.98)";
-              } else {
-                navbar.classList.remove("shadow-sm");
-                navbar.style.background = "rgba(249, 250, 251, 0.85)";
-              }
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-xl', 'border-brand-primary/5');
+                    navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                } else {
+                    navbar.classList.remove('shadow-xl', 'border-brand-primary/5');
+                    navbar.style.background = 'rgba(249, 250, 251, 0.85)';
+                }
             });
         });
     </script>

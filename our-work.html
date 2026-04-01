@@ -52,7 +52,6 @@
             backdrop-filter: blur(8px);
             border: 1px solid rgba(226, 232, 240, 1);
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-            /* Upgraded to super silky 0.6s easing */
             transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
@@ -61,9 +60,18 @@
             box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15); 
         }
 
-        .hero-inner-bg {
+        /* Fixed GSAP parallax implementation for better performance and mobile support */
+        .hero-bg-layer {
+            position: absolute;
+            top: -20%;
+            left: -5%;
+            width: 110%;
+            height: 140%;
             background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.85)), 
-                        url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+                        url('https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+            z-index: 0;
+            pointer-events: none;
+            will-change: transform;
         }
 
         .research-grid {
@@ -315,12 +323,13 @@
     </div>
 
     <!-- Inner Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
-        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
-        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
-        <div class="absolute inset-0 research-grid opacity-20"></div>
+    <section id="hero-section" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center text-center px-4 overflow-hidden">
+        <div class="hero-bg-layer"></div>
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%] parallax-blob"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%] parallax-blob"></div>
+        <div class="absolute inset-0 research-grid opacity-20 z-0"></div>
         
-        <div class="max-w-5xl mx-auto z-10">
+        <div class="max-w-5xl mx-auto z-10 relative">
             <h3 class="reveal text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Programs & Initiatives</h3>
             
             <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
@@ -355,7 +364,7 @@
                 </div>
                 <div>
                     <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-gradient-primary">Science & Research</h2>
-                    <p class="reveal text-slate-500 font-bold mt-1 uppercase tracking-wider text-xs" style="transition-delay: 100ms;">Democratizing Data & Innovation</p>
+                    <p class="reveal text-slate-500 font-bold mt-1 uppercase tracking-wider text-xs" style="transition-delay: 100ms;">Promoting science & Innovation</p>
                 </div>
             </div>
 
@@ -363,7 +372,7 @@
                 <div class="space-y-6 reveal">
                     <div class="glass-card p-8 rounded-2xl hover:border-brand-primary/50 group">
                         <h4 class="text-brand-dark font-bold text-lg mb-3 flex items-center gap-2"><i class="fa-solid fa-circle-exclamation text-rose-500"></i> The Problem</h4>
-                        <p class="text-slate-600 leading-relaxed">Local policy and community development are frequently executed without baseline data. Furthermore, scientific innovation and laboratory access remain concentrated in urban centers, leaving rural populations disconnected from technological advancement.</p>
+                        <p class="text-slate-600 leading-relaxed">Local policy and community are not promoting science and innovation. Furthermore, scientific innovation and laboratory access is not the concern in our society.</p>
                     </div>
                     <div class="glass-card p-8 rounded-2xl hover:border-brand-primary/50 group">
                         <h4 class="text-brand-dark font-bold text-lg mb-3 flex items-center gap-2"><i class="fa-solid fa-lightbulb text-amber-500"></i> Our Approach</h4>
@@ -375,15 +384,15 @@
                     <div class="glass-card p-8 rounded-3xl h-full flex flex-col hover:border-brand-primary/50 group">
                         <h4 class="text-brand-primary font-bold text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-list-check"></i> Key Activities</h4>
                         <ul class="custom-list text-slate-600 text-sm space-y-4 mb-8 flex-grow">
-                            <li><strong>Baseline Data Collection:</strong> Surveying community health and environmental metrics before policy execution.</li>
-                            <li><strong>STEM Micro-Labs:</strong> Equipping underfunded public schools with portable science kits and trained facilitators.</li>
-                            <li><strong>Open Access Publishing:</strong> Producing white papers and research articles accessible to local governments.</li>
-                            <li><strong>Science Dialogues:</strong> Hosting virtual and physical seminars connecting global experts with local youth.</li>
+                            <li><strong>Data Collection:</strong> Collect, analyze and save data before and after executing plans and projects.</li>
+                            
+                            <li><strong>Open Access Publishing:</strong> Publising scientific and community reports in regular periodic basis.</li>
+                            <li><strong>Science Dialogues:</strong> Interviews and talk show with science experts.</li>
                         </ul>
                         
                         <div class="bg-brand-primary/5 border border-brand-primary/20 rounded-2xl p-5 mt-auto">
                             <h5 class="text-brand-primary font-bold mb-2 text-sm uppercase tracking-wider"><i class="fa-solid fa-chart-line"></i> Expected Outcomes</h5>
-                            <p class="text-brand-dark text-sm font-medium">Evidence-based local governance, a 40% increase in student engagement in STEM subjects, and a robust open-data portal for rural Nepal.</p>
+                            <p class="text-brand-dark text-sm font-medium">Increase in community engagement in science.</p>
                         </div>
                     </div>
                 </div>
@@ -401,7 +410,7 @@
                 </div>
                 <div>
                     <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-brand-secondary">Environment & Sustainability</h2>
-                    <p class="reveal text-slate-500 font-bold mt-1 uppercase tracking-wider text-xs" style="transition-delay: 100ms;">Research-Led Ecological Conservation</p>
+                    <p class="reveal text-slate-500 font-bold mt-1 uppercase tracking-wider text-xs" style="transition-delay: 100ms;">Environment Protection</p>
                 </div>
             </div>
 
@@ -410,8 +419,8 @@
                     <div class="glass-card p-8 rounded-3xl h-full flex flex-col hover:border-brand-secondary/50 group">
                         <h4 class="text-brand-secondary font-bold text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-list-check"></i> Key Activities</h4>
                         <ul class="custom-list text-slate-600 text-sm space-y-4 mb-8 text-brand-secondary flex-grow">
-                            <li><span class="text-slate-600"><strong>Biodiversity Mapping:</strong> Cataloging indigenous medicinal flora in community forests.</span></li>
-                            <li><span class="text-slate-600"><strong>Eco-Agriculture:</strong> Training local farmers in organic fertilizer production and sustainable crop rotation.</span></li>
+                            <li><span class="text-slate-600"><strong>Conservation Advocacy:</strong> Educating individuals and communities on environment friendly approaches.</span></li>
+                            <li><span class="text-slate-600"><strong>Eco-Agriculture:</strong> Investigating indigenous medicinal flora, biopesticides and biofertilizers for environmental and agricultural benefits.</span></li>
                             <li><span class="text-slate-600"><strong>Climate Workshops:</strong> Educating vulnerable communities on climate adaptation and disaster preparedness.</span></li>
                             <li><span class="text-slate-600"><strong>Conservation Advocacy:</strong> Partnering with forestry departments for anti-poaching and forest fire management strategies.</span></li>
                         </ul>
@@ -426,11 +435,11 @@
                 <div class="space-y-6 reveal" style="transition-delay: 150ms;">
                     <div class="glass-card p-8 rounded-2xl hover:border-brand-secondary/50 group">
                         <h4 class="text-brand-dark font-bold text-lg mb-3 flex items-center gap-2"><i class="fa-solid fa-circle-exclamation text-rose-500"></i> The Problem</h4>
-                        <p class="text-slate-600 leading-relaxed">Rapid biodiversity loss and climate change disproportionately impact rural agricultural communities. Traditional farming practices are becoming unsustainable, and indigenous knowledge of local flora is slowly disappearing.</p>
+                        <p class="text-slate-600 leading-relaxed">Negligence to manage plastic based solid materials impact environment. Traditional farming practices need to be upgraded using scientific knowledge and technology.</p>
                     </div>
                     <div class="glass-card p-8 rounded-2xl hover:border-brand-secondary/50 group">
                         <h4 class="text-brand-dark font-bold text-lg mb-3 flex items-center gap-2"><i class="fa-solid fa-lightbulb text-amber-500"></i> Our Approach</h4>
-                        <p class="text-slate-600 leading-relaxed">We merge traditional ecological knowledge with modern environmental science. Rather than dictating policies from afar, we empower local forest user groups and farmer cooperatives with data, tools, and eco-friendly technologies to lead their own conservation efforts.</p>
+                        <p class="text-slate-600 leading-relaxed">We promote biodegradable and environment friendly product and also investigate the possibility of the biofriendly product development for human and agricultural uses. </p>
                     </div>
                 </div>
             </div>
@@ -449,7 +458,7 @@
                 </div>
                 <div>
                     <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-brand-accent">Education & Capacity Building</h2>
-                    <p class="reveal text-slate-500 font-bold mt-1 uppercase tracking-wider text-xs" style="transition-delay: 100ms;">Empowering Youth and Women</p>
+                    <p class="reveal text-slate-500 font-bold mt-1 uppercase tracking-wider text-xs" style="transition-delay: 100ms;">Empowering Students</p>
                 </div>
             </div>
 
@@ -457,7 +466,7 @@
                 <div class="space-y-6 reveal">
                     <div class="glass-card p-8 rounded-2xl hover:border-brand-accent/50 group">
                         <h4 class="text-brand-dark font-bold text-lg mb-3 flex items-center gap-2"><i class="fa-solid fa-circle-exclamation text-rose-500"></i> The Problem</h4>
-                        <p class="text-slate-600 leading-relaxed">A severe digital divide exists between urban and rural demographics. Marginalized women and youth lack access to modern skill-building, leadership training, and the digital tools necessary to participate in today's economy.</p>
+                        <p class="text-slate-600 leading-relaxed">Our education system lacks brain storming and curiosity build up approach. Artificial intelligence and digitalization cause both opportunity and challenges in today’s world.</p>
                     </div>
                     <div class="glass-card p-8 rounded-2xl hover:border-brand-accent/50 group">
                         <h4 class="text-brand-dark font-bold text-lg mb-3 flex items-center gap-2"><i class="fa-solid fa-lightbulb text-amber-500"></i> Our Approach</h4>
@@ -469,14 +478,14 @@
                     <div class="glass-card p-8 rounded-3xl h-full flex flex-col hover:border-brand-accent/50 group">
                         <h4 class="text-brand-accent font-bold text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-list-check"></i> Key Activities</h4>
                         <ul class="custom-list text-slate-600 text-sm space-y-4 mb-8 text-brand-accent flex-grow">
-                            <li><span class="text-slate-600"><strong>Digital Literacy Bootcamps:</strong> Teaching women basic computer skills, internet safety, and digital banking.</span></li>
+                            <li><span class="text-slate-600"><strong>Brain storming sessions: </strong> Conduct sessions focusing science and social issues to induce awareness of the recent trends in science and social inclination.</span></li>
                             <li><span class="text-slate-600"><strong>Youth Leadership Incubators:</strong> Training young adults in project management, public speaking, and local governance participation.</span></li>
-                            <li><span class="text-slate-600"><strong>Scholarship Programs:</strong> Providing educational materials and financial support to girls at risk of dropping out.</span></li>
+                            <li><span class="text-slate-600"><strong>Scholarship Programs:</strong> Providing educational materials and financial support to students.</span></li>
                         </ul>
                         
                         <div class="bg-brand-accent/10 border border-brand-accent/30 rounded-2xl p-5 mt-auto">
                             <h5 class="text-brand-accent font-bold mb-2 text-sm uppercase tracking-wider"><i class="fa-solid fa-chart-line"></i> Expected Outcomes</h5>
-                            <p class="text-brand-dark text-sm font-medium">Creation of a financially independent cohort of women, increased youth participation in local councils, and a zero-dropout rate among sponsored students.</p>
+                            <p class="text-brand-dark text-sm font-medium">Provide platform for students in science, innovation and social welfare. </p>
                         </div>
                     </div>
                 </div>
@@ -503,7 +512,7 @@
                     <div class="glass-card p-8 rounded-3xl h-full flex flex-col hover:border-brand-highlight/50 group">
                         <h4 class="text-brand-highlight font-bold text-lg mb-4 flex items-center gap-2"><i class="fa-solid fa-list-check"></i> Key Activities</h4>
                         <ul class="custom-list text-slate-600 text-sm space-y-4 mb-8 text-brand-highlight flex-grow">
-                            <li><span class="text-slate-600"><strong>Mobile Health Camps:</strong> Deploying medical teams to remote areas for basic screening and medicine distribution.</span></li>
+                            <!-- <li><span class="text-slate-600"><strong>Mobile Health Camps:</strong> Deploying medical teams to remote areas for basic screening and medicine distribution.</span></li> -->
                             <li><span class="text-slate-600"><strong>Mental Health Counseling:</strong> Operating free, confidential counseling centers for individuals facing trauma or psychological distress.</span></li>
                             <li><span class="text-slate-600"><strong>Crisis Relief Fund:</strong> Providing immediate financial or material support to vulnerable families during emergencies.</span></li>
                             <li><span class="text-slate-600"><strong>Sanitation Drives:</strong> Educating communities on hygiene, menstrual health, and clean water practices.</span></li>
@@ -849,6 +858,33 @@
                     );
                 });
             }
+
+            // 4. GSAP Parallax Effects (Smooth background & blobs)
+            gsap.to(".hero-bg-layer", {
+                yPercent: 20,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            const parallaxBlobs = document.querySelectorAll(".parallax-blob");
+            parallaxBlobs.forEach((blob, index) => {
+                const direction = index % 2 === 0 ? 1 : -1;
+                gsap.to(blob, {
+                    y: 120 * direction,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: blob.parentElement,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            });
 
             // Mobile Menu Toggle
             const mobileBtn = document.getElementById("mobile-menu-btn");

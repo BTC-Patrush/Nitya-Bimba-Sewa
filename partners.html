@@ -62,9 +62,18 @@
             box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.15); 
         }
 
-        .hero-inner-bg {
+        /* Fixed GSAP parallax implementation for better performance and mobile support */
+        .hero-bg-layer {
+            position: absolute;
+            top: -20%;
+            left: -5%;
+            width: 110%;
+            height: 140%;
             background: linear-gradient(rgba(30, 58, 138, 0.9), rgba(30, 58, 138, 0.85)), 
-                        url('https://images.unsplash.com/photo-1576267423048-15c0040fec78?q=80&w=2070&auto=format&fit=crop') center/cover fixed;
+                        url('https://images.unsplash.com/photo-1576267423048-15c0040fec78?q=80&w=2070&auto=format&fit=crop') center/cover no-repeat;
+            z-index: 0;
+            pointer-events: none;
+            will-change: transform;
         }
 
         .research-grid {
@@ -146,41 +155,49 @@
 
                     <!-- About Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i></button>
-                        <div class="absolute top-16 left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="about.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">About Us</a>
-                            <a href="team.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Our Team</a>
-                            <a href="transparency.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Transparency</a>
-                            <a href="faq.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">FAQ</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            About <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="about.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">About Us</a>
+                            <a href="team.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Our Team</a>
+                            <a href="transparency.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Transparency</a>
+                            <a href="faq.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">FAQ</a>
                         </div>
                     </div>
 
-                    <!-- Work Dropdown -->
+                    <!-- Our Work Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i></button>
-                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="our-work.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Core Pillars</a>
-                            <a href="projects.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Projects</a>
-                            <a href="impact.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Impact & Results</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Our Work <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="our-work.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Core Pillars</a>
+                            <a href="projects.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Projects</a>
+                            <a href="impact.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Impact & Results</a>
                         </div>
                     </div>
 
                     <!-- Knowledge Dropdown -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i></button>
-                        <div class="absolute top-16 left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="research.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Research & Publications</a>
-                            <a href="media.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Media Gallery</a>
+                        <button class="flex items-center gap-1 hover:text-brand-accent transition-colors">
+                            Knowledge <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 left-0 w-60 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="research.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Research & Publications</a>
+                            <a href="media.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Media Gallery</a>
                         </div>
                     </div>
                     
                     <!-- Engage Dropdown (Active Marker) -->
                     <div class="relative group py-6">
-                        <button class="flex items-center gap-1 text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i></button>
-                        <div class="absolute top-16 right-0 lg:left-0 w-48 bg-white rounded-xl shadow-xl border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left scale-95 group-hover:scale-100 flex flex-col py-2 z-50">
-                            <a href="get-involved.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">Get Involved</a>
-                            <a href="partners.html" class="px-4 py-2 text-brand-primary bg-slate-50 transition-colors">Partners</a>
-                            <a href="news.html" class="px-4 py-2 hover:bg-slate-50 hover:text-brand-primary transition-colors">News & Insights</a>
+                        <button class="flex items-center gap-1 text-brand-accent border-b-2 border-brand-accent pb-1 transition-colors">
+                            Engage <i class="fa-solid fa-chevron-down text-[10px] mt-0.5 transition-transform duration-300 group-hover:rotate-180"></i>
+                        </button>
+                        <div class="absolute top-16 right-0 lg:left-0 w-56 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.05)] border border-slate-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out transform translate-y-4 group-hover:translate-y-0 flex flex-col py-3 z-50">
+                            <a href="get-involved.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">Get Involved</a>
+                            <a href="partners.html" class="px-5 py-2.5 text-sm font-medium text-brand-primary bg-brand-primary/5 pl-7 transition-all duration-300">Partners</a>
+                            <a href="news.html" class="px-5 py-2.5 text-sm font-medium text-slate-600 hover:text-brand-primary hover:bg-brand-primary/5 hover:pl-7 transition-all duration-300">News & Insights</a>
                         </div>
                     </div>
 
@@ -192,7 +209,7 @@
                     </button>
                 </div>
 
-                <!-- Mobile menu button & Mobile Search Icon -->
+                <!-- Mobile menu button & Search -->
                 <div class="lg:hidden flex items-center gap-3">
                     <button onclick="toggleSearch()" class="w-10 h-10 rounded-full bg-slate-50 border border-slate-200 text-brand-primary flex items-center justify-center hover:bg-brand-primary hover:text-white transition-all shadow-sm">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -211,9 +228,9 @@
                 
                 <div class="pt-4"><span class="text-xs font-bold text-brand-primary uppercase tracking-wider mb-2 block">About</span>
                     <div class="flex flex-col space-y-3 pl-2">
-                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">Who We Are</a>
-                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Leadership Team</a>
-                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Corporate Governance</a>
+                        <a href="about.html" class="text-slate-600 hover:text-brand-accent text-sm">About Us</a>
+                        <a href="team.html" class="text-slate-600 hover:text-brand-accent text-sm">Our Team</a>
+                        <a href="transparency.html" class="text-slate-600 hover:text-brand-accent text-sm">Transparency</a>
                         <a href="faq.html" class="text-slate-600 hover:text-brand-accent text-sm">FAQ</a>
                     </div>
                 </div>
@@ -262,13 +279,14 @@
         </div>
     </div>
 
-    <!-- Inner Hero Section -->
-    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center hero-inner-bg text-center px-4 overflow-hidden">
-        <div class="glow-blob bg-brand-accent top-[10%] left-[5%]"></div>
-        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%]"></div>
-        <div class="absolute inset-0 research-grid opacity-20"></div>
+    <!-- Inner Hero Section with Parallax -->
+    <section id="hero-section" class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 flex items-center justify-center text-center px-4 overflow-hidden">
+        <div class="hero-bg-layer"></div>
+        <div class="glow-blob bg-brand-accent top-[10%] left-[5%] parallax-blob"></div>
+        <div class="glow-blob bg-brand-secondary bottom-[10%] right-[5%] parallax-blob"></div>
+        <div class="absolute inset-0 research-grid opacity-20 z-0"></div>
         
-        <div class="max-w-5xl mx-auto z-10 reveal">
+        <div class="max-w-5xl mx-auto z-10 reveal relative">
             <h3 class="text-white/80 font-bold tracking-widest uppercase text-sm mb-4 bg-white/10 inline-block px-4 py-1 rounded-full backdrop-blur-sm border border-white/20 hero-elem">Our Global & Local Network</h3>
             <h1 class="kinetic-text text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight">
                 Collaborating for <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-accent to-brand-secondary">Impact.</span>
@@ -444,7 +462,7 @@
                     <h2 class="kinetic-text text-3xl md:text-4xl font-bold text-brand-dark mb-4">The 'Vigya' (Expert) Council</h2>
                     <p class="text-slate-600 leading-relaxed">Our intellectual backbone. This council comprises doctors, scientists, agronomists, and social researchers who voluntarily guide our operational frameworks.</p>
                 </div>
-                <a href="get-involved.html#membership" class="mt-4 md:mt-0 text-brand-primary font-bold hover:text-brand-accent transition-colors flex items-center gap-2">
+                <a href="contact.html" class="mt-4 md:mt-0 text-brand-primary font-bold hover:text-brand-accent transition-colors flex items-center gap-2">
                     Apply to join the Council <i class="fa-solid fa-arrow-right"></i>
                 </a>
             </div>
@@ -526,7 +544,7 @@
                 <h4 class="text-white font-bold mb-3 uppercase text-xs tracking-widest text-left">Knowledge & Trust</h4>
                 <ul class="space-y-2 text-sm font-medium text-left">
                     <li><a href="research.html" class="hover:text-white transition-colors">Research Hub</a></li>
-                    <li><a href="media.html" class="text-white transition-colors">Media Gallery</a></li>
+                    <li><a href="media.html" class="hover:text-white transition-colors">Media Gallery</a></li>
                     <li><a href="transparency.html" class="hover:text-white transition-colors">Transparency</a></li>
                     <li><a href="faq.html" class="hover:text-white transition-colors">Help & FAQ</a></li>
                 </ul>
@@ -631,7 +649,7 @@
               }
             );
 
-            // 2. Scroll Reveal Animations
+            // 2. Scroll Reveal Animations 
             gsap.set(".reveal", { visibility: "visible" });
             const revealElements = document.querySelectorAll(".reveal");
             revealElements.forEach((elem) => {
@@ -679,6 +697,33 @@
                     );
                 });
             }
+
+            // --- GSAP Parallax Effects (Smooth background & blobs) ---
+            gsap.to(".hero-bg-layer", {
+                yPercent: 20,
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#hero-section",
+                    start: "top top",
+                    end: "bottom top",
+                    scrub: true
+                }
+            });
+
+            const parallaxBlobs = document.querySelectorAll(".parallax-blob");
+            parallaxBlobs.forEach((blob, index) => {
+                const direction = index % 2 === 0 ? 1 : -1;
+                gsap.to(blob, {
+                    y: 120 * direction,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: blob.parentElement,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            });
 
             // Mobile Menu Toggle
             const mobileBtn = document.getElementById("mobile-menu-btn");
@@ -742,7 +787,6 @@
                         const targetSection = document.querySelector(targetId);
                         
                         if (targetSection) {
-                            // Immediately update active styling
                             navLinks.forEach(l => {
                                 l.classList.remove("text-brand-primary", "border-b-2", "border-brand-primary", "pb-1");
                                 l.classList.add("text-slate-500");
@@ -761,7 +805,6 @@
                     let current = "";
                     sections.forEach((section) => {
                         const sectionTop = section.offsetTop;
-                        // Offset buffer to trigger nav change just before hitting the exact top
                         if (window.scrollY >= (sectionTop - 250)) {
                             current = section.getAttribute("id");
                         }
